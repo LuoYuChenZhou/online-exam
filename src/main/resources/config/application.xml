@@ -57,9 +57,9 @@
         <constructor-arg index="0" ref="sqlSessionFactory"/>
     </bean>
 
-    <tx:annotation-driven transaction-manager="transactionManager"/>
-    <bean id="transactionManager"
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <!-- 使用annotation注解方式配置事务 -->
+    <tx:annotation-driven/>
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
