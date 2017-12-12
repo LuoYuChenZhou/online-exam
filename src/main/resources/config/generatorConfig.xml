@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+
+    <properties resource="config/jdbc.properties"/>
+
+    <!-- 数据库驱动包位置 -->
+    <classPathEntry
+            location="D:\maven-repository\repository\mysql\mysql-connector-java\5.1.40\mysql-connector-java-5.1.40.jar"/>
+
+    <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <!-- TKmybatis配置 -->
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+        <plugin type="${mapper.plugin}">
+            <property name="mappers" value="${mapper.Mapper}"/>
+        </plugin>
+
+        <commentGenerator>
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <!-- 数据库链接URL、用户名、密码 -->
+        <jdbcConnection driverClass="${jdbc_driverClassName}"
+                        connectionURL="jdbc:mysql://localhost:3306/online-exam?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC&amp;useSSL=false"
+                        userId="${jdbc_username}" password="${jdbc_password}"/>
+        <!-- 生成模型的包名和位置 -->
+        <javaModelGenerator targetPackage="${targetEntityPackage}" targetProject="${targetJavaProject}"/>
+        <!-- 生成的映射文件包名和位置 -->
+        <sqlMapGenerator targetPackage="${targetMapperPackage}" targetProject="${targetJavaProject}"/>
+        <!-- 生成service的包名和位置 -->
+        <javaClientGenerator targetPackage="${targetDaoPackage}" targetProject="${targetJavaProject}" type="XMLMAPPER"/>
+        <!-- 要生成的那些表 -->
+        <table tableName="blank_questions"/>
+        <table tableName="choose_questions"/>
+        <table tableName="er_ee"/>
+        <table tableName="essay_questions"/>
+        <table tableName="examinee"/>
+        <table tableName="examiner"/>
+        <table tableName="papers"/>
+        <table tableName="programming_questions"/>
+    </context>
+</generatorConfiguration>
