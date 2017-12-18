@@ -1,13 +1,13 @@
-package com.lycz.service.other.impl;
+package com.lycz.service.paper.impl;
 
-import com.lycz.model.Papers;
+import com.lycz.model.PaperQuestion;
 import com.lycz.service.base.impl.BaseServiceTk;
-import com.lycz.service.other.PapersService;
+import com.lycz.service.paper.PaperQuestionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-public class PapersServiceImpl extends BaseServiceTk<Papers> implements PapersService {
+public class PaperQuestionServiceImpl extends BaseServiceTk<PaperQuestion> implements PaperQuestionService {
 }
