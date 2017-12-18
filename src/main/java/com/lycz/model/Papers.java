@@ -1,8 +1,11 @@
 package com.lycz.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 import javax.persistence.*;
 
+@Table(name = "papers")
 public class Papers {
     /**
      * 试卷id
@@ -31,9 +34,11 @@ public class Papers {
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
     @Column(name = "create_time")
     private Date createTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
     @Column(name = "modify_time")
     private Date modifyTime;
 

@@ -1,7 +1,11 @@
 package com.lycz.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
 import javax.persistence.*;
 
+@Table(name = "examinee")
 public class Examinee {
     /**
      * 主键
@@ -36,11 +40,13 @@ public class Examinee {
     /**
      * 联系电话
      */
+    @Column(name = "phone")
     private String phone;
 
     /**
      * 电子邮箱
      */
+    @Column(name = "email")
     private String email;
 
     /**
@@ -48,6 +54,10 @@ public class Examinee {
      */
     @Column(name = "sort_no")
     private String sortNo;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
+    @Column(name = "reg_time")
+    private Date regTime;
 
     /**
      * 状态（0-禁用，1-正常，4-删除）
@@ -196,6 +206,20 @@ public class Examinee {
      */
     public void setSortNo(String sortNo) {
         this.sortNo = sortNo;
+    }
+
+    /**
+     * @return reg_time
+     */
+    public Date getRegTime() {
+        return regTime;
+    }
+
+    /**
+     * @param regTime
+     */
+    public void setRegTime(Date regTime) {
+        this.regTime = regTime;
     }
 
     /**

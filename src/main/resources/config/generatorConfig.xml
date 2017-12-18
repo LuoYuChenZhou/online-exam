@@ -32,6 +32,8 @@
         <sqlMapGenerator targetPackage="${targetMapperPackage}" targetProject="${targetJavaProject}"/>
         <!-- 生成service的包名和位置 -->
         <javaClientGenerator targetPackage="${targetDaoPackage}" targetProject="${targetJavaProject}" type="XMLMAPPER"/>
+
+
         <!-- 要生成的那些表 -->
         <table tableName="blank_questions"/>
         <table tableName="choose_questions"/>

@@ -36,8 +36,14 @@
     </bean>
 
     <!-- 自动扫描了所有的XxxxMapper.xml对应的mapper接口文件，这样就不用一个一个手动配置Mpper的映射了，只要Mapper接口类和Mapper映射文件对应起来就可以了。 -->
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.lycz.dao"/>
+    <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+        <property name="basePackage" value="com.lycz.dao" />
+        <property name="properties">
+            <value>
+                mappers=tk.mybatis.mapper.common.Mapper
+            </value>
+        </property>
     </bean>
 
     <!-- 配置Mybatis的文件 ，mapperLocations配置**Mapper.xml文件位置，configLocation配置mybatis配置文件位置-->
@@ -46,7 +52,7 @@
         <property name="mapperLocations" value="classpath:mapper/**/*.xml"/>
         <property name="configLocation" value="classpath:config/mybatis.xml"/>
         <!--typeAliasesPackage自动取对应包中不包括包名的简单类名作为包括包名的别名-->
-        <property name="typeAliasesPackage" value="com.lycz.model"/>
+        <!--<property name="typeAliasesPackage" value="com.lycz.model"/>/-->
     </bean>
 
     <!-- 自动扫描注解的bean -->

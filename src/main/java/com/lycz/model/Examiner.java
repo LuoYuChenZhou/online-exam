@@ -1,7 +1,11 @@
 package com.lycz.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
 import javax.persistence.*;
 
+@Table(name = "examiner")
 public class Examiner {
     /**
      * 主键
@@ -36,6 +40,10 @@ public class Examiner {
      * 电子邮箱
      */
     private String email;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
+    @Column(name = "reg_time")
+    private Date regTime;
 
     /**
      * 状态（0-禁用，1-正常，4-删除）
@@ -148,6 +156,20 @@ public class Examiner {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * @return reg_time
+     */
+    public Date getRegTime() {
+        return regTime;
+    }
+
+    /**
+     * @param regTime
+     */
+    public void setRegTime(Date regTime) {
+        this.regTime = regTime;
     }
 
     /**
