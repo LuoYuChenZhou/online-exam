@@ -1,8 +1,7 @@
 package com.lycz.model;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "blank_questions")
 public class BlankQuestions {
@@ -13,16 +12,16 @@ public class BlankQuestions {
     private String id;
 
     /**
+     * 所属考官id
+     */
+    @Column(name = "er_id")
+    private String erId;
+
+    /**
      * 所属试卷id
      */
     @Column(name = "paper_id")
     private String paperId;
-
-    /**
-     * 试题号
-     */
-    @Column(name = "qusetion_no")
-    private Integer qusetionNo;
 
     /**
      * 分数,与空数对应，逗号分开
@@ -51,6 +50,17 @@ public class BlankQuestions {
      */
     @Column(name = "assign_score")
     private Integer assignScore;
+
+    @Column(name = "create_time")
+    private Date createTime;
+
+    @Column(name = "modify_time")
+    private Date modifyTime;
+
+    /**
+     * 状态（0-禁用，1-正常，4-删除）
+     */
+    private String status;
 
     /**
      * 问题描述（空处用$$表示）
@@ -82,6 +92,24 @@ public class BlankQuestions {
     }
 
     /**
+     * 获取所属考官id
+     *
+     * @return er_id - 所属考官id
+     */
+    public String getErId() {
+        return erId;
+    }
+
+    /**
+     * 设置所属考官id
+     *
+     * @param erId 所属考官id
+     */
+    public void setErId(String erId) {
+        this.erId = erId;
+    }
+
+    /**
      * 获取所属试卷id
      *
      * @return paper_id - 所属试卷id
@@ -97,24 +125,6 @@ public class BlankQuestions {
      */
     public void setPaperId(String paperId) {
         this.paperId = paperId;
-    }
-
-    /**
-     * 获取试题号
-     *
-     * @return qusetion_no - 试题号
-     */
-    public Integer getQusetionNo() {
-        return qusetionNo;
-    }
-
-    /**
-     * 设置试题号
-     *
-     * @param qusetionNo 试题号
-     */
-    public void setQusetionNo(Integer qusetionNo) {
-        this.qusetionNo = qusetionNo;
     }
 
     /**
@@ -203,6 +213,52 @@ public class BlankQuestions {
      */
     public void setAssignScore(Integer assignScore) {
         this.assignScore = assignScore;
+    }
+
+    /**
+     * @return create_time
+     */
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    /**
+     * @param createTime
+     */
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    /**
+     * @return modify_time
+     */
+    public Date getModifyTime() {
+        return modifyTime;
+    }
+
+    /**
+     * @param modifyTime
+     */
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
+    }
+
+    /**
+     * 获取状态（0-禁用，1-正常，4-删除）
+     *
+     * @return status - 状态（0-禁用，1-正常，4-删除）
+     */
+    public String getStatus() {
+        return status;
+    }
+
+    /**
+     * 设置状态（0-禁用，1-正常，4-删除）
+     *
+     * @param status 状态（0-禁用，1-正常，4-删除）
+     */
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     /**

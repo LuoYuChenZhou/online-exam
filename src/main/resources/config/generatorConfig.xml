@@ -41,5 +41,8 @@
         <table tableName="examiner"/>
         <table tableName="papers"/>
         <table tableName="programming_questions"/>
+        <table tableName="ee_grade"/>
+        <table tableName="grade"/>
+        <table tableName="paper_question"/>
     </context>
 </generatorConfiguration>

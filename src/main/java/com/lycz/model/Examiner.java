@@ -1,7 +1,6 @@
 package com.lycz.model;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 public class Examiner {
     /**
@@ -37,6 +36,11 @@ public class Examiner {
      * 电子邮箱
      */
     private String email;
+
+    /**
+     * 状态（0-禁用，1-正常，4-删除）
+     */
+    private String status;
 
     /**
      * 获取主键
@@ -144,5 +148,23 @@ public class Examiner {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * 获取状态（0-禁用，1-正常，4-删除）
+     *
+     * @return status - 状态（0-禁用，1-正常，4-删除）
+     */
+    public String getStatus() {
+        return status;
+    }
+
+    /**
+     * 设置状态（0-禁用，1-正常，4-删除）
+     *
+     * @param status 状态（0-禁用，1-正常，4-删除）
+     */
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

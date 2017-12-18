@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lycz.dao.BlankQuestionsMapper">
+<mapper namespace="generator.dao.BlankQuestionsMapper">
   <resultMap id="BaseResultMap" type="com.lycz.model.BlankQuestions">
     <!--
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="er_id" jdbcType="VARCHAR" property="erId" />
     <result column="paper_id" jdbcType="VARCHAR" property="paperId" />
-    <result column="qusetion_no" jdbcType="INTEGER" property="qusetionNo" />
     <result column="question_score" jdbcType="VARCHAR" property="questionScore" />
     <result column="correct_type" jdbcType="VARCHAR" property="correctType" />
     <result column="score_type" jdbcType="VARCHAR" property="scoreType" />
     <result column="assign_score" jdbcType="INTEGER" property="assignScore" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="question_desc" jdbcType="LONGVARCHAR" property="questionDesc" />
     <result column="answer" jdbcType="LONGVARCHAR" property="answer" />
   </resultMap>

@@ -1,8 +1,6 @@
 package com.lycz.model;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Table(name = "er_ee")
 public class ErEe {

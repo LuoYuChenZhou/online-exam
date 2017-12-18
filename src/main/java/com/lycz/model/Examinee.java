@@ -1,7 +1,6 @@
 package com.lycz.model;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 public class Examinee {
     /**
@@ -23,6 +22,12 @@ public class Examinee {
     private String loginPwd;
 
     /**
+     * 考生号、学号等
+     */
+    @Column(name = "ee_no")
+    private String eeNo;
+
+    /**
      * 真实姓名
      */
     @Column(name = "real_name")
@@ -37,6 +42,17 @@ public class Examinee {
      * 电子邮箱
      */
     private String email;
+
+    /**
+     * 排序号，越大排越前
+     */
+    @Column(name = "sort_no")
+    private String sortNo;
+
+    /**
+     * 状态（0-禁用，1-正常，4-删除）
+     */
+    private String status;
 
     /**
      * 获取主键
@@ -93,6 +109,24 @@ public class Examinee {
     }
 
     /**
+     * 获取考生号、学号等
+     *
+     * @return ee_no - 考生号、学号等
+     */
+    public String getEeNo() {
+        return eeNo;
+    }
+
+    /**
+     * 设置考生号、学号等
+     *
+     * @param eeNo 考生号、学号等
+     */
+    public void setEeNo(String eeNo) {
+        this.eeNo = eeNo;
+    }
+
+    /**
      * 获取真实姓名
      *
      * @return real_name - 真实姓名
@@ -144,5 +178,41 @@ public class Examinee {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * 获取排序号，越大排越前
+     *
+     * @return sort_no - 排序号，越大排越前
+     */
+    public String getSortNo() {
+        return sortNo;
+    }
+
+    /**
+     * 设置排序号，越大排越前
+     *
+     * @param sortNo 排序号，越大排越前
+     */
+    public void setSortNo(String sortNo) {
+        this.sortNo = sortNo;
+    }
+
+    /**
+     * 获取状态（0-禁用，1-正常，4-删除）
+     *
+     * @return status - 状态（0-禁用，1-正常，4-删除）
+     */
+    public String getStatus() {
+        return status;
+    }
+
+    /**
+     * 设置状态（0-禁用，1-正常，4-删除）
+     *
+     * @param status 状态（0-禁用，1-正常，4-删除）
+     */
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -3,30 +3,24 @@ package com.lycz.model;
 import java.util.Date;
 import javax.persistence.*;
 
-public class Papers {
+public class Grade {
     /**
-     * 试卷id
+     * 班级id
      */
     @Id
     private String id;
 
     /**
-     * 试卷名称
+     * 所属考官id
      */
-    @Column(name = "papers_name")
-    private String papersName;
+    @Column(name = "er_id")
+    private String erId;
 
     /**
-     * 考试时间（以分钟为单位）
+     * 班级名称
      */
-    @Column(name = "exam_time")
-    private Integer examTime;
-
-    /**
-     * 创建者
-     */
-    @Column(name = "examiner_id")
-    private String examinerId;
+    @Column(name = "grade_name")
+    private String gradeName;
 
     /**
      * 创建时间
@@ -38,80 +32,68 @@ public class Papers {
     private Date modifyTime;
 
     /**
+     * 排序号，越大排越前
+     */
+    @Column(name = "sort_no")
+    private Byte sortNo;
+
+    /**
      * 状态（0-禁用，1-正常，4-删除）
      */
     private String status;
 
     /**
-     * 获取试卷id
+     * 获取班级id
      *
-     * @return id - 试卷id
+     * @return id - 班级id
      */
     public String getId() {
         return id;
     }
 
     /**
-     * 设置试卷id
+     * 设置班级id
      *
-     * @param id 试卷id
+     * @param id 班级id
      */
     public void setId(String id) {
         this.id = id;
     }
 
     /**
-     * 获取试卷名称
+     * 获取所属考官id
      *
-     * @return papers_name - 试卷名称
+     * @return er_id - 所属考官id
      */
-    public String getPapersName() {
-        return papersName;
+    public String getErId() {
+        return erId;
     }
 
     /**
-     * 设置试卷名称
+     * 设置所属考官id
      *
-     * @param papersName 试卷名称
+     * @param erId 所属考官id
      */
-    public void setPapersName(String papersName) {
-        this.papersName = papersName;
+    public void setErId(String erId) {
+        this.erId = erId;
     }
 
     /**
-     * 获取考试时间（以分钟为单位）
+     * 获取班级名称
      *
-     * @return exam_time - 考试时间（以分钟为单位）
+     * @return grade_name - 班级名称
      */
-    public Integer getExamTime() {
-        return examTime;
+    public String getGradeName() {
+        return gradeName;
     }
 
     /**
-     * 设置考试时间（以分钟为单位）
+     * 设置班级名称
      *
-     * @param examTime 考试时间（以分钟为单位）
+     * @param gradeName 班级名称
      */
-    public void setExamTime(Integer examTime) {
-        this.examTime = examTime;
-    }
-
-    /**
-     * 获取创建者
-     *
-     * @return examiner_id - 创建者
-     */
-    public String getExaminerId() {
-        return examinerId;
-    }
-
-    /**
-     * 设置创建者
-     *
-     * @param examinerId 创建者
-     */
-    public void setExaminerId(String examinerId) {
-        this.examinerId = examinerId;
+    public void setGradeName(String gradeName) {
+        this.gradeName = gradeName;
     }
 
     /**
@@ -144,6 +126,24 @@ public class Papers {
      */
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    /**
+     * 获取排序号，越大排越前
+     *
+     * @return sort_no - 排序号，越大排越前
+     */
+    public Byte getSortNo() {
+        return sortNo;
+    }
+
+    /**
+     * 设置排序号，越大排越前
+     *
+     * @param sortNo 排序号，越大排越前
+     */
+    public void setSortNo(Byte sortNo) {
+        this.sortNo = sortNo;
     }
 
     /**

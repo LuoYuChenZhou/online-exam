@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lycz.dao.ExaminerMapper">
+<mapper namespace="generator.dao.ExaminerMapper">
   <resultMap id="BaseResultMap" type="com.lycz.model.Examiner">
     <!--
       WARNING - @mbg.generated
@@ -11,5 +11,6 @@
     <result column="real_name" jdbcType="VARCHAR" property="realName" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
   </resultMap>
 </mapper>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lycz.dao.ExamineeMapper">
+<mapper namespace="generator.dao.ExamineeMapper">
   <resultMap id="BaseResultMap" type="com.lycz.model.Examinee">
     <!--
       WARNING - @mbg.generated
@@ -8,8 +8,11 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="login_name" jdbcType="VARCHAR" property="loginName" />
     <result column="login_pwd" jdbcType="VARCHAR" property="loginPwd" />
+    <result column="ee_no" jdbcType="VARCHAR" property="eeNo" />
     <result column="real_name" jdbcType="VARCHAR" property="realName" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="sort_no" jdbcType="VARCHAR" property="sortNo" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
   </resultMap>
 </mapper>
