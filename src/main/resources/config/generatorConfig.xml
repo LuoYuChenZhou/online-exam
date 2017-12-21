@@ -35,16 +35,17 @@
 
 
         <!-- 要生成的那些表 -->
-        <table tableName="blank_questions"/>
-        <table tableName="choose_questions"/>
-        <table tableName="er_ee"/>
-        <table tableName="essay_questions"/>
-        <table tableName="examinee"/>
-        <table tableName="examiner"/>
-        <table tableName="papers"/>
-        <table tableName="programming_questions"/>
-        <table tableName="ee_grade"/>
-        <table tableName="grade"/>
-        <table tableName="paper_question"/>
+        <!--<table tableName="blank_questions"/>-->
+        <!--<table tableName="choose_questions"/>-->
+        <!--<table tableName="er_ee"/>-->
+        <!--<table tableName="essay_questions"/>-->
+        <!--<table tableName="examinee"/>-->
+        <!--<table tableName="examiner"/>-->
+        <!--<table tableName="papers"/>-->
+        <!--<table tableName="programming_questions"/>-->
+        <!--<table tableName="ee_grade"/>-->
+        <!--<table tableName="grade"/>-->
+        <!--<table tableName="paper_question"/>-->
+        <table tableName="sys_log"/>
     </context>
 </generatorConfiguration>

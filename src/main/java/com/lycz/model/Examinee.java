@@ -1,7 +1,5 @@
 package com.lycz.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.util.Date;
 import javax.persistence.*;
 
@@ -55,7 +53,6 @@ public class Examinee {
     @Column(name = "sort_no")
     private String sortNo;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
     @Column(name = "reg_time")
     private Date regTime;
 

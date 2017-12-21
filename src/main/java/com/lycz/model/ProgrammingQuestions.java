@@ -1,7 +1,5 @@
 package com.lycz.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.util.Date;
 import javax.persistence.*;
 
@@ -31,11 +29,9 @@ public class ProgrammingQuestions {
     @Column(name = "question_score")
     private Integer questionScore;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
     @Column(name = "create_time")
     private Date createTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
     @Column(name = "modify_time")
     private Date modifyTime;
 

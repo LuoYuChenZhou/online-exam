@@ -79,11 +79,6 @@
         <location>/WEB-INF/errorPage/500.jsp</location>
     </error-page>
 
-     <context-param>
-       <param-name>log4jConfiguration</param-name>
-       <param-value>classpath:config/log4j2.xml</param-value>
-     </context-param>
-
     <!--弃用
     &lt;!&ndash;设置log4j的配置文件位置&ndash;&gt;
     <context-param>

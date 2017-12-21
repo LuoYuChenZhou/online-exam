@@ -1,13 +1,12 @@
 package com.lycz.controller.user;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lycz.controller.common.CommonMethods;
 import com.lycz.controller.common.CommonResult;
 import com.lycz.model.Examinee;
 import com.lycz.model.Examiner;
 import com.lycz.service.user.ExamineeService;
 import com.lycz.service.user.ExaminerService;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.json.JsonObject;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
@@ -36,7 +34,7 @@ public class LoginController {
      */
     @RequestMapping(value = "/exeLogin", method = RequestMethod.POST)
     @ResponseBody
-    public String exeLogin(@RequestParam("type") String type, @RequestParam("loginName") String loginName,
+    public JSONObject exeLogin(@RequestParam("type") String type, @RequestParam("loginName") String loginName,
                                @RequestParam("loginPass") String loginPass) {
         CommonResult<String> result = new CommonResult<>();
         result.setData("");
@@ -61,6 +59,6 @@ public class LoginController {
                 break;
         }
 
-        return "";
+        return JSONObject.fromObject(result);
     }
 }

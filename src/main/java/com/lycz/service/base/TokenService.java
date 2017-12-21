@@ -1,7 +1,8 @@
 package com.lycz.service.base;
 
-import java.util.Map;
-
 public interface TokenService {
-    String createToken(Map map);
+
+    String createToken(Object entity);
+
+    void destroyToken(String token);
 }

@@ -21,6 +21,9 @@
         </property>
     </bean>
 
+    <!-- 配置自动为匹配 aspectJ 注解的 Java 类生成代理对象 -->
+    <aop:aspectj-autoproxy/>
+
     <!-- 配置数据源 -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${jdbc_driverClassName}"/>
