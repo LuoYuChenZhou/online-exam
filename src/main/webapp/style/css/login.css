@@ -51,7 +51,7 @@ button {
     font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 
-/* FIRST BUTTON */
+/* 登录按钮 */
 
 .border {
     position: absolute;
@@ -82,7 +82,7 @@ button {
     height: 4em;
 }
 
-/* FOURTH BUTTON */
+/* 注册按钮 */
 
 #fourth > .border:nth-of-type(1) {
     top: 0;
@@ -132,7 +132,7 @@ button {
     height: 3.2em;
 }
 
-/* SEVENTH BUTTON */
+/* 切换登录类型按钮 */
 
 #seventh > button {
     width: 10em;
