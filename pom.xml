@@ -11,6 +11,8 @@
     <properties>
         <!-- spring版本号 -->
         <spring.version>4.3.10.RELEASE</spring.version>
+        <!--jackson版本号-->
+        <jackson.version>2.9.0</jackson.version>
         <!-- junit版本号 -->
         <junit.version>4.12</junit.version>
         <!-- mybatis版本号 -->
@@ -250,6 +252,23 @@
             <artifactId>json-lib</artifactId>
             <version>2.4</version>
             <classifier>jdk15</classifier>
+        </dependency>
+
+        <!--ajax执行需要（json与springMVC转换）-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
 
         <!--使用jedis管理redis-->

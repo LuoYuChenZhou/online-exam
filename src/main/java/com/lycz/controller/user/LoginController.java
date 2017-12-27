@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
-
 @Controller
 @RequestMapping("Login")
 public class LoginController {
@@ -28,7 +26,7 @@ public class LoginController {
     /**
      * 登录
      *
-     * @param type      登录类型（1-考官登录，2-考生登录）
+     * @param type      登录类型（1-考官登录，2-考生登录，99-管理员登录）
      * @param loginName 用户名
      * @param loginPass 密码
      */
@@ -38,16 +36,24 @@ public class LoginController {
                                @RequestParam("loginPass") String loginPass) {
         CommonResult<String> result = new CommonResult<>();
         result.setData("");
-        result.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        result.setStatus(400);
 
         switch (type) {
             case "1":
                 Examiner examiner = examinerService.erLogin(loginName, loginPass);
+                if (examiner == null) {
+                    result.setMsg("用户名或密码错误");
+                    return JSONObject.fromObject(result);
+                }
                 break;
             case "2":
                 Examinee examinee = examineeService.eeLogin(loginName, loginPass);
+                if (examinee == null) {
+                    result.setMsg("用户名或密码错误");
+                    return JSONObject.fromObject(result);
+                }
                 break;
-            case "3":
+            case "99":
                 String serviceName = CommonMethods.getProperty("config/sysLg.properties", "sys_lg_na");
                 String servicePass = CommonMethods.getProperty("config/sysLg.properties", "sys_lg_pw");
                 if (serviceName.equals(loginName) && servicePass.equals(loginPass)) {
@@ -55,10 +61,13 @@ public class LoginController {
                 }
                 break;
             default:
-
-                break;
+                result.setStatus(401);
+                result.setMsg("非法登录");
+                return JSONObject.fromObject(result);
         }
 
+        result.setStatus(200);
+        result.setMsg("登录成功");
         return JSONObject.fromObject(result);
     }
 }
