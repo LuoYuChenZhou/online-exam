@@ -30,6 +30,12 @@ public class Examiner {
     private String realName;
 
     /**
+     * 性别（0-男，1-女）
+     */
+    @Column(name = "sex")
+    private String sex;
+
+    /**
      * 联系电话
      */
     private String phone;
@@ -117,6 +123,14 @@ public class Examiner {
      */
     public void setRealName(String realName) {
         this.realName = realName;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
     /**

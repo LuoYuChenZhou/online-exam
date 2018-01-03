@@ -15,4 +15,11 @@ public class ToolUtil extends StringUtils {
         return map == null;
     }
 
+    public static boolean isNotEmpty(List list) {
+        return !isEmpty(list);
+    }
+
+    public static boolean isNotEmpty(Map map) {
+        return !isEmpty(map);
+    }
 }

@@ -10,6 +10,7 @@
     <result column="login_pwd" jdbcType="VARCHAR" property="loginPwd" />
     <result column="ee_no" jdbcType="VARCHAR" property="eeNo" />
     <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="sort_no" jdbcType="VARCHAR" property="sortNo" />

@@ -1,19 +1,106 @@
 body {
     background-image: url(../image/login-bg.jpg);
     background-size: cover;
+    z-index: 1;
 }
 
+/*登陆表单*/
 #center-form {
     width: 30em;
     position: absolute;
     left: 13%;
     top: 15%;
+    z-index: 1;
 }
 
 #center-form .input__label-content {
     color: YellowGreen;
 }
 
+/*注册页面遮罩层*/
+#mask {
+    position: absolute;
+    top: 0;
+    filter: alpha(opacity=60);
+    background-color: #777;
+    z-index: 10;
+    left: 0;
+    opacity: 0.7;
+    -moz-opacity: 0.7;
+}
+
+/*注册表单*/
+#register-form {
+    background-image: url("../image/reg-bg.png");
+    background-size: cover;
+    position: absolute;
+    top: 2%;
+    left: 50%;
+    width: 30em;
+    height: 95%;
+    margin-left: -15em;
+    z-index: 20;
+}
+
+#register-form .for-reset {
+    margin: 35px 20px 20px;
+}
+
+#register-form .reg_msg {
+    font-size: 10px;
+    color: red;
+}
+
+/*tab页*/
+#reg-tab {
+    color: #6D6D6D;
+    height: 2em;
+    border-bottom: 2px solid white;
+    background-color: #9196A1;
+}
+
+.tab-class {
+    float: left;
+    font-weight: bold;
+    line-height: 2em;
+    text-align: center;
+    height: 2em;
+    width: 50%;
+}
+
+#left-tab {
+    border-right: 2px solid white;
+}
+
+.tab-click{
+    color: yellowgreen;
+    background-color: #EDEFF2;
+}
+
+/*注册页面输入框样式*/
+.effect-17:focus ~ label, .has-content.effect-17 ~ label {
+    color: dodgerblue;
+    font-size: 14px;
+}
+
+.effect-17 ~ .focus-border {
+    background-color: dodgerblue;
+}
+
+.effect-17 ~ label {
+    color: #7F7F7F;
+    font-size: 14px;
+}
+
+/*load样式*/
+#preloader6 {
+    position: absolute;
+    top: 49%;
+    left: 49%;
+    z-index: 100;
+}
+
+/*登陆提示信息显示部分*/
 #message-div {
     width: 20em;
     height: 10em;
@@ -29,11 +116,34 @@ body {
     bottom: 3%;
 }
 
-/*登录注册、切换登录类型按钮开始*/
+/*性别div*/
+#sex-div {
+    border: 1px solid #CCCCCC;
+    width: 80%;
+    height: 3.6em;
+    margin: 35px 20px 20px;
+    color: #7F7F7F;
+}
+
+#sex-div .el-radio {
+    margin: 0 0 0 40px;
+}
+
+#sex-div legend {
+    color: #7F7F7F;
+}
+
+/*登录注册、切换登录类型等按钮开始*/
 .buttonBox {
     position: relative;
     float: left;
     margin: 1vw 3vw;
+}
+
+.reg-buttonBox {
+    position: relative;
+    float: left;
+    margin: 10px 15px 20px 20px;
 }
 
 button {
@@ -145,4 +255,97 @@ button {
     font-size: 20px;
 }
 
-/*登录注册、切换登录类型按钮结束*/
+/*注册提交按钮*/
+#commit > .border:nth-of-type(1) {
+    top: 0;
+    left: 0;
+    border-top: 1px solid white;
+    width: 6.55em;
+}
+
+#commit > .border:nth-of-type(2) {
+    bottom: 0;
+    left: 0;
+    width: 6.55em;
+    border-bottom: 1px solid white;
+}
+
+#commit > .border:nth-of-type(3) {
+    left: 0;
+    top: 1px;
+    height: 3.15em;
+    border-left: 1px solid white;
+}
+
+#commit > .border:nth-of-type(4) {
+    top: 1px;
+    right: 0;
+    height: 3.15em;
+    border-right: 1px solid white;
+}
+
+#commit:hover .border:nth-of-type(1) {
+    transform: translate(0, 3.2em);
+}
+
+#commit:hover .border:nth-of-type(2) {
+    transform: translate(0, -3.2em);
+}
+
+#commit:hover .border:nth-of-type(3) {
+    transform: translate(6.5em, 0);
+}
+
+#commit:hover .border:nth-of-type(4) {
+    transform: translate(-6.5em, 0);
+}
+
+/*注册取消按钮*/
+#cancel {
+    overflow: hidden;
+}
+
+#cancel > button {
+    z-index: 1;
+    transition: color .5s ease;
+}
+
+#cancel .border {
+    z-index: 0;
+    background: #E1E3E6;
+    width: 30px;
+    height: 30px;
+    transform: rotate(45deg);
+}
+
+#cancel > .border:nth-of-type(1) {
+    top: -65px;
+    left: -60px;
+}
+
+#cancel > .border:nth-of-type(2) {
+    top: -65px;
+    right: -60px;
+}
+
+#cancel > .border:nth-of-type(3) {
+    bottom: -65px;
+    left: -60px;
+}
+
+#cancel > .border:nth-of-type(4) {
+    bottom: -65px;
+    right: -60px;
+}
+
+#cancel:hover .border {
+    width: 160px;
+    height: 160px;
+}
+
+#cancel:hover button {
+    color: #D652A3;
+    transition: color 2s ease;
+}
+
+/*登录注册、切换登录类型等按钮结束*/

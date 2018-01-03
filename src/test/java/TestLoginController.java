@@ -32,7 +32,8 @@ public class TestLoginController {
     @Test
     public void testLog4j2() {
         Logger logger = LogManager.getLogger();
-        logger.error("abc{}", 12);
+        logger.info("abc{}", 12);
+        logger.info("abc{}:{}", 12,23);
     }
 
     @Test

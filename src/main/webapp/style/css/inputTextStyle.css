@@ -1,20 +1,27 @@
 /*本css用于改变input框的样式。作为基础模板应作为只读模式，需要改动应写到其它css文件中*/
+
+/*还可以*/
+/*isao：label在线下，点击线label消失，线变粗*/
+/*kyo：label在框下，点击输入框全屏变色（点击其它部位取消输入）*/
+
+/*勉强能用*/
+/*minoru：label上面一个框，点击以后框体加上边框（过程发生放射特效）*/
+/*akira：label在框中，点击以后label移动到框上（效果一般，估计颜色问题）*/
+
+/*样式崩坏，估计少了js*/
 /*haruki：两条横线，label内容在中间，点击以后label上浮到第一条横线之上，在横线中间输入*/
 /*hoshi：左边一条横线，右边是label，点击label横线右移到label下面*/
 /*kuro：label在框中，点击以后框左右分开，label掉到框下面*/
 /*jiro：label下面一根线，点击以后线先上移，再向下拉成框*/
-/*minoru：label上面一个框，点击以后框体加上边框（过程发生放射特效）*/
 /*yoko：label上面一根线，点击线向上翻成框*/
-/*kyo：label在框下，点击输入框全屏变色（点击其它部位取消输入）*/
-/*akira：label在框中，点击以后label移动到框上（效果一般，估计颜色问题）*/
 /*ichiro：label一般在框中左侧，点击后框体下半部分拉伸成输入框*/
 /*juro：label在框中，点击以后label移动到框上，并且label和框体都被更大的框包围*/
 /*hideo：估计坏了，要用自己搞*/
 /*madoka：点击label以后label字体变小原位置出现透明框体（abel位置还原以后效果不佳）*/
-/*kaede：label有一般在框体右边，点击以后整体右移*/
-/*isao：label在线下，点击线label消失，线变粗*/
+/*kaede：label有一半在框体右边，点击以后整体右移*/
+
 /*使用示例
-<span class="input input--minoru">
+<span class="input input--isao">
 		<input class="input__field input__field--isao" type="text" id="input-13"/>
 		<label class="input__label input__label--isao" for="input-13">
 		<span class="input__label-content input__label-content--isao">用户名</span>

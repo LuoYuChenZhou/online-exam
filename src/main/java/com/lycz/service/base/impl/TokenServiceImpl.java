@@ -13,6 +13,9 @@ import java.util.UUID;
 
 @Service
 public class TokenServiceImpl implements TokenService {
+
+    private String tokenPre = "online-exam-token:";
+
     @Override
     public String createToken(Object entity) {
         Map<String, Object> tokenMap = new HashMap<>();
@@ -23,17 +26,25 @@ public class TokenServiceImpl implements TokenService {
             tokenMap = CommonMethods.transBean2Map(entity);
             tokenMap.remove("loginPwd");
         } else if (entity.equals("sysLog")) {
-            tokenMap.put("realName","超级管理员");
-
+            tokenMap.put("id", "sys_id");
+            tokenMap.put("realName", "超级管理员");
+            tokenMap.put("manageToken", "随便来点什么，反正普通用户没有");
+        } else {
+            return null;
         }
 
         String uuid = UUID.randomUUID().toString();
-        JedisUtil.setMap(uuid, tokenMap);
+        JedisUtil.setMap(tokenPre + uuid, tokenMap);
         return uuid;
     }
 
     @Override
     public void destroyToken(String token) {
+        JedisUtil.delKey(tokenPre + token);
+    }
 
+    @Override
+    public Map<String, Object> getToken(String token) {
+        return JedisUtil.getMap(tokenPre + token);
     }
 }

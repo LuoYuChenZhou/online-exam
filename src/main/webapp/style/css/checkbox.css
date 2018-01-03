@@ -4,6 +4,7 @@
  * lincense:MIT
  */
 /*checkbox radio component*/
+/*重要：此样式所有按钮均占一行*/
 /*
  *本组件用于单选按钮、多选框、switch滑块
  *el-radio，el-checkbox，el-switch
@@ -14,6 +15,16 @@
 <label class="el-switch">
     <input type="checkbox" name="switch" checked hidden>
     <span class="el-switch-style"></span>
+</label>
+<label class="el-checkbox">
+    <span>custom text</span>
+    <input type="checkbox" name="check" value="option">
+    <span class="el-checkbox-style"></span>
+</label>
+<label class="el-radio">
+    <span>custom text</span>
+    <input type="radio" name="radio" value="option">
+    <span class="el-radio-style"></span>
 </label>
 */
 

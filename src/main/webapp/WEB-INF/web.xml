@@ -70,8 +70,8 @@
     </error-page>
     <error-page>
         <!-- 没有访问权限，访问被禁止 -->
-        <error-code>405</error-code>
-        <location>/WEB-INF/errorPage/405.jsp</location>
+        <error-code>401</error-code>
+        <location>/index.jsp</location>
     </error-page>
     <error-page>
         <!-- 内部错误 -->

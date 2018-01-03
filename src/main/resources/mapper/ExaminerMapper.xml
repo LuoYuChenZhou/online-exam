@@ -9,6 +9,7 @@
     <result column="login_name" jdbcType="VARCHAR" property="loginName" />
     <result column="login_pwd" jdbcType="VARCHAR" property="loginPwd" />
     <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="reg_time" jdbcType="TIMESTAMP" property="regTime" />
