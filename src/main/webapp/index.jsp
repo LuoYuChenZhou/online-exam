@@ -65,14 +65,14 @@
         <span class="reg_msg"></span>
     </div>
     <div class="for-reset">
-        <input class="effect-17" type="text" placeholder="" id="reg-password">
+        <input class="effect-17" type="password" placeholder="" id="reg-password">
         <label><span style="color: orange">*</span>登录密码</label>
         <span class="focus-border"></span>
         <span class="reg_msg"></span>
     </div>
     <div class="for-reset">
-        <input class="effect-17" type="text" placeholder="" id="reg-rePassword">
-        <label><span style="color: orange">*</span>重复密码</label>
+        <input class="effect-17" type="password" placeholder="" id="reg-rePassword">
+        <label><span style="color: orange">*</span>再次输入密码</label>
         <span class="focus-border"></span>
         <span class="reg_msg"></span>
     </div>
@@ -234,25 +234,89 @@
 
         //点击考生注册
         $("#left-tab").click(function () {
-            if (regType === 2) {
+            if (regType === "2") {
                 return;
             }
-            regType = 2;
+            regType = "2";
             $(".only-ee").show();
             $("#left-tab").addClass("tab-click");
             $("#right-tab").removeClass("tab-click");
+            userNameIsExist();
         });
 
         //点击考官注册
         $("#right-tab").click(function () {
-            if (regType === 1) {
+            if (regType === "1") {
                 return;
             }
-            regType = 1;
+            regType = "1";
             $(".only-ee").hide();
             $("#right-tab").addClass("tab-click");
             $("#left-tab").removeClass("tab-click");
+            userNameIsExist();
         });
+
+        //用户名字段失去焦点触发,判断用户名是否已占用
+        $("#reg-name").blur(function () {
+            userNameIsExist();
+        });
+
+        //密码字段失去焦点触发,判断是否为空
+        $("#reg-password").blur(function () {
+            var password = $("#reg-password");
+            if (!password.val()) {
+                password.siblings(".reg_msg").text("请输入登录密码");
+            }  else {
+                password.siblings(".reg_msg").text("");
+            }
+        });
+
+        //重复密码字段失去焦点触发,判断两次输入的是否相同
+        $("#reg-rePassword").blur(function () {
+            var password = $("#reg-password");
+            var rePassword = $("#reg-rePassword");
+            if (!password.val()) {
+                password.siblings(".reg_msg").text("请输入登录密码");
+            } else if (!rePassword.val()) {
+                rePassword.siblings(".reg_msg").text("请再次输入密码");
+            } else if (password.val() !== rePassword.val()) {
+                rePassword.siblings(".reg_msg").text("两次输入的密码不一致");
+            } else {
+                password.siblings(".reg_msg").text("");
+                rePassword.siblings(".reg_msg").text("");
+            }
+        });
+
+        function userNameIsExist() {
+            var name = $("#reg-name");
+            if (!name.val()) {
+                name.siblings(".reg_msg").text("请输入用户名");
+                return;
+            }
+            $.ajax({
+                url: '/Login/userNameIsExist',
+                type: 'GET',
+                async: true,    //是否异步
+                data: {
+                    userName: name.val(),
+                    regType: regType
+                },
+                timeout: 5000,    //超时时间
+                dataType: 'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+                success: function (data) {
+                    if (data.status === 200) {
+                        if (data.data.isExist === "true") {
+                            name.siblings(".reg_msg").text("用户名被占用");
+                        } else {
+                            name.siblings(".reg_msg").text("");
+                        }
+                    }
+                },
+                error: function () {
+                    alert("服务器维护中");
+                }
+            })
+        }
 
         //点击提交按钮显示load层，执行操作
         $("#commit").click(function () {
@@ -273,10 +337,10 @@
                 password.siblings(".reg_msg").text("请输入登录密码");
                 return;
             } else if (!rePassword.val()) {
-                rePassword.siblings(".reg_msg").text("请输入重复密码");
+                rePassword.siblings(".reg_msg").text("请再次输入密码");
                 return;
             } else if (password.val() !== rePassword.val()) {
-                rePassword.siblings(".reg_msg").text("重复密码与登录密码不一致");
+                rePassword.siblings(".reg_msg").text("两次输入的密码不一致");
                 return;
             }
             if (!realName.val()) {
@@ -295,8 +359,15 @@
             $("#register-form").hide();
             load.show();
 
+            var targetUrl;
+            if (regType === "1") {
+                targetUrl = '/Login/erRegister';
+            } else {
+                targetUrl = '/Login/eeRegister';
+            }
+
             $.ajax({
-                url: '/Login/exeRegister',
+                url: targetUrl,
                 type: 'POST',
                 async: false,    //是否异步
                 data: {
@@ -306,23 +377,28 @@
                     realName: realName.val(),
                     sex: sex.val(),
                     phone: phone.val(),
-                    email: email.val(),
-                    regType:regType
+                    email: email.val()
                 },
                 timeout: 5000,    //超时时间
                 dataType: 'json',    //返回的数据格式：json/xml/html/script/jsonp/text
                 success: function (data) {
-                    if (data.status === 200) {
+                    if (data.status === 201) {
                         alert("注册成功");
+                        //跳转页面
                     } else if (data.status === 400) {
-                        $("#message-div").html("<span style='display:block;color: Orange'>" + data.msg + "</span>");
+                        alert("注册发生错误，请联系管理员");
+                        $("#register-form").show();
+                    } else if (data.status === 301) {
+                        $("#register-form").show();
+                        userNameIsExist();
+                    } else {
+                        alert("服务器维护中");
                     }
                 },
                 error: function () {
                     alert("服务器维护中");
                 },
                 complete: function () {
-                    mask.hide();
                     load.hide();
                 }
             })

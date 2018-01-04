@@ -45,7 +45,7 @@ public class TestLoginController {
     public void testLog4j2() {
         Logger logger = LogManager.getLogger();
         logger.info("abc{}", 12);
-        logger.info("abc{}:{}", 12,23);
+        logger.info("abc{}:{}", 12, 23);
     }
 
     @Test
@@ -71,17 +71,45 @@ public class TestLoginController {
     @Test
     public void testSubString() {
         String ooo = "abcdcef";
-        log.trace(ooo.substring(ooo.lastIndexOf("c")+1));
-        log.info(ooo.substring(ooo.lastIndexOf("c")+1));
-        log.debug(ooo.substring(ooo.lastIndexOf("c")+1));
-        log.warn(ooo.substring(ooo.lastIndexOf("c")+1));
-        log.error(ooo.substring(ooo.lastIndexOf("c")+1));
-        log.fatal(ooo.substring(ooo.lastIndexOf("c")+1));
+        log.trace(ooo.substring(ooo.lastIndexOf("c") + 1));
+        log.info(ooo.substring(ooo.lastIndexOf("c") + 1));
+        log.debug(ooo.substring(ooo.lastIndexOf("c") + 1));
+        log.warn(ooo.substring(ooo.lastIndexOf("c") + 1));
+        log.error(ooo.substring(ooo.lastIndexOf("c") + 1));
+        log.fatal(ooo.substring(ooo.lastIndexOf("c") + 1));
     }
 
     @Test
     public void testGetName() {
         Examiner examiner = new Examiner();
         log.info(examiner.getClass().getName());
+    }
+
+    @Test
+    public void eeRegister() {
+        String registerType = "2";
+        String loginName = "testl";
+        String loginPass = "testp";
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("registerType", registerType);
+        params.add("loginName", loginName);
+        params.add("loginPass", loginPass);
+
+        url = url + "/Login/eeRegister";
+        RestTemplate restTemplate = new RestTemplate();
+        System.out.println(restTemplate.postForObject(url, params, String.class));
+    }
+
+    @Test
+    public void userNameIsExist() {
+        String regType = "2";
+        String userName = "lll";
+
+        url = url + "/Login/userNameIsExist" +
+                "?regType="+regType +
+                "&userName=" + userName;
+        log.info(url);
+        RestTemplate restTemplate = new RestTemplate();
+        System.out.println(restTemplate.getForObject(url, String.class));
     }
 }

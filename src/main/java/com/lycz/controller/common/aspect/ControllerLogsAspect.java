@@ -21,6 +21,11 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * 日志切片
+ * @author lizhenqing
+ * @version 1.0
+ */
 @Aspect
 @Component
 public class ControllerLogsAspect {
@@ -29,8 +34,6 @@ public class ControllerLogsAspect {
     private String classMapping;  //类对应的@RequestMapping注解的value
     private String methodMapping;  //方法对应的@RequestMapping注解的value
     private String preTitle;  //方法对应的@Privilege注解的methodName
-    private String currentClassName;  //当前类名称
-    private String currentMethodName;  //当前方法名称
     private String userId;//当前操作人员
 
     @Autowired
@@ -52,10 +55,10 @@ public class ControllerLogsAspect {
     }
 
     @After(value = "controllerAspect(token)", argNames = "joinPoint,token")
-    public void getClassMethodsInfo(JoinPoint joinPoint, String token) {
+    public void getInfo(JoinPoint joinPoint, String token) {
         try {
             //获取控制类上的注解
-            currentClassName = joinPoint.getTarget().getClass().getName();
+            String currentClassName = joinPoint.getTarget().getClass().getName();
             Class<?> tempClass = Class.forName(currentClassName);
             Annotation[] annotations = tempClass.getAnnotations();
             for (Annotation annotation : annotations) {
@@ -67,7 +70,7 @@ public class ControllerLogsAspect {
             }
 
             //获取方法上的注解
-            currentMethodName = joinPoint.getSignature().getName();
+            String currentMethodName = joinPoint.getSignature().getName();
             Method[] methods = tempClass.getMethods();
             for (Method method : methods) {
                 if (method.getName().equals(currentMethodName)) {

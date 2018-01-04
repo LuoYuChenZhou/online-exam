@@ -1,5 +1,6 @@
 package com.lycz.service.user.impl;
 
+import com.lycz.controller.common.ToolUtil;
 import com.lycz.model.Examiner;
 import com.lycz.service.base.impl.BaseServiceTk;
 import com.lycz.service.user.ExaminerService;
@@ -21,5 +22,13 @@ public class ExaminerServiceImpl extends BaseServiceTk<Examiner> implements Exam
                 andEqualTo("status", "1");
         List<Examiner> erList = selectByExample(example);
         return (erList == null || erList.size() < 1) ? null : erList.get(0);
+    }
+
+    @Override
+    public boolean userNameIsExist(String userName) {
+        Example example = new Example(Examiner.class);
+        example.or().andEqualTo("loginName", userName).andNotEqualTo("status", "4");
+        List<Examiner> eeList = selectByExample(example);
+        return ToolUtil.isNotEmpty(eeList);
     }
 }

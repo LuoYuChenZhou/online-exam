@@ -51,6 +51,10 @@ body {
     color: red;
 }
 
+.effect-17{
+    width: 100%;
+}
+
 /*tab页*/
 #reg-tab {
     color: #6D6D6D;
@@ -143,7 +147,7 @@ body {
 .reg-buttonBox {
     position: relative;
     float: left;
-    margin: 10px 15px 20px 20px;
+    margin: 0 15px 20px 85px;
 }
 
 button {

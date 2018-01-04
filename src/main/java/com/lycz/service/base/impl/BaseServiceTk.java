@@ -66,7 +66,7 @@ public abstract class BaseServiceTk<T> implements IBaseServiceTk<T> {
      * 保存一个实体，null的属性不会保存，会使用数据库默认值
      */
     public int insertSelective(T record) {
-        return mapper.insert(record);
+        return mapper.insertSelective(record);
     }
 
     /**

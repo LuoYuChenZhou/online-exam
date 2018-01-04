@@ -19,6 +19,7 @@ import java.lang.annotation.Annotation;
 import java.util.Map;
 
 /**
+ * 权限切片
  * @author lizhenqing
  * @version 1.0
  * @data 2018/1/4 8:40

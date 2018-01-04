@@ -4,7 +4,6 @@ import com.lycz.controller.common.CommonMethods;
 import com.lycz.controller.common.CommonResult;
 import com.lycz.controller.common.ToolUtil;
 import com.lycz.controller.common.annotation.NoSaveLog;
-import com.lycz.controller.common.annotation.Privilege;
 import com.lycz.model.Examinee;
 import com.lycz.model.Examiner;
 import com.lycz.model.SysLog;
@@ -17,15 +16,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import javax.validation.Valid;
+import java.util.*;
 
 @Controller
 @RequestMapping("Login")
@@ -109,18 +108,120 @@ public class LoginController {
         return JSONObject.fromObject(result);
     }
 
+    /**
+     * 考生注册
+     */
     @NoSaveLog
     @RequestMapping(value = "/eeRegister", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject exeRegister(String registerType) {
+    public JSONObject eeRegister(@Valid Examinee examinee, BindingResult bindingResult, @RequestParam("password") String password) {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
         result.setStatus(400);
 
+        examinee.setId(UUID.randomUUID().toString());
+        examinee.setRegTime(new Date());
+        examinee.setStatus("1");
+        examinee.setLoginPwd(password);
+
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> allErrors = bindingResult.getAllErrors();
+            result.setMsg(allErrors.get(allErrors.size() - 1).getDefaultMessage());
+            return JSONObject.fromObject(result);
+        }
+
+        if (examineeService.userNameIsExist(examinee.getLoginName())) {
+            result.setMsg("用户名被占用");
+            result.setStatus(301);
+            return JSONObject.fromObject(result);
+        }
+
+        if (examineeService.insertSelective(examinee) < 1) {
+            result.setMsg("注册失败");
+            log.error("考生注册发生错误");
+        } else {
+            result.setMsg("注册成功");
+            result.setStatus(201);
+        }
 
         return JSONObject.fromObject(result);
     }
 
+    /**
+     * 考官注册
+     */
+    @NoSaveLog
+    @RequestMapping(value = "/erRegister", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject erRegister(@Valid Examiner examiner, BindingResult bindingResult, @RequestParam("password") String password) {
+        CommonResult<JSONObject> result = new CommonResult<>();
+        result.setData(JSONObject.fromObject("{}"));
+        result.setStatus(400);
+
+        examiner.setId(UUID.randomUUID().toString());
+        examiner.setRegTime(new Date());
+        examiner.setStatus("1");
+        examiner.setLoginPwd(password);
+
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> allErrors = bindingResult.getAllErrors();
+            result.setMsg(allErrors.get(allErrors.size() - 1).getDefaultMessage());
+            return JSONObject.fromObject(result);
+        }
+
+        if (examinerService.userNameIsExist(examiner.getLoginName())) {
+            result.setMsg("用户名被占用");
+            result.setStatus(301);
+            return JSONObject.fromObject(result);
+        }
+
+        if (examinerService.insertSelective(examiner) < 1) {
+            result.setMsg("注册失败");
+            log.error("考官注册发生错误");
+        } else {
+            result.setMsg("注册成功");
+            result.setStatus(201);
+        }
+
+        return JSONObject.fromObject(result);
+    }
+
+    /**
+     * 判断用户名是否被占用
+     *
+     * @param userName 用户名
+     * @param regType  注册类型（“1”-考官，“2”-考生）
+     * @return data中的 isExist（“true”-占用，“false”-未占用）
+     */
+    @RequestMapping(value = "/userNameIsExist", method = RequestMethod.GET)
+    @ResponseBody
+    public JSONObject userNameIsExist(@RequestParam("userName") String userName, @RequestParam("regType") String regType) {
+        CommonResult<JSONObject> result = new CommonResult<>();
+        result.setData(JSONObject.fromObject("{}"));
+        result.setStatus(400);
+
+        boolean isExist = false;
+
+        switch (regType) {
+            case "1":
+                isExist = examinerService.userNameIsExist(userName);
+                break;
+            case "2":
+                isExist = examineeService.userNameIsExist(userName);
+                break;
+            default:
+                result.setMsg("注册类型错误");
+                break;
+        }
+
+        result.setStatus(200);
+        result.setData(JSONObject.fromObject("{\"isExist\":\"" + isExist + "\"}"));
+        return JSONObject.fromObject(result);
+    }
+
+    /**
+     * 保存登录日志
+     */
     private void saveLoginLog(String loginName, String loginPass, String desc) {
         SysLog logsEntity = new SysLog(UUID.randomUUID().toString(), desc, "0", "", new Date(),
                 "用户名：" + loginName + "密码：" + loginPass, "Login/exeLogin");
