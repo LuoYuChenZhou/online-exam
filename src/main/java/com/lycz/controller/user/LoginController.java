@@ -50,7 +50,6 @@ public class LoginController {
      * @param loginPass 密码
      */
     @NoSaveLog
-    @Privilege(methodName = "登录", privilegeLevel = 0)
     @RequestMapping(value = "/exeLogin", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject exeLogin(@RequestParam("type") String type, @RequestParam("loginName") String loginName,
@@ -110,10 +109,10 @@ public class LoginController {
         return JSONObject.fromObject(result);
     }
 
-    @RequestMapping(value = "/change", method = RequestMethod.GET)
-    @Privilege(methodName = "注册", privilegeLevel = 0)
+    @NoSaveLog
+    @RequestMapping(value = "/eeRegister", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject exeRegister(@RequestParam("token") String token) {
+    public JSONObject exeRegister(String registerType) {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
         result.setStatus(400);
@@ -121,7 +120,6 @@ public class LoginController {
 
         return JSONObject.fromObject(result);
     }
-
 
     private void saveLoginLog(String loginName, String loginPass, String desc) {
         SysLog logsEntity = new SysLog(UUID.randomUUID().toString(), desc, "0", "", new Date(),

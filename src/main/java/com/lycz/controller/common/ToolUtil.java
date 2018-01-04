@@ -22,4 +22,19 @@ public class ToolUtil extends StringUtils {
     public static boolean isNotEmpty(Map map) {
         return !isEmpty(map);
     }
+
+    /**
+     * 如果比较字符串中有一个与被计较字符串相同，返回true
+     *
+     * @param compare 被比较字符串
+     * @param ss      数目不定的比较字符串
+     */
+    public static boolean anyEqual(String compare, String... ss) {
+        for (String s : ss) {
+            if (s.equals(compare)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

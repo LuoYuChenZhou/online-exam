@@ -12,9 +12,9 @@ import java.lang.annotation.Target;
  * privilegeLevel 权限等级
  * 0：无限制
  * 1：登录后可用
- * 2：考生可用
- * 3：考官可用
- * 4：系统管理员可用
+ * 2：考生、系统管理员可用
+ * 3：考官、系统管理员可用
+ * 4：仅系统管理员可用
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

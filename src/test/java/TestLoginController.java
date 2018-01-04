@@ -1,4 +1,5 @@
 import com.lycz.controller.common.JedisUtil;
+import com.lycz.model.Examiner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
@@ -25,6 +26,17 @@ public class TestLoginController {
         params.add("loginPass", loginPass);
 
         url = url + "/Login/exeLogin";
+        RestTemplate restTemplate = new RestTemplate();
+        System.out.println(restTemplate.postForObject(url, params, String.class));
+    }
+
+    @Test
+    public void tempTest() {
+        String loginPass = "testp";
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("registerType", loginPass);
+
+        url = url + "/Login/tempTest";
         RestTemplate restTemplate = new RestTemplate();
         System.out.println(restTemplate.postForObject(url, params, String.class));
     }
@@ -65,5 +77,11 @@ public class TestLoginController {
         log.warn(ooo.substring(ooo.lastIndexOf("c")+1));
         log.error(ooo.substring(ooo.lastIndexOf("c")+1));
         log.fatal(ooo.substring(ooo.lastIndexOf("c")+1));
+    }
+
+    @Test
+    public void testGetName() {
+        Examiner examiner = new Examiner();
+        log.info(examiner.getClass().getName());
     }
 }

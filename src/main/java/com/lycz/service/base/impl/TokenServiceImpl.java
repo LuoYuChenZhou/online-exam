@@ -25,10 +25,11 @@ public class TokenServiceImpl implements TokenService {
         } else if (entity instanceof Examinee || entity instanceof Examiner) {
             tokenMap = CommonMethods.transBean2Map(entity);
             tokenMap.remove("loginPwd");
+            tokenMap.put("userType", entity instanceof Examinee ? "Examinee" : "Examiner");
         } else if (entity.equals("sysLog")) {
             tokenMap.put("id", "sys_id");
             tokenMap.put("realName", "超级管理员");
-            tokenMap.put("manageToken", "随便来点什么，反正普通用户没有");
+            tokenMap.put("userType", CommonMethods.getProperty("config/sysLg.properties", "sys_user_type"));
         } else {
             return null;
         }
