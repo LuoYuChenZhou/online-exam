@@ -1,0 +1,24 @@
+.icon {
+    width: 1.5em;
+    height: 1.5em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+}
+
+.left_menu_top {
+    width: 2em;
+    height: 2em;
+    padding: .5em .5em .5em 1em;
+}
+
+#main_menu_top {
+    width: 100%;
+    height: 6%;
+    background-color: #C5D5CB;
+}
+
+#main_show{
+    margin-left: 220px;
+    height: 93.5%;
+}

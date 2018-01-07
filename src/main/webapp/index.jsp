@@ -9,7 +9,11 @@
     <link rel="stylesheet" type="text/css" href="style/css/input-style.css"/>
     <link rel="stylesheet" type="text/css" href="style/css/loadStyle.css"/>
     <link rel="stylesheet" type="text/css" href="style/css/login.css"/>
+    <link rel="stylesheet" type="text/css" href="style/css/sweetalert2.min.css"/>
     <script type="text/javascript" src="style/js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="style/js/sweetalert2.min.js"></script>
+    <script type="text/javascript" src="style/js/es6-promise.min.js"></script>
+    <script type="text/javascript" src="style/js/jquery.cookie.js"></script>
 </head>
 <body>
 
@@ -198,7 +202,8 @@
                 dataType: 'json',    //返回的数据格式：json/xml/html/script/jsonp/text
                 success: function (data) {
                     if (data.status === 200) {
-                        alert("登录成功");
+                        $.cookie('online_token', data.data.token);
+                        toMainMenu();
                     } else if (data.status === 400) {
                         $("#message-div").html("<span style='display:block;color: Orange'>" + data.msg + "</span>");
                     } else if (data.status === 401) {
@@ -206,7 +211,7 @@
                     }
                 },
                 error: function () {
-                    alert("服务器维护中");
+                    swal('错误', '服务器维护中!', 'error');
                 },
                 complete: function () {
                     mask.hide();
@@ -228,8 +233,8 @@
 
         //点击注册按钮显示隐藏层和弹出层
         $("#fourth").click(function () {
-            mask.show();  //显示隐藏层
-            $("#register-form").show();  //显示隐藏层
+            mask.fadeIn();  //显示隐藏层
+            $("#register-form").fadeIn();  //显示隐藏层
         });
 
         //点击考生注册
@@ -266,7 +271,7 @@
             var password = $("#reg-password");
             if (!password.val()) {
                 password.siblings(".reg_msg").text("请输入登录密码");
-            }  else {
+            } else {
                 password.siblings(".reg_msg").text("");
             }
         });
@@ -313,7 +318,7 @@
                     }
                 },
                 error: function () {
-                    alert("服务器维护中");
+                    swal('错误', '服务器维护中!', 'error');
                 }
             })
         }
@@ -383,20 +388,21 @@
                 dataType: 'json',    //返回的数据格式：json/xml/html/script/jsonp/text
                 success: function (data) {
                     if (data.status === 201) {
-                        alert("注册成功");
-                        //跳转页面
+                        $.cookie('online_token', data.data.token);
+                        $.cookie('isReg', "1");
+                        toMainMenu();
                     } else if (data.status === 400) {
-                        alert("注册发生错误，请联系管理员");
+                        swal('注册失败', '请重试或联系管理员!', 'error');
                         $("#register-form").show();
                     } else if (data.status === 301) {
                         $("#register-form").show();
                         userNameIsExist();
                     } else {
-                        alert("服务器维护中");
+                        swal('错误', '服务器维护中!', 'error');
                     }
                 },
                 error: function () {
-                    alert("服务器维护中");
+                    swal('错误', '服务器维护中!', 'error');
                 },
                 complete: function () {
                     load.hide();
@@ -411,10 +417,15 @@
 
         //去除隐藏层
         function cancelRegister() {
-            $("#mask").hide();
-            $("#register-form").hide();
+            $("#mask").fadeOut();
+            $("#register-form").fadeOut();
         }
 
+        //跳转到主页面
+        function toMainMenu() {
+            var strUrl = '/Login/toMainMenu?token=' + $.cookie('online_token');
+            location.href = strUrl;
+        }
     };
 </script>
 </html>

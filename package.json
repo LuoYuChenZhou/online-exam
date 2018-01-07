@@ -1,0 +1,23 @@
+{
+  "name": "online-exam",
+  "version": "1.0.0",
+  "description": "陆续搭建，练习使用github",
+  "main": "index.js",
+  "dependencies": {
+    "sweetalert2": "^7.3.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LuoYuChenZhou/online-exam.git"
+  },
+  "author": "lzq",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LuoYuChenZhou/online-exam/issues"
+  },
+  "homepage": "https://github.com/LuoYuChenZhou/online-exam#readme"
+}

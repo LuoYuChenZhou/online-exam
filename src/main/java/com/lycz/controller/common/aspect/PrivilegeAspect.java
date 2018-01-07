@@ -43,13 +43,11 @@ public class PrivilegeAspect {
     }
 
     @Around(value = "priAspect(token)", argNames = "joinPoint,token")
-    public Object doController(ProceedingJoinPoint joinPoint, String token) throws Throwable {
+    public Object doPriController(ProceedingJoinPoint joinPoint, String token) throws Throwable {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setMsg("权限不足");
         result.setData(JSONObject.fromObject("{}"));
         result.setStatus(401);
-
-        log.info("什么鬼");
 
         Integer privilegeLevel = 0;//权限
         boolean canExe = false;//是否拥有权限执行

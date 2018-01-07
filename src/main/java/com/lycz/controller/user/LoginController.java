@@ -4,6 +4,7 @@ import com.lycz.controller.common.CommonMethods;
 import com.lycz.controller.common.CommonResult;
 import com.lycz.controller.common.ToolUtil;
 import com.lycz.controller.common.annotation.NoSaveLog;
+import com.lycz.controller.common.annotation.Privilege;
 import com.lycz.model.Examinee;
 import com.lycz.model.Examiner;
 import com.lycz.model.SysLog;
@@ -98,13 +99,13 @@ public class LoginController {
             result.setMsg("登录失败");
             return JSONObject.fromObject(result);
         }
+        saveLoginLog(loginName, "不显示", "登录成功");
 
         Map<String, String> tokenMap = new HashMap<>();
         tokenMap.put("token", token);
         result.setData(JSONObject.fromObject(tokenMap));
         result.setStatus(200);
         result.setMsg("登录成功");
-        saveLoginLog(loginName, "不显示", "登录成功");
         return JSONObject.fromObject(result);
     }
 
@@ -140,8 +141,15 @@ public class LoginController {
             result.setMsg("注册失败");
             log.error("考生注册发生错误");
         } else {
+            Examinee examinee1 = examineeService.eeLogin(examinee.getLoginName(), examinee.getLoginPwd());
+            String token = tokenService.createToken(examinee1);
+            Map<String, String> tokenMap = new HashMap<>();
+            tokenMap.put("token", token);
+
+            result.setData(JSONObject.fromObject(tokenMap));
             result.setMsg("注册成功");
             result.setStatus(201);
+
         }
 
         return JSONObject.fromObject(result);
@@ -179,6 +187,12 @@ public class LoginController {
             result.setMsg("注册失败");
             log.error("考官注册发生错误");
         } else {
+            Examiner examiner1 = examinerService.erLogin(examiner.getLoginName(), examiner.getLoginPwd());
+            String token = tokenService.createToken(examiner1);
+            Map<String, String> tokenMap = new HashMap<>();
+            tokenMap.put("token", token);
+
+            result.setData(JSONObject.fromObject(tokenMap));
             result.setMsg("注册成功");
             result.setStatus(201);
         }
@@ -217,6 +231,13 @@ public class LoginController {
         result.setStatus(200);
         result.setData(JSONObject.fromObject("{\"isExist\":\"" + isExist + "\"}"));
         return JSONObject.fromObject(result);
+    }
+
+    @NoSaveLog
+    @RequestMapping(value = "/toMainMenu", method = RequestMethod.GET)
+    @Privilege(methodName = "跳转到主菜单")
+    public String toMainMenu(@RequestParam("token") String token){
+        return "mainMenu";
     }
 
     /**
