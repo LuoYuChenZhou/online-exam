@@ -73,7 +73,7 @@ public class PrivilegeAspect {
 
         //获取用户权限
         Map<String, Object> tokenMap = tokenService.getToken(token);
-        if(ToolUtil.isEmpty(tokenMap)){
+        if(ToolUtil.isEmpty(tokenMap) || tokenMap.get("userType") == null){
             result.setMsg("非法登录");
             return JSONObject.fromObject(result);
         }

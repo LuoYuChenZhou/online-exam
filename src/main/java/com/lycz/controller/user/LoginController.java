@@ -233,11 +233,19 @@ public class LoginController {
         return JSONObject.fromObject(result);
     }
 
-    @NoSaveLog
-    @RequestMapping(value = "/toMainMenu", method = RequestMethod.GET)
-    @Privilege(methodName = "跳转到主菜单")
-    public String toMainMenu(@RequestParam("token") String token){
-        return "mainMenu";
+    @RequestMapping(value = "/getUserType", method = RequestMethod.GET)
+    @Privilege(methodName = "获取用户类型")
+    @ResponseBody
+    public JSONObject getUserType(@RequestParam("token") String token){
+        CommonResult<JSONObject> result = new CommonResult<>();
+
+        Map<String, Object> jm = tokenService.getToken(token);
+        String userType = (String) jm.get("userType");
+
+        result.setData(JSONObject.fromObject("{\"loginType\":\""+userType+"\"}"));
+        result.setStatus(200);
+
+        return JSONObject.fromObject("");
     }
 
     /**

@@ -17,7 +17,7 @@
     <script type="text/javascript" src="../style/js/jquery.cookie.js"></script>
 </head>
 <body>
-123123
+    <h2>欢迎使用到测入流在线评测系统</h2>
 </body>
 <script type="text/javascript">
     window.onload = function () {

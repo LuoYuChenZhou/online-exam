@@ -423,8 +423,7 @@
 
         //跳转到主页面
         function toMainMenu() {
-            var strUrl = '/Login/toMainMenu?token=' + $.cookie('online_token');
-            location.href = strUrl;
+            location.href = "view/mainMenu.jsp";
         }
     };
 </script>

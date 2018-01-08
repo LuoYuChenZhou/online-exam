@@ -1,3 +1,7 @@
+body {
+    overflow: hidden; /*隐藏滚动条,高度100%会出现*/
+}
+
 .icon {
     width: 1.5em;
     height: 1.5em;
@@ -18,7 +22,21 @@
     background-color: #C5D5CB;
 }
 
-#main_show{
+#main_menu_top_left {
+    float: left;
+}
+
+#main_menu_top_left img {
+    height: 42px;
+    margin-left: 1em;
+}
+
+#main_menu_top_right {
+    float: right;
+    margin-right: 1em;
+}
+
+#main_show {
     margin-left: 220px;
-    height: 93.5%;
+    height: 94%;
 }
