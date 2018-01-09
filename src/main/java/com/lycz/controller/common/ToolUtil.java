@@ -30,8 +30,9 @@ public class ToolUtil extends StringUtils {
      * @param ss      数目不定的比较字符串
      */
     public static boolean anyEqual(String compare, String... ss) {
+        if (compare == null) return false;
         for (String s : ss) {
-            if (s.equals(compare)) {
+            if (compare.equals(s)) {
                 return true;
             }
         }
