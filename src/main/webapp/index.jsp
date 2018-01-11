@@ -417,8 +417,8 @@
 
         //去除隐藏层
         function cancelRegister() {
-            $("#mask").fadeOut();
-            $("#register-form").fadeOut();
+            $("#mask").hide();
+            $("#register-form").hide();
         }
 
         //跳转到主页面
