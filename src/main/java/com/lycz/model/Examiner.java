@@ -1,5 +1,7 @@
 package com.lycz.model;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import java.util.Date;
 import javax.persistence.*;
 
@@ -14,6 +16,7 @@ public class Examiner {
     /**
      * 用户名
      */
+    @NotBlank(message = "用户名不能为空")
     @Column(name = "login_name")
     private String loginName;
 

@@ -1,8 +1,9 @@
 package com.lycz.model;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import java.util.Date;
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
 @Table(name = "examinee")
 public class Examinee {
@@ -22,7 +23,6 @@ public class Examinee {
     /**
      * 登录密码
      */
-    @NotBlank(message = "登录密码不能为空")
     @Column(name = "login_pwd")
     private String loginPwd;
 
