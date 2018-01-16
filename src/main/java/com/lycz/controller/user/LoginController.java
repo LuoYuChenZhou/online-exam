@@ -120,16 +120,16 @@ public class LoginController {
         result.setData(JSONObject.fromObject("{}"));
         result.setStatus(400);
 
-        examinee.setId(UUID.randomUUID().toString());
-        examinee.setRegTime(new Date());
-        examinee.setStatus("1");
-        examinee.setLoginPwd(password);
-
         if (bindingResult.hasErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
             result.setMsg(allErrors.get(allErrors.size() - 1).getDefaultMessage());
             return JSONObject.fromObject(result);
         }
+
+        examinee.setId(UUID.randomUUID().toString());
+        examinee.setRegTime(new Date());
+        examinee.setStatus("1");
+        examinee.setLoginPwd(password);
 
         if (examineeService.userNameIsExist(examinee.getLoginName())) {
             result.setMsg("用户名被占用");
@@ -166,16 +166,16 @@ public class LoginController {
         result.setData(JSONObject.fromObject("{}"));
         result.setStatus(400);
 
-        examiner.setId(UUID.randomUUID().toString());
-        examiner.setRegTime(new Date());
-        examiner.setStatus("1");
-        examiner.setLoginPwd(password);
-
         if (bindingResult.hasErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
             result.setMsg(allErrors.get(allErrors.size() - 1).getDefaultMessage());
             return JSONObject.fromObject(result);
         }
+
+        examiner.setId(UUID.randomUUID().toString());
+        examiner.setRegTime(new Date());
+        examiner.setStatus("1");
+        examiner.setLoginPwd(password);
 
         if (examinerService.userNameIsExist(examiner.getLoginName())) {
             result.setMsg("用户名被占用");
@@ -233,19 +233,40 @@ public class LoginController {
         return JSONObject.fromObject(result);
     }
 
-    @RequestMapping(value = "/getUserType", method = RequestMethod.GET)
-    @Privilege(methodName = "获取用户类型")
+    @RequestMapping(value = "/getUserInfoByType", method = RequestMethod.GET)
+    @Privilege(methodName = "根据输入类型获取用户信息")
     @ResponseBody
-    public JSONObject getUserType(@RequestParam("token") String token){
+    public JSONObject getUserInfoByType(@RequestParam("searchType") String searchType, @RequestParam("token") String token) {
         CommonResult<JSONObject> result = new CommonResult<>();
+        result.setData(JSONObject.fromObject("{}"));
+        result.setStatus(400);
 
         Map<String, Object> jm = tokenService.getToken(token);
-        String userType = (String) jm.get("userType");
 
-        result.setData(JSONObject.fromObject("{\"loginType\":\""+userType+"\"}"));
+        String realType;
+        switch (searchType) {
+            case "type":
+                realType = "userType";
+                break;
+            case "name":
+                realType = "realName";
+                break;
+            default:
+                result.setMsg("查询类型错误");
+                return JSONObject.fromObject(result);
+        }
+
+        String returnData = (String) jm.get(realType);
+
+        //系统用户类型转换
+        if(returnData.equals(CommonMethods.getProperty("config/sysLg.properties", "sys_user_type"))){
+            returnData = "system_type";
+        }
+
+        result.setData(JSONObject.fromObject("{\"returnData\":\"" + returnData + "\"}"));
         result.setStatus(200);
 
-        return JSONObject.fromObject("");
+        return JSONObject.fromObject(result);
     }
 
     /**

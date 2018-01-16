@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * @author Sholybell
- * @说明：此为Mapper3通用的Service抽象接口，其他Serice可以在继承此Service的基础上， 实现自己定义的接口的方法，自定义的方法需要另外使用Mapper.xml
+ * @说明 此为Mapper3通用的Service抽象接口，其他Serice可以在继承此Service的基础上， 实现自己定义的接口的方法，自定义的方法需要另外使用Mapper.xml
  */
 
 @Service

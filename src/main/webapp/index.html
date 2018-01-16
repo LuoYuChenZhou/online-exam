@@ -1,4 +1,3 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,7 +16,7 @@
 </head>
 <body>
 
-<%--登录页面--%>
+<!--登录页面-->
 <div id="center-form">
     <span class="input input--isao">
 		<input class="input__field input__field--isao" type="text" id="input-name"/>
@@ -52,7 +51,7 @@
     </div>
 </div>
 
-<%--注册页面--%>
+<!--注册页面-->
 <div id="register-form">
     <div id="reg-tab">
         <div id="left-tab" class="tab-class tab-click">
@@ -134,7 +133,7 @@
     </div>
 </div>
 
-<%--load加载页面--%>
+<!--load加载样式-->
 <div id="preloader6">
     <span></span>
     <span></span>
@@ -142,7 +141,7 @@
     <span></span>
 </div>
 
-<%--遮罩层--%>
+<!--遮罩层-->
 <div id="mask"></div>
 </body>
 <script type="text/javascript">
@@ -190,7 +189,7 @@
             mask.show();
             load.show();
             $.ajax({
-                url: '/Login/exeLogin',
+                url: '/Login/exeLogin.do',
                 type: 'POST', //GET
                 async: false,    //或false,是否异步
                 data: {
@@ -299,7 +298,7 @@
                 return;
             }
             $.ajax({
-                url: '/Login/userNameIsExist',
+                url: '/Login/userNameIsExist.do',
                 type: 'GET',
                 async: true,    //是否异步
                 data: {
@@ -366,9 +365,9 @@
 
             var targetUrl;
             if (regType === "1") {
-                targetUrl = '/Login/erRegister';
+                targetUrl = '/Login/erRegister.do';
             } else {
-                targetUrl = '/Login/eeRegister';
+                targetUrl = '/Login/eeRegister.do';
             }
 
             $.ajax({
@@ -423,7 +422,7 @@
 
         //跳转到主页面
         function toMainMenu() {
-            location.href = "view/mainMenu.jsp";
+            location.href = "view/mainMenu.html";
         }
     };
 </script>

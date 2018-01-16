@@ -20,8 +20,10 @@ $(function(){
             $('.nav-item.nav-show').removeClass('nav-show');
             $('.nav-item').children('ul').removeAttr('style');
             $('.nav').addClass('nav-mini');
+            $('#main_show').removeClass('left_show');
         }else{
             $('.nav').removeClass('nav-mini');
+            $('#main_show').addClass('left_show');
         }
     });
 });

@@ -88,12 +88,12 @@ public class TestLoginController {
     @Test
     public void eeRegister() {
         String registerType = "2";
-        String loginName = "testl";
-        String loginPass = "testp";
+        String loginName = "tes18tl";
+        String password = "testp";
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("registerType", registerType);
-        params.add("loginName", loginName);
-        params.add("loginPass", loginPass);
+        params.add("password", password);
+//        params.add("loginName", loginName);
 
         url = url + "/Login/eeRegister";
         RestTemplate restTemplate = new RestTemplate();
