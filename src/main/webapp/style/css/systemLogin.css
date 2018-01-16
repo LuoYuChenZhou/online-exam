@@ -1,0 +1,18 @@
+/*load样式*/
+#preloader6 {
+    position: absolute;
+    top: 49%;
+    left: 49%;
+    z-index: 100;
+}
+
+#mask {
+    position: absolute;
+    top: 0;
+    filter: alpha(opacity=60);
+    background-color: #777;
+    z-index: 10;
+    left: 0;
+    opacity: 0.7;
+    -moz-opacity: 0.7;
+}

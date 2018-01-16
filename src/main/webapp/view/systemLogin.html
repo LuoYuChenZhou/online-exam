@@ -1,0 +1,40 @@
+<!--
+  User: LuoYuChengZhou
+  Date: 2018/1/16
+  Time: 10:53
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>后台登录</title>
+    <link rel="stylesheet" type="text/css" href="../style/css/loadStyle.css"/>
+    <link rel="stylesheet" type="text/css" href="../style/css/sweetalert2.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../style/css/systemLogin.css"/>
+    <script type="text/javascript" src="../style/js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="../style/js/sweetalert2.min.js"></script>
+    <script type="text/javascript" src="../style/js/es6-promise.min.js"></script>
+    <script type="text/javascript" src="../style/js/jquery.cookie.js"></script>
+</head>
+<body>
+    <form id="login">
+        <label class="form_label" for="input-name">用户名：</label>
+        <input type="text" id="input-name"/>
+        <label class="form_label" for="input-pass">密码：</label>
+        <input type="password" id="input-pass"/>
+        <input type="submit" value="登录">
+        <input type="reset" value="清空">
+    </form>
+
+    <!--load加载样式-->
+    <div id="preloader6">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <!--遮罩层-->
+    <div id="mask"></div>
+</body>
+</html>
