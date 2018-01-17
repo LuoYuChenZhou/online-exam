@@ -29,19 +29,19 @@ public class CommonMethods {
     public static String getProperty(String fileName, String property) {
         Properties prop = new Properties();
         String path = CommonMethods.class.getResource("/" + fileName).getPath();
-        InputStream inStream = null;
+        InputStream inStream;
+        String propertiesValue;
         try {
             inStream = new FileInputStream(path);
-        } catch (FileNotFoundException e) {
-            logger.error("配置文件路径错误：{}", fileName);
-        }
-        String propertiesValue = "";
-        try {
             prop.load(inStream);
             propertiesValue = prop.getProperty(property);
+        } catch (FileNotFoundException e) {
+            logger.error("配置文件路径错误：{}", fileName);
+            return null;
         } catch (IOException e) {
-            System.out.println("conference配置读取失败！");
+            logger.error("配置读取失败！");
             e.printStackTrace();
+            return null;
         }
         return propertiesValue;
     }

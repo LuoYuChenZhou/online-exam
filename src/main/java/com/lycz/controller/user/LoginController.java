@@ -82,7 +82,7 @@ public class LoginController {
             case "99":
                 String serviceName = CommonMethods.getProperty("config/sysLg.properties", "sys_lg_na");
                 String servicePass = CommonMethods.getProperty("config/sysLg.properties", "sys_lg_pw");
-                if (serviceName.equals(loginName) && servicePass.equals(loginPass)) {
+                if (Objects.equals(serviceName, loginName) && Objects.equals(servicePass, loginPass)) {
                     tokenObj = "sysLog";
                 }
                 break;
