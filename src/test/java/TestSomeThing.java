@@ -1,3 +1,4 @@
+import com.lycz.controller.common.JedisUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
@@ -9,7 +10,24 @@ import org.junit.Test;
  */
 public class TestSomeThing {
     private Logger log = LogManager.getLogger();
-    
+
+    @Test
+    public void testDestoryEmptyToken() {
+        JedisUtil.delKey("123");
+    }
+
+    @Test
+    public void testTimeOut() throws InterruptedException {
+        JedisUtil.setString("111","abc");
+        JedisUtil.setOutTime("111",5);
+        log.info("_____________________");
+        log.info(JedisUtil.getString("111"));
+        log.info("_____________________");
+        Thread.sleep(6000);
+        log.info(JedisUtil.getString("111"));
+        log.info("_____________________");
+    }
+
     @Test
     public void testStringNull() {
         Object a = null;

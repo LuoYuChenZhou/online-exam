@@ -39,7 +39,7 @@ public class JedisUtil {
             REDIS_PORT = Integer.valueOf(prop.getProperty("REDIS_PORT"));
             VIRTUAL_COURSE_PRE = prop.getProperty("VIRTUAL_COURSE_PRE");
         } catch (IOException e) {
-            System.out.println("conference配置读取失败！");
+            logger.error("redisPool配置读取失败！");
             e.printStackTrace();
         }
     }
@@ -264,6 +264,18 @@ public class JedisUtil {
         } catch (Exception e) {
             logger.error("缓存删除操作发生错误，键：【{}】，错误详情： {}: ", key, e.getMessage());
             throw new RuntimeException("缓存删除操作发生错误,详情见日志");
+        } finally {
+            closeJedis(jedis);
+        }
+    }
+
+    public static void setOutTime(String key, Integer time) {
+        Jedis jedis = getJedis();
+        try {
+            jedis.expire(VIRTUAL_COURSE_PRE + key, time);
+        } catch (Exception e) {
+            logger.error("设置缓存过期时间发生错误，键：【{}】，时间：【{}】，错误详情： {}: ", key, time, e.getMessage());
+            throw new RuntimeException("设置缓存过期时间发生错误,详情见日志");
         } finally {
             closeJedis(jedis);
         }

@@ -2,6 +2,7 @@ package com.lycz.controller.common.aspect;
 
 import com.lycz.controller.common.CommonMethods;
 import com.lycz.controller.common.CommonResult;
+import com.lycz.controller.common.JedisUtil;
 import com.lycz.controller.common.ToolUtil;
 import com.lycz.controller.common.annotation.Privilege;
 import com.lycz.service.base.TokenService;
@@ -14,6 +15,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import redis.clients.jedis.Jedis;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;
@@ -119,6 +121,7 @@ public class PrivilegeAspect {
         }
 
         if (canExe) {
+            JedisUtil.setOutTime(CommonMethods.getProperty("config/globalConfig.properties", "TOKEN_PRE") + token, 21600);
             return joinPoint.proceed();
         } else {
             return JSONObject.fromObject(result);

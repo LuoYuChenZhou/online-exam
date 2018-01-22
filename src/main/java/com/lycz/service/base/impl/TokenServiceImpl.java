@@ -14,7 +14,7 @@ import java.util.UUID;
 @Service
 public class TokenServiceImpl implements TokenService {
 
-    private String tokenPre = "online-exam-token:";
+    private String tokenPre = CommonMethods.getProperty("config/globalConfig.properties", "TOKEN_PRE");
 
     @Override
     public String createToken(Object entity) {

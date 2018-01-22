@@ -259,12 +259,25 @@ public class LoginController {
         String returnData = (String) jm.get(realType);
 
         //系统用户类型转换
-        if(returnData.equals(CommonMethods.getProperty("config/sysLg.properties", "sys_user_type"))){
+        if (returnData.equals(CommonMethods.getProperty("config/sysLg.properties", "sys_user_type"))) {
             returnData = "system_type";
         }
 
         result.setData(JSONObject.fromObject("{\"returnData\":\"" + returnData + "\"}"));
         result.setStatus(200);
+
+        return JSONObject.fromObject(result);
+    }
+
+    @RequestMapping(value = "/exeLoginOut", method = RequestMethod.POST)
+    @Privilege(methodName = "注销")
+    @ResponseBody
+    public JSONObject exeLoginOut(@RequestParam("token") String token) {
+        CommonResult<JSONObject> result = new CommonResult<>();
+        result.setData(JSONObject.fromObject("{}"));
+        result.setStatus(400);
+
+        tokenService.destroyToken(token);
 
         return JSONObject.fromObject(result);
     }
