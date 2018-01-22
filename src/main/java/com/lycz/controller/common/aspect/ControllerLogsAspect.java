@@ -36,10 +36,14 @@ public class ControllerLogsAspect {
     private String preTitle;  //方法对应的@Privilege注解的methodName
     private String userId;//当前操作人员
 
+    private final SysLogService sysLogService;
+    private final TokenService tokenService;
+
     @Autowired
-    private SysLogService sysLogService;
-    @Autowired
-    private TokenService tokenService;
+    public ControllerLogsAspect(SysLogService sysLogService, TokenService tokenService) {
+        this.sysLogService = sysLogService;
+        this.tokenService = tokenService;
+    }
 
     /**
      * 通用切点

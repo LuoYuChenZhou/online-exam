@@ -13,6 +13,7 @@
     <script type="text/javascript" src="style/js/sweetalert2.min.js"></script>
     <script type="text/javascript" src="style/js/es6-promise.min.js"></script>
     <script type="text/javascript" src="style/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="style/js/common-methods.js"></script>
 </head>
 <body>
 
@@ -145,10 +146,10 @@
 <div id="mask"></div>
 </body>
 <script type="text/javascript">
-    var loginType = "2";// 登录类型（1-考官登录，2-考生登录）
-    var regType = "2";//注册类型（1-考官注册，2-考生注册）
-    var load = $("#preloader6");//load加载图形
-    var mask = $("#mask");//遮罩层
+    let loginType = "2";// 登录类型（1-考官登录，2-考生登录）
+    let regType = "2";//注册类型（1-考官注册，2-考生注册）
+    let load = $("#preloader6");//load加载图形
+    let mask = $("#mask");//遮罩层
 
     // 页面加载完后执行
     window.onload = function () {
@@ -174,8 +175,8 @@
 
         // 点击登录按钮
         $("#first").click(function () {
-            var userName = $("#input-name").val();
-            var password = $("#input-pass").val();
+            let userName = $("#input-name").val();
+            let password = $("#input-pass").val();
             if (!userName) {
                 $("#message-div").html("<span style='display:block;color: red'>用户名不能为空</span>");
                 return;
@@ -205,8 +206,6 @@
                         toMainMenu();
                     } else if (data.status === 400) {
                         $("#message-div").html("<span style='display:block;color: Orange'>" + data.msg + "</span>");
-                    } else if (data.status === 401) {
-                        location.href = "http://127.0.0.1:2333/index.jsp";
                     }
                 },
                 error: function () {
@@ -267,7 +266,7 @@
 
         //密码字段失去焦点触发,判断是否为空
         $("#reg-password").blur(function () {
-            var password = $("#reg-password");
+            let password = $("#reg-password");
             if (!password.val()) {
                 password.siblings(".reg_msg").text("请输入登录密码");
             } else {
@@ -277,8 +276,8 @@
 
         //重复密码字段失去焦点触发,判断两次输入的是否相同
         $("#reg-rePassword").blur(function () {
-            var password = $("#reg-password");
-            var rePassword = $("#reg-rePassword");
+            let password = $("#reg-password");
+            let rePassword = $("#reg-rePassword");
             if (!password.val()) {
                 password.siblings(".reg_msg").text("请输入登录密码");
             } else if (!rePassword.val()) {
@@ -292,7 +291,7 @@
         });
 
         function userNameIsExist() {
-            var name = $("#reg-name");
+            let name = $("#reg-name");
             if (!name.val()) {
                 name.siblings(".reg_msg").text("请输入用户名");
                 return;
@@ -324,14 +323,14 @@
 
         //点击提交按钮显示load层，执行操作
         $("#commit").click(function () {
-            var name = $("#reg-name");
-            var password = $("#reg-password");
-            var rePassword = $("#reg-rePassword");
-            var eeNo = $("#reg-eeNo");
-            var realName = $("#reg-realName");
-            var sex = $("input[name='reg-sex']:checked");
-            var phone = $("#reg-phone");
-            var email = $("#reg-email");
+            let name = $("#reg-name");
+            let password = $("#reg-password");
+            let rePassword = $("#reg-rePassword");
+            let eeNo = $("#reg-eeNo");
+            let realName = $("#reg-realName");
+            let sex = $("input[name='reg-sex']:checked");
+            let phone = $("#reg-phone");
+            let email = $("#reg-email");
             $(".reg_msg").text("");
             if (!name.val()) {
                 name.siblings(".reg_msg").text("请输入用户名");
@@ -363,7 +362,7 @@
             $("#register-form").hide();
             load.show();
 
-            var targetUrl;
+            let targetUrl;
             if (regType === "1") {
                 targetUrl = '/Login/erRegister.do';
             } else {

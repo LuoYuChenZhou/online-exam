@@ -75,7 +75,6 @@
                 <li><a href="javascript:void(0);"><span>申请列表</span></a></li>
                 <li><a href="javascript:void(0);"><span>历史动态</span></a></li>
             </ul>
-
             <a href="javascript:void(0);">
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-course-lib"></use>
@@ -133,20 +132,21 @@
     $(function () {
         $("title").text("欢迎使用");
 
+        getUserType();
+        setMenu();
+
         getUserName();
         setName();
 
-        getUserType();
-        setMenu();
     });
 
-    //设置显示菜单
+    //根据用户类型显示菜单
     function setMenu() {
-        if(!user_type){
-            setTimeout("setMenu()",1000);
+        if (!user_type) {
+            setTimeout("setMenu()", 1000);
             return;
         }
-        switch (user_type){
+        switch (user_type) {
             case "Examinee":
                 $(".ee_have").show();
                 break;
@@ -157,7 +157,7 @@
                 $(".nav-item").show();
                 break;
             default :
-
+                location.href = localhostPath;
         }
     }
 

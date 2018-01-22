@@ -20,6 +20,7 @@ import java.util.Map;
 
 /**
  * 权限切片
+ *
  * @author lizhenqing
  * @version 1.0
  * @data 2018/1/4 8:40
@@ -30,8 +31,12 @@ public class PrivilegeAspect {
 
     private Logger log = LogManager.getLogger();
 
+    private final TokenService tokenService;
+
     @Autowired
-    private TokenService tokenService;
+    public PrivilegeAspect(TokenService tokenService) {
+        this.tokenService = tokenService;
+    }
 
     /**
      * 切点
@@ -73,7 +78,7 @@ public class PrivilegeAspect {
 
         //获取用户权限
         Map<String, Object> tokenMap = tokenService.getToken(token);
-        if(ToolUtil.isEmpty(tokenMap) || tokenMap.get("userType") == null){
+        if (ToolUtil.isEmpty(tokenMap) || tokenMap.get("userType") == null) {
             result.setMsg("非法登录");
             return JSONObject.fromObject(result);
         }
@@ -103,7 +108,7 @@ public class PrivilegeAspect {
                 }
                 break;
             case 4:
-                if (sys.equals(tokenType)) {
+                if (sys != null && sys.equals(tokenType)) {
                     canExe = true;
                 }
                 break;
