@@ -4,6 +4,8 @@
     <title></title>
     <link rel="stylesheet" type="text/css" href="../style/css/nav.css"/>
     <link rel="stylesheet" type="text/css" href="../style/css/mainMenu.css"/>
+    <link rel="stylesheet" type="text/css" href="../style/css/sweetalert2.min.css"/>
+    <script type="text/javascript" src="../style/js/sweetalert2.min.js"></script>
     <script type="text/javascript" src="../style/js/jquery-3.2.1.js"></script>
     <script type="text/javascript" src="../style/js/jquery.cookie.js"></script>
     <script type="text/javascript" src="../style/js/nav.js"></script>
@@ -24,7 +26,7 @@
             </svg>
         </a>
         <div class="separator"></div>
-        <a href="javascript:void(0);">
+        <a href="javascript:void(0);" onclick="loginOut()">
             <svg class="icon left_menu_top" aria-hidden="true">
                 <use xlink:href="#icon-zhuxiao"></use>
             </svg>
@@ -139,6 +141,25 @@
         setName();
 
     });
+
+    // 注销
+    function loginOut() {
+        swal({
+            title: '注销',
+            text: '是否要退出登录？',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: '是',
+            cancelButtonText: '否',
+        }).then(function (isConfirm) {
+            if (isConfirm === true) {
+                $.cookie('online_token', null, {path: "/"});
+                $.post("/Login/exeLoginOut.do", {token: token}, function (data) {
+                    location.href = localhostPath;
+                });
+            }
+        });
+    }
 
     //根据用户类型显示菜单
     function setMenu() {

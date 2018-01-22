@@ -202,7 +202,7 @@
                 dataType: 'json',    //返回的数据格式：json/xml/html/script/jsonp/text
                 success: function (data) {
                     if (data.status === 200) {
-                        $.cookie('online_token', data.data.token);
+                        $.cookie('online_token', data.data.token, {path: "/"});
                         toMainMenu();
                     } else if (data.status === 400) {
                         $("#message-div").html("<span style='display:block;color: Orange'>" + data.msg + "</span>");
@@ -386,8 +386,8 @@
                 dataType: 'json',    //返回的数据格式：json/xml/html/script/jsonp/text
                 success: function (data) {
                     if (data.status === 201) {
-                        $.cookie('online_token', data.data.token);
-                        $.cookie('isReg', "1");
+                        $.cookie('online_token', data.data.token, {path: "/"});
+                        $.cookie('isReg', "1", {path: "/"});
                         toMainMenu();
                     } else if (data.status === 400) {
                         swal('注册失败', '请重试或联系管理员!', 'error');
