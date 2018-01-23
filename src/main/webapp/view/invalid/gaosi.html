@@ -1,0 +1,38 @@
+<!--
+  User: LuoYuChengZhou
+  Date: 2018/1/23
+  Time: 11:07
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        body {
+            z-index: 1;
+            overflow: hidden;
+            background: url("../../style/image/for-gaosi.jpg") no-repeat fixed;/*用于实现高斯模糊*/
+            background-size: cover;
+        }
+
+
+        .form_mask {
+            border :1px solid red;
+            position: absolute;
+            top: 13%;
+            left: 30%;
+            width: 600px;
+            height: 350px;
+            background: inherit;/*继承父类的背景*/
+            -webkit-filter: blur(10px); /* Chrome, Opera */
+            -moz-filter: blur(10px);
+            -ms-filter: blur(10px);
+            filter: blur(10px);
+        }
+    </style>
+</head>
+<body>
+<div class="form_mask"></div>
+</body>
+</html>
