@@ -290,6 +290,18 @@
             }
         });
 
+        //手机号码字段失去焦点触发,判断是否符合规则
+        $("#reg-phone").blur(function () {
+            let phone = $("#reg-phone");
+            if (!phone.val()) {
+                phone.siblings(".reg_msg").text("请输入联系电话");
+            } else if (!/1\d{10}/.test(phone.val())) {
+                phone.siblings(".reg_msg").text("手机号码格式错误");
+            } else {
+                phone.siblings(".reg_msg").text("");
+            }
+        });
+
         function userNameIsExist() {
             let name = $("#reg-name");
             if (!name.val()) {
@@ -357,7 +369,11 @@
             if (!phone.val()) {
                 phone.siblings(".reg_msg").text("请输入联系电话");
                 return;
+            } else if (!/1\d{10}/.test(phone.val())) {
+                phone.siblings(".reg_msg").text("手机号码格式错误");
+                return;
             }
+
 
             $("#register-form").hide();
             load.show();

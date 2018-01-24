@@ -11,7 +11,7 @@
 </head>
 <body>
     <h2 style="text-align: center;color: #9FA8A3;">欢迎使用到测如流在线评测系统</h2>
-    <input type="button" onclick="controlMainMask(1)" />
+    <input type="button" onclick="test()" />
 </body>
 <script type="text/javascript">
     window.onload = function () {
@@ -23,6 +23,10 @@
                 timer: 2000
             });
         }
+    }
+    function test() {
+        controlMainMask(1);
+        setTimeout("controlMainMask()",1000);
     }
 </script>
 </html>
