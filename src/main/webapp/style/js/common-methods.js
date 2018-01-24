@@ -6,6 +6,24 @@ let token = $.cookie('online_token') ? $.cookie('online_token') : "";//token
 let user_name;
 let user_type;
 
+/**
+ * 校验文本框
+ * values : 要校验的值的数组
+ * mids: 用于显示的元素的id的数组
+ * msgs:提示信息数组
+ */
+function validNull(values, mids, msgs) {
+    for (let i = 0; i < values.length; i++) {
+        if (!values[i]) {
+            $("#" + mids[i]).html("<span style='color:red;''>" + msgs[i] + "</span>");
+            return false;
+        } else {
+            $("#" + mids[i]).html("");
+        }
+    }
+    return true;
+}
+
 //获取用户姓名
 function getUserName() {
     $.get("/Login/getUserInfoByType.do", {searchType: "name", token: token}, function (data) {

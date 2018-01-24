@@ -1,0 +1,110 @@
+body {
+    z-index: 1;
+    overflow: hidden;
+    background: url("../../image/sys-login-bg.jpg") no-repeat fixed; /*用于实现高斯模糊*/
+    background-size: cover;
+}
+
+.form_mask {
+    border: 1px solid white;
+    position: absolute;
+    top: 18%;
+    left: 30%;
+    width: 600px;
+    height: 300px;
+    background: inherit; /*继承父类的背景*/
+    -webkit-filter: blur(10px); /* Chrome, Opera */
+    -moz-filter: blur(10px);
+    -ms-filter: blur(10px);
+    filter: blur(10px);
+}
+
+#login {
+    position: absolute;
+    top: 18%;
+    left: 30%;
+    width: 600px;
+    height: 300px;
+    text-align: center;
+}
+
+.input_div {
+    width: 600px;
+    height: 50px;
+    margin-top: 20px;
+}
+
+.form_label {
+    line-height: 44px;
+    width: 80px;
+    color: lightgoldenrodyellow;
+    font-size: 20px;
+    float: left;
+    margin-left: 110px;
+    border: 3px solid rgba(255, 127, 39, 0.6);
+    border-right: 0;
+    background-color: rgba(255, 127, 39, 0.2);
+}
+
+.input_text {
+    color: rgb(191, 130, 112);
+    font-size: 20px;
+    float: right;
+    margin-right: 100px;
+    width: 300px;
+    height: 50px;
+    border: 3px solid yellowgreen;
+    border-left: 0;
+    background-color: rgba(188, 220, 157, 0.3);
+}
+
+.form_btn_rst {
+    width: 150px;
+    height: 50px;
+    float: right;
+    margin: 30px 100px 0 0;
+    font-size: 20px;
+    background-color: rgba(205, 92, 92, 0.3);
+    border: 3px solid indianred;
+    border-left: 0;
+    color: lightgoldenrodyellow;
+    cursor:pointer
+}
+
+.form_btn_sub {
+    float: left;
+    color: lightgoldenrodyellow;
+    margin: 30px 0 0 110px;
+    width: 150px;
+    height: 50px;
+    background-color: rgba(30, 144, 255, 0.3);
+    border: 3px solid dodgerblue;
+    border-right: 0;
+    font-size: 20px;
+    cursor:pointer
+}
+
+/*load样式*/
+#preloader5 {
+    position: absolute;
+    top: 49%;
+    left: 49%;
+    z-index: 100;
+}
+
+#mask {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    filter: alpha(opacity=60);
+    background-color: #777;
+    z-index: 10;
+    opacity: 0.7;
+    -moz-opacity: 0.7;
+}
+
+.err-msg{
+    color: red;
+}
