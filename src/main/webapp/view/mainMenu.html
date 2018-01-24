@@ -3,6 +3,7 @@
 <head>
     <title></title>
     <link rel="stylesheet" type="text/css" href="../style/css/nav.css"/>
+    <link rel="stylesheet" type="text/css" href="../style/css/loadStyle.css"/>
     <link rel="stylesheet" type="text/css" href="../style/css/index/mainMenu.css"/>
     <link rel="stylesheet" type="text/css" href="../style/css/sweetalert2.min.css"/>
     <script type="text/javascript" src="../style/js/sweetalert2.min.js"></script>
@@ -26,13 +27,13 @@
             </svg>
         </a>
         <div class="separator"></div>
-        <a href="javascript:void(0);" onclick="loginOut()">
+        <a href="javascript:void(0);" onclick="loginOut()" style="margin-right: 15px;">
             <svg class="icon left_menu_top" aria-hidden="true">
                 <use xlink:href="#icon-zhuxiao"></use>
             </svg>
         </a>
     </div>
-    <div id="top_info">
+        <div id="top_info">
         <span>欢迎使用~</span>
     </div>
 </div>
@@ -40,7 +41,7 @@
 <div class="nav">
     <div class="nav-top">
         <div id="mini" style="border-bottom:1px solid rgba(255,255,255,.1)">
-            <svg class="icon left_menu_top" aria-hidden="true">
+            <svg class="icon" aria-hidden="true" style="margin: 10px 0 10px 10px ;width: 2em;height: 2em;">
                 <use xlink:href="#icon-menu"></use>
             </svg>
         </div>
@@ -130,10 +131,21 @@
         </iframe>
     </div>
 </div>
+<!--遮罩层和load-->
+<div id="mask"></div>
+<div id="preloader_4">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
 </body>
 
 <script type="text/javascript">
     $(function () {
+        controlMask();
+
         $("title").text("欢迎使用");
 
         getUserType();
@@ -143,6 +155,17 @@
         setName();
 
     });
+
+    //隐藏遮罩层
+    function controlMask(num) {
+        if(num === 1){
+            $("#mask").show();
+            $("#preloader_4").show();
+        }else {
+            $("#mask").hide();
+            $("#preloader_4").hide();
+        }
+    }
 
     // 注销
     function loginOut() {
@@ -156,7 +179,7 @@
         }).then(function (isConfirm) {
             if (isConfirm === true) {
                 $.cookie('online_token', null, {path: "/"});
-                $.post("/Login/exeLoginOut.do", {token: token}, function (data) {
+                $.post("/Login/exeLoginOut.do", {token: token}, function () {
                     location.href = localhostPath;
                 });
             }
@@ -193,7 +216,7 @@
         $("#top_info").find("span").append(user_name)
     }
 
-    function change() {
+    function changeView() {
         // 切换页面
         $("#main_show_iframe").attr("src", "../view/others/1.jsp");
     }

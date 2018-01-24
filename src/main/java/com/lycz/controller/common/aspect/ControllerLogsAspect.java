@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 /**
  * 日志切片
+ *
  * @author lizhenqing
  * @version 1.0
  */
@@ -133,14 +134,14 @@ public class ControllerLogsAspect {
 
         Date date = new Date();
         SysLog logsEntity = new SysLog(UUID.randomUUID().toString(), preTitle + "发生错误", level, userId, date,
-                msg, classMapping + "/" + methodMapping);
+                msg, classMapping + methodMapping);
         try {
             if (sysLogService.save(logsEntity) < 1) {
                 log.error("日志保存失败：{}:{}", logsEntity.getModuleName(), msg);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("日志保存失败：{}/{}:{}", classMapping, methodMapping, msg);
+            log.error("日志保存失败：{}{}:{}", classMapping, methodMapping, msg);
         }
     }
 
@@ -163,13 +164,13 @@ public class ControllerLogsAspect {
 
             Date date = new Date();
             SysLog logsEntity = new SysLog(UUID.randomUUID().toString(), preTitle + "发生错误", level, userId, date,
-                    sb.toString(), classMapping + "/" + methodMapping);
+                    sb.toString(), classMapping + methodMapping);
             if (sysLogService.save(logsEntity) < 1) {
                 log.error("异常日志保存失败：{}:{}", logsEntity.getModuleName(), sb.toString());
             }
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("异常日志保存失败{}/{}:{}", classMapping, methodMapping, e.getMessage());
+            log.error("异常日志保存失败{}{}:{}", classMapping, methodMapping, e.getMessage());
         }
     }
 

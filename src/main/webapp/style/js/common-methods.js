@@ -6,8 +6,19 @@ let token = $.cookie('online_token') ? $.cookie('online_token') : "";//token
 let user_name;
 let user_type;
 
+//控制主页面的遮罩层
+function controlMainMask(num) {
+    if (num === 1) {
+        $("#mask", window.parent.document).show();
+        $("#preloader_4", window.parent.document).show();
+    } else {
+        $("#mask", window.parent.document).hide();
+        $("#preloader_4", window.parent.document).hide();
+    }
+}
+
 /**
- * 校验文本框
+ * 校验值是否为空
  * values : 要校验的值的数组
  * mids: 用于显示的元素的id的数组
  * msgs:提示信息数组
