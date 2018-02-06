@@ -9,7 +9,7 @@ a{text-decoration:none;}
 
 /* nav */
 .nav{width: 220px;height: 94%;background: #6585BA;transition: all .3s; position: absolute;top:6%;left: 0;}
-.nav a{display: block;overflow: hidden;padding-left: 20px;line-height: 46px;max-height: 46px;color: #90F2FF;transition: all .3s;}
+.nav a{display: block;overflow: hidden;padding-left: 20px;line-height: 46px;max-height: 46px;color: #E0FCFF;transition: all .3s;}
 .nav a span{margin-left: 30px;}
 .nav-item{position: relative;display: none}
 .nav-item.nav-show{border-bottom: none;}
