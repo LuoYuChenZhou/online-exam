@@ -33,7 +33,7 @@
             </svg>
         </a>
     </div>
-        <div id="top_info">
+    <div id="top_info">
         <span>欢迎使用~</span>
     </div>
 </div>
@@ -180,7 +180,11 @@
             if (isConfirm === true) {
                 $.cookie('online_token', null, {path: "/"});
                 $.post("/Login/exeLoginOut.do", {token: token}, function () {
-                    location.href = localhostPath;
+                    if(user_type === "system_type"){
+                        location.href = localhostPath + "/view/systemLogin.html";
+                    }else {
+                        location.href = localhostPath;
+                    }
                 });
             }
         });
@@ -213,7 +217,7 @@
             setTimeout("setName()", 1000);
             return;
         }
-        $("#top_info").find("span").append(user_name)
+        $("#top_info").find("span").append(user_name);
     }
 
     function changeView() {

@@ -60,7 +60,7 @@ public class Examinee {
      * 排序号，越大排越前
      */
     @Column(name = "sort_no")
-    private String sortNo;
+    private Short sortNo;
 
     @Column(name = "reg_time")
     private Date regTime;
@@ -209,7 +209,7 @@ public class Examinee {
      *
      * @return sort_no - 排序号，越大排越前
      */
-    public String getSortNo() {
+    public Short getSortNo() {
         return sortNo;
     }
 
@@ -218,7 +218,7 @@ public class Examinee {
      *
      * @param sortNo 排序号，越大排越前
      */
-    public void setSortNo(String sortNo) {
+    public void setSortNo(Short sortNo) {
         this.sortNo = sortNo;
     }
 

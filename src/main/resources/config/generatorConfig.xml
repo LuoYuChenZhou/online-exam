@@ -7,7 +7,7 @@
 
     <!-- 数据库驱动包位置 -->
     <classPathEntry
-            location="D:\maven-repository\repository\mysql\mysql-connector-java\5.1.40\mysql-connector-java-5.1.40.jar"/>
+            location="C:\Users\LuoYuChengZhou\.m2\repository\mysql\mysql-connector-java\5.1.40\mysql-connector-java-5.1.40.jar"/>
 
     <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
         <!-- TKmybatis配置 -->
@@ -46,6 +46,6 @@
         <!--<table tableName="ee_grade"/>-->
         <!--<table tableName="grade"/>-->
         <!--<table tableName="paper_question"/>-->
-        <table tableName="sys_log"/>
+        <table tableName="sys_dict"/>
     </context>
 </generatorConfiguration>

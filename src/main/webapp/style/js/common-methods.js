@@ -6,7 +6,7 @@ let token = $.cookie('online_token') ? $.cookie('online_token') : "";//token
 let user_name;
 let user_type;
 
-//控制主页面的遮罩层
+//控制主页面的遮罩层,只适用于子页面
 function controlMainMask(num) {
     if (num === 1) {
         $("#mask", window.parent.document).show();

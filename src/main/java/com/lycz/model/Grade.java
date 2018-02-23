@@ -36,7 +36,7 @@ public class Grade {
      * 排序号，越大排越前
      */
     @Column(name = "sort_no")
-    private Byte sortNo;
+    private Short sortNo;
 
     /**
      * 状态（0-禁用，1-正常，4-删除）
@@ -134,7 +134,7 @@ public class Grade {
      *
      * @return sort_no - 排序号，越大排越前
      */
-    public Byte getSortNo() {
+    public Short getSortNo() {
         return sortNo;
     }
 
@@ -143,7 +143,7 @@ public class Grade {
      *
      * @param sortNo 排序号，越大排越前
      */
-    public void setSortNo(Byte sortNo) {
+    public void setSortNo(Short sortNo) {
         this.sortNo = sortNo;
     }
 
