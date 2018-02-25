@@ -69,3 +69,138 @@ $.ajaxSetup({
             }
         }
 });
+
+/**
+ * 如果字符串过长，显示...
+ * @param sourceMsg 源字符串
+ * @param size 最大长度
+ */
+function getLessMsg(sourceMsg, size) {
+    if (sourceMsg.length > size) {
+        return sourceMsg.substring(0, size - 3) + "...";
+    } else {
+        return sourceMsg;
+    }
+}
+
+/**
+ * unix时间戳转化日期
+ * @param type yMdHms,这里只控制显示什么，格式不能改变
+ * @param timeStamp 时间戳
+ * @returns {*}
+ */
+function dtf(type, timeStamp) {
+    let date = new Date(parseInt(timeStamp)*1000);
+
+    let year = date.getFullYear();
+    let month = add0(date.getMonth() + 1);
+    let day = add0(date.getDate());
+    let hour = add0(date.getHours());
+    let minute = add0(date.getMinutes());
+    let second = add0(date.getSeconds());
+
+    let re;
+    if (type.indexOf("y") >= 0) {
+        re = year;
+    }
+    if (type.indexOf("M") >= 0) {
+        re = re + "-" + month;
+    }
+    if (type.indexOf("d") >= 0) {
+        re = re + "-" + day;
+    }
+    if (type.indexOf("H") >= 0) {
+        re = re + " " + hour;
+    }
+    if (type.indexOf("m") >= 0) {
+        re = re + ":" + minute;
+    }
+    if (type.indexOf("s") >= 0) {
+        re = re + ":" + second;
+    }
+
+    return re;
+}
+
+/**
+ * 补齐位数
+ * @param source 源目标
+ * @param size 位数
+ * @returns {string|*}
+ */
+function add0(source, size) {
+    size = !size ? 2 : size;
+    source = "" + source;
+    let l = source.length;
+    for (let i = l; i < size; i++) {
+        source = "0" + source;
+    }
+    return source;
+}
+
+/**
+ * 获取表单的所有值，要求取值字段有name属性（未测试）
+ * @param form 表单id，加#号
+ * @returns {{}}
+ */
+function getEntity(form) {
+    let result = {};
+    $(form).find("[name]").each(function() {
+        let field = $(this).attr("name");
+        let val;
+
+        if ($(this).attr('type') === 'checkbox') {
+            val = $(this).prop('checked');
+        } else if ($(this).attr('type') === 'radio') {
+            val = $(this).prop('checked');
+        } else {
+            val = $(this).val();
+        }
+        // 获取单个属性的值,并扩展到result对象里面
+        getField(field.split('.'), val, result);
+    });
+    return result;
+}
+
+function getField(fieldNames, value, result) {
+    if (fieldNames.length > 1) {
+        for (let i = 0; i < fieldNames.length - 1; i++) {
+            if (result[fieldNames[i]] === undefined) {
+                result[fieldNames[i]] = {}
+            }
+            result = result[fieldNames[i]];
+        }
+        result[fieldNames[fieldNames.length - 1]] = value;
+    } else {
+        result[fieldNames[0]] = value;
+    }
+}
+
+/**
+ * 表单赋值方法，要求字段有name属性（未测试）
+ * @param form
+ * @param entity
+ */
+function setEntity(form, entity) {
+    $(form).find("[name]").each(function() {
+        let field = $(this).attr("name");
+        fieldNames = field.split('.');
+        let value = JSON.parse(JSON.stringify(entity));
+        for (let index = 0; index < fieldNames.length; index++) {
+            value = value[fieldNames[index]];
+            if (!value) {
+                break;
+            }
+        }
+        if ($(this).attr("type") === "checkbox" ||
+            $(this).attr("type") === "radio") {
+            $(this).attr('checked', Boolean(value));
+        } else {
+            if (value) {
+                $(this).val(value);
+            } else {
+                $(this).val("");
+            }
+        }
+    })
+}

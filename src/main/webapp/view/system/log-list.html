@@ -1,0 +1,70 @@
+<!--
+  User: LuoYuChengZhou
+  Date: 2018/2/23
+  Time: 10:25
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>日志列表</title>
+    <link rel="stylesheet" type="text/css" href="../../style/layui/css/layui.css" media="all"/>
+    <script type="text/javascript" src="../../style/layui/layui.js"></script>
+    <script type="text/javascript" src="../../style/js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="../../style/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../style/js/common-methods.js"></script>
+    <script type="text/javascript" src="../../style/js/system/log-list.js"></script>
+</head>
+<body>
+<div class="layui-form" id="log_form">
+    <div class="layui-form-item" style="margin:10px 0 -10px -20px;">
+
+        <div class="layui-inline">
+            <label class="layui-form-label">时间：</label>
+            <div class="layui-input-inline" style="width: 150px;">
+                <input type="text" class="layui-input" id="startTime" name="searchStartTime">
+            </div>
+            <div class="layui-form-mid">-</div>
+            <div class="layui-input-inline" style="width: 150px;">
+                <input type="text" class="layui-input" id="endTime" name="searchEndTime">
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">日志等级：</label>
+            <div class="layui-input-block">
+                <select name="searchLevel" id="logLevel">
+                    <option value=""></option>
+                    <option value="0">系统信息</option>
+                    <option value="1">错误</option>
+                    <option value="2">严重错误</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">日志标题：</label>
+            <div class="layui-input-inline" style="width: 150px;">
+                <input type="text" name="searchTitle" autocomplete="off" class="layui-input" id="logTitle">
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <div class="layui-input-block">
+                <button class="layui-btn" style="background: #1E9FFF;" onclick="searchBtnClick()">搜索</button>
+            </div>
+        </div>
+    </div>
+</div>
+<table id="log_table" class="layui-table" lay-filter="log-t"></table>
+</body>
+</html>
+<script type="text/html" id="levelName">
+    {{ getLevelName(d.logLevel) }}
+</script>
+<script type="text/html" id="time2string">
+    {{ dtf("yMdHms",d.createTime) }}
+</script>
+<script type="text/html" id="log_bar">
+    <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+</script>

@@ -114,7 +114,12 @@ public class ControllerLogsAspect {
         String msg = null;
         try {
             JSONObject jrtv = JSONObject.fromObject(rtv);
-            status = null == jrtv.getString("status") ? null : jrtv.getInt("status");
+            if (!jrtv.has("status") || jrtv.get("status") == null) {
+                status = (!jrtv.has("code") || null == jrtv.get("code")) ? null : jrtv.getInt("code");
+            } else {
+                status = jrtv.getInt("status");
+            }
+
             msg = StringUtil.isEmpty(jrtv.getString("msg")) ? "该错误没有返回msg" : jrtv.getString("msg");
         } catch (Exception e) {
             e.printStackTrace();

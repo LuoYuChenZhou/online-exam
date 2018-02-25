@@ -54,7 +54,7 @@
                 </svg>
                 <span>系统管理</span><i class="nav-more"></i>
                 <ul>
-                    <li><a href="javascript:void(0);"><span>日志管理</span></a></li>
+                    <li><a href="javascript:void(0);" onclick="changeView('system/log-list.html')"><span>日志管理</span></a></li>
                 </ul>
             </a>
         </li>
@@ -220,9 +220,9 @@
         $("#top_info").find("span").append(user_name);
     }
 
-    function changeView() {
-        // 切换页面
-        $("#main_show_iframe").attr("src", "../view/others/1.jsp");
+    // 切换页面
+    function changeView(path) {
+        $("#main_show_iframe").attr("src", "../view/"+path);
     }
 </script>
 </html>
