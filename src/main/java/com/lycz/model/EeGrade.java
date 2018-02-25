@@ -23,6 +23,12 @@ public class EeGrade {
     private String gradeId;
 
     /**
+     * 排序号，越大排越前
+     */
+    @Column(name = "sort_no")
+    private Short sortNo;
+
+    /**
      * 获取主键id
      *
      * @return id - 主键id
@@ -74,5 +80,23 @@ public class EeGrade {
      */
     public void setGradeId(String gradeId) {
         this.gradeId = gradeId;
+    }
+
+    /**
+     * 获取排序号，越大排越前
+     *
+     * @return sort_no - 排序号，越大排越前
+     */
+    public Short getSortNo() {
+        return sortNo;
+    }
+
+    /**
+     * 设置排序号，越大排越前
+     *
+     * @param sortNo 排序号，越大排越前
+     */
+    public void setSortNo(Short sortNo) {
+        this.sortNo = sortNo;
     }
 }

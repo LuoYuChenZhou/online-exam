@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lycz.dao.EeGradeMapper">
-  <resultMap id="BaseResultMap" type="com.lycz.model.EeGrade">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="ee_id" jdbcType="VARCHAR" property="eeId" />
-    <result column="grade_id" jdbcType="VARCHAR" property="gradeId" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.lycz.model.EeGrade">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="ee_id" jdbcType="VARCHAR" property="eeId"/>
+        <result column="grade_id" jdbcType="VARCHAR" property="gradeId"/>
+        <result column="sort_no" jdbcType="SMALLINT" property="sortNo"/>
+    </resultMap>
 </mapper>

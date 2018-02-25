@@ -64,7 +64,7 @@ public class LoginController {
             case "1":
                 Examiner examiner = examinerService.erLogin(loginName, loginPass);
                 if (examiner == null) {
-                    saveLoginLog(loginName, loginPass, "用户名或密码错误");
+                    saveLoginLog(loginName, loginPass, type, "用户名或密码错误");
                     result.setMsg("用户名或密码错误");
                     return JSONObject.fromObject(result);
                 }
@@ -73,7 +73,7 @@ public class LoginController {
             case "2":
                 Examinee examinee = examineeService.eeLogin(loginName, loginPass);
                 if (examinee == null) {
-                    saveLoginLog(loginName, loginPass, "用户名或密码错误");
+                    saveLoginLog(loginName, loginPass, type, "用户名或密码错误");
                     result.setMsg("用户名或密码错误");
                     return JSONObject.fromObject(result);
                 }
@@ -89,17 +89,17 @@ public class LoginController {
             default:
                 result.setStatus(401);
                 result.setMsg("非法登录");
-                saveLoginLog(loginName, loginPass, "非法登录");
+                saveLoginLog(loginName, loginPass, type, "非法登录");
                 return JSONObject.fromObject(result);
         }
 
         String token = tokenService.createToken(tokenObj);
         if (ToolUtil.isEmpty(token)) {
-            saveLoginLog(loginName, loginPass, "登录失败");
+            saveLoginLog(loginName, loginPass, type, "登录失败");
             result.setMsg("登录失败");
             return JSONObject.fromObject(result);
         }
-        saveLoginLog(loginName, "不显示", "登录成功");
+        saveLoginLog(loginName, "不显示", type, "登录成功");
 
         Map<String, String> tokenMap = new HashMap<>();
         tokenMap.put("token", token);
@@ -285,16 +285,31 @@ public class LoginController {
     /**
      * 保存登录日志
      */
-    private void saveLoginLog(String loginName, String loginPass, String desc) {
+    private void saveLoginLog(String loginName, String loginPass, String loginType, String desc) {
+        String strType;
+        switch (loginType) {
+            case "1":
+                strType = "    登录类型：考官登陆";
+                break;
+            case "2":
+                strType = "    登录类型：考生登录";
+                break;
+            case "99":
+                strType = "    登录类型：系统管理员登录";
+                break;
+            default:
+                strType = "    登陆类型：错误类型";
+        }
+
         SysLog logsEntity = new SysLog(UUID.randomUUID().toString(), desc, "0", "", new Date(),
-                "用户名：" + loginName + "密码：" + loginPass, "Login/exeLogin");
+                "用户名：" + loginName + strType + "<br/>" + "密码：" + loginPass, "Login/exeLogin");
         try {
             if (sysLogService.save(logsEntity) < 1) {
                 log.error("登录日志保存失败:{}：{}", desc, logsEntity.getLogDescription());
             }
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("日志保存失败：{}:,用户名：{}密码：{}", "Login/exeLogin", loginName, loginPass);
+            log.error("日志保存失败：{}:,用户名：{}密码：{}{}", "Login/exeLogin", loginName, loginPass, strType);
         }
     }
 }

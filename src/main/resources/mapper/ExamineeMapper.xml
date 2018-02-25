@@ -13,7 +13,6 @@
     <result column="sex" jdbcType="VARCHAR" property="sex" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="sort_no" jdbcType="SMALLINT" property="sortNo" />
     <result column="reg_time" jdbcType="TIMESTAMP" property="regTime" />
     <result column="status" jdbcType="VARCHAR" property="status" />
   </resultMap>

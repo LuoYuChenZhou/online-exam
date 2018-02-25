@@ -139,8 +139,8 @@ function add0(source, size) {
 }
 
 /**
- * 获取表单的所有值，要求取值字段有name属性（未测试）
- * @param form 表单id，加#号
+ * 获取表单的所有值，要求取值字段有name属性
+ * @param form 选择器（如："#form"）
  * @returns {{}}
  */
 function getEntity(form) {

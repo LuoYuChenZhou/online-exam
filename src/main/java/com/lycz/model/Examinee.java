@@ -56,12 +56,6 @@ public class Examinee {
     @Column(name = "email")
     private String email;
 
-    /**
-     * 排序号，越大排越前
-     */
-    @Column(name = "sort_no")
-    private Short sortNo;
-
     @Column(name = "reg_time")
     private Date regTime;
 
@@ -202,24 +196,6 @@ public class Examinee {
      */
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    /**
-     * 获取排序号，越大排越前
-     *
-     * @return sort_no - 排序号，越大排越前
-     */
-    public Short getSortNo() {
-        return sortNo;
-    }
-
-    /**
-     * 设置排序号，越大排越前
-     *
-     * @param sortNo 排序号，越大排越前
-     */
-    public void setSortNo(Short sortNo) {
-        this.sortNo = sortNo;
     }
 
     /**
