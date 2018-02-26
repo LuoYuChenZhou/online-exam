@@ -1,0 +1,53 @@
+<!--
+  User: LuoYuChengZhou
+  Date: 2018/2/25
+  Time: 22:08
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>班级列表</title>
+    <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_533369_1cj8crt5bem6lxr.css" />
+    <link rel="stylesheet" type="text/css" href="../../style/layui/css/layui.css" media="all"/>
+    <script type="text/javascript" src="../../style/layui/layui.js"></script>
+    <script type="text/javascript" src="../../style/js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="../../style/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../style/js/common-methods.js"></script>
+    <script type="text/javascript" src="../../style/js/grade/grade-list.js"></script>
+</head>
+<body>
+<div class="layui-form" id="grade_list_form">
+    <div class="layui-form-item" style="margin:10px 0 -10px -9px;">
+
+        <div class="layui-inline">
+            <label class="layui-form-label">班级名称：</label>
+            <div class="layui-input-inline" style="width: 180px;">
+                <input type="text" name="searchGradeName" autocomplete="off" class="layui-input" id="search_grade_name">
+            </div>
+        </div>
+        <div class="layui-inline" style="margin-left: -60px">
+            <div class="layui-input-block">
+                <button class="layui-btn" style="background: #1E9FFF;" onclick="searchBtnClick()">搜索</button>
+            </div>
+        </div>
+
+        <div class="layui-inline" style="margin-left: -100px">
+            <div class="layui-input-block">
+                <button class="layui-btn" style="background: #5FB878;" onclick="searchBtnClick()">新增</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<table id="grade_list_table" class="layui-table" lay-filter="grade-t"></table>
+</body>
+</html>
+<script type="text/html" id="time2string">
+    {{ dtf("yMdHms",d.createTime) }}
+</script>
+<script type="text/html" id="grade_list_bar">
+    <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="layui-icon">&#xe615;</i></a>
+    <a class="layui-btn layui-btn-xs" lay-event="sort" style="background-color: #FFB800;width: 28px;"><i class="iconfont icon-paixu"></i></a>
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete" style="width: 28px;"><i class="iconfont icon-delete"></i></a>
+</script>
