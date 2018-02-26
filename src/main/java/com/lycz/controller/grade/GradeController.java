@@ -1,10 +1,13 @@
 package com.lycz.controller.grade;
 
+import com.lycz.controller.common.CommonResult;
 import com.lycz.controller.common.FixPageInfo;
 import com.lycz.controller.common.ToolUtil;
 import com.lycz.controller.common.annotation.Privilege;
+import com.lycz.model.Grade;
 import com.lycz.service.base.SysLogService;
 import com.lycz.service.base.TokenService;
+import com.lycz.service.grade.GradeService;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +32,7 @@ import java.util.Map;
 public class GradeController {
 
     @Resource
-    private SysLogService sysLogService;
+    private GradeService gradeService;
     @Resource
     private TokenService tokenService;
 
@@ -57,5 +60,25 @@ public class GradeController {
 //
 //        return JSONObject.fromObject(logInfo);
 //    }
+    public JSONObject changeGradeStatus(@RequestParam("id") String id,@RequestParam("status") String status){
+
+        CommonResult<Object> result = new CommonResult<>();
+
+        Grade grade = new Grade();
+        grade.setId(id);
+        grade.setStatus(status);
+
+        if(gradeService.updateByPrimaryKeySelective(grade) > 0){
+            result.setMsg("修改成功");
+            result.setStatus(201);
+            result.setData("");
+        }else {
+            result.setMsg("修改失败");
+            result.setStatus(400);
+            result.setData("");
+        }
+
+        return JSONObject.fromObject(result);
+    }
 }
 
