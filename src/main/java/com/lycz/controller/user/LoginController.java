@@ -275,7 +275,7 @@ public class LoginController {
     public JSONObject exeLoginOut(@RequestParam("token") String token) {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
-        result.setStatus(400);
+        result.setStatus(200);
 
         tokenService.destroyToken(token);
 

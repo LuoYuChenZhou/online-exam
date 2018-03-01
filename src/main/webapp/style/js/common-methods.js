@@ -90,6 +90,9 @@ function getLessMsg(sourceMsg, size) {
  * @returns {*}
  */
 function dtf(type, timeStamp) {
+    if(!timeStamp){
+        return "";
+    }
     let date = new Date(parseInt(timeStamp)*1000);
 
     let year = date.getFullYear();

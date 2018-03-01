@@ -8,5 +8,9 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="examiner_id" jdbcType="VARCHAR" property="examinerId" />
     <result column="examinee_id" jdbcType="VARCHAR" property="examineeId" />
+    <result column="cur_status" jdbcType="VARCHAR" property="curStatus" />
+    <result column="his_status" jdbcType="VARCHAR" property="hisStatus" />
+    <result column="his_time" jdbcType="VARCHAR" property="hisTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
   </resultMap>
 </mapper>

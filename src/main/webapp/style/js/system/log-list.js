@@ -23,6 +23,9 @@ function searchBtnClick() {
             , searchEndTime: jsonFormData.searchEndTime
             , searchLevel: jsonFormData.searchLevel
             , searchTitle: jsonFormData.searchTitle
+        },
+        page:{
+            curr:1
         }
     });
 }
@@ -42,7 +45,7 @@ layui.use('table', function () {
             , {field: 'logLevel', title: '等级', width: 100, templet: '#levelName'}
             , {field: 'logDescription', title: '描述', width: 350}
             , {field: 'createTime', title: '发生时间', width: 177, templet: '#time2string'}
-            , {field: 'logUser', title: '操作人', width: 80}
+            , {field: 'logUser', title: '操作人', width: 120}
             , {fixed: 'right', title: '操作', width: 100, align: 'center', toolbar: '#log_bar'}
         ]]
         , id: 'logTable'
@@ -78,7 +81,7 @@ layui.use('table', function () {
                     shadeClose: true,
                     content: '日志标题：<span style="color: #1E9FFF">' + data.logTitle + "</span><hr/>" +
                     "模块：<span style=\"color: #1E9FFF\">" + data.moduleName + "</span><hr/>" +
-                    "描述：<textarea class=\"layui-textarea\">" + data.logDescription + "</textarea>"
+                    "描述：<div style='border: 1px solid #E6E6E6;border-radius: 5px; height: 150px; overflow: auto;font-size:12px;color: #1E9FFF;'>" + data.logDescription + "</div>"
                 });
             });
         }

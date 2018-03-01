@@ -19,12 +19,12 @@
             id AS id,
             log_title AS logTitle,
             log_level AS logLevel,
-            vu.userName AS logUser,
+            vu.user_name AS logUser,
             UNIX_TIMESTAMP(create_time) AS createTime,
             log_description AS logDescription,
             module_name AS moduleName
         FROM sys_log sl
-        LEFT JOIN v_user vu ON sl.log_user = vu.userId
+        LEFT JOIN v_user vu ON sl.log_user = vu.user_id
         <where>
             <if test=' searchStartTime != null '>
                 AND create_time <![CDATA[ >= ]]> #{searchStartTime}

@@ -9,4 +9,6 @@ public interface TokenService {
     void destroyToken(String token);
 
     Map<String, Object> getToken(String token);
+
+    String getUserId(String token);
 }

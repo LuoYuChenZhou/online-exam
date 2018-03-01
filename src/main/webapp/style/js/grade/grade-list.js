@@ -17,13 +17,13 @@ layui.use('table', function () {
     let log_tab = table.render({
         elem: '#grade_list_table'
         , height: 'full-80'//高度设置为距底部30
-        , url: '../../SysLog/getSysLogList.do' //数据接口
+        , url: '../../Grade/getGradeListByNameUser.do' //数据接口
         , page: true //开启分页
         , cols: [[ //表头
             {field: 'logTitle', title: '班级名称', width: 180, fixed: 'left'}
             , {field: 'moduleName', title: '当前人数', width: 200}
             , {field: 'createTime', title: '创建时间', width: 177, templet: '#time2string'}
-            , {fixed: 'right', title: '操作', width: 150, align: 'center', toolbar: '#grade_list_bar'}
+            , {fixed: 'right', title: '操作', width: 200, align: 'center', toolbar: '#grade_list_bar'}
         ]]
         , id: 'gradeListTable'
         , where: {
