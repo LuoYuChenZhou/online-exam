@@ -1,34 +1,14 @@
-//日期选择器
-layui.use('laydate', function () {
-    let laydate = layui.laydate;
 
-    laydate.render({
-        elem: '#startTime' //指定元素
-        , type: 'datetime'
-    });
-    laydate.render({
-        elem: '#endTime' //指定元素
-        , type: 'datetime'
+layui.use('form', function(){
+    let form = layui.form;
+
+    getGradeList();
+    form.render('select','search_form'); //刷新select选择框渲染
+
+    form.on('select(searchClass)', function(){
+        searchBtnClick();
     });
 });
-
-function searchBtnClick() {
-    let jsonFormData = getEntity("#log_form");
-    let table = layui.table;
-
-    table.reload('logTable', {
-        where: {
-            token: token
-            , searchStartTime: jsonFormData.searchStartTime
-            , searchEndTime: jsonFormData.searchEndTime
-            , searchLevel: jsonFormData.searchLevel
-            , searchTitle: jsonFormData.searchTitle
-        },
-        page:{
-            curr:1
-        }
-    });
-}
 
 layui.use('table', function () {
     let layer = layui.layer;
@@ -88,24 +68,37 @@ layui.use('table', function () {
     });
 });
 
-layui.use('form', function(){
-    let form = layui.form;
+//搜索按钮点击
+function searchBtnClick() {
+    let jsonFormData = getEntity("#log_form");
+    let table = layui.table;
 
-    form.on('select(level-log)', function(){
-        searchBtnClick();
+    table.reload('logTable', {
+        where: {
+            token: token
+            , searchStartTime: jsonFormData.searchStartTime
+            , searchEndTime: jsonFormData.searchEndTime
+            , searchLevel: jsonFormData.searchLevel
+            , searchTitle: jsonFormData.searchTitle
+        },
+        page: {
+            curr: 1
+        }
     });
-});
+}
 
-//实际上已使用
-function getLevelName(logLevel) {
-    switch (logLevel) {
-    case "0":
-        return "系统信息";
-    case "1":
-        return "错误";
-    case "2":
-        return "严重错误";
-    default:
-        return "";
-    }
+//获取班级列表
+function getGradeList() {
+    layui.msg("23");
+    $.get("/Grade/getGradeListByNameUser.do", {page: 1, limit: 1000, token: token}, function (data) {
+        if (data.code === 0) {
+            $("#searchClass").append("<option value=\"\"></option>");
+
+            $.each(data.data, function (index, val) {
+                $("#searchClass").append("<option value=" + val.id + ">" + val.gradeName + "</option>");
+            });
+        } else if (data.code === 204) {
+            $("#searchClass").html("<option value=\"\"></option>");
+        }
+    });
 }
