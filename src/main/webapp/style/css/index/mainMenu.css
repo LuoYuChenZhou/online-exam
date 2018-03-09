@@ -90,3 +90,7 @@ body {
 .left_show {
     margin-left: 220px;
 }
+
+.left_hide {
+    margin-left: 60px;
+}

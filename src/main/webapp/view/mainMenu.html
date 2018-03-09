@@ -9,11 +9,11 @@
     <script type="text/javascript" src="../style/js/sweetalert2.min.js"></script>
     <script type="text/javascript" src="../style/js/jquery-3.2.1.js"></script>
     <script type="text/javascript" src="../style/js/jquery.cookie.js"></script>
-    <script type="text/javascript" src="../style/js/nav.js"></script>
     <script type="text/javascript" src="../style/js/common-methods.js"></script>
+    <script type="text/javascript" src="../style/js/nav.js"></script>
     <script type="text/javascript" src="//at.alicdn.com/t/font_533369_bpplghbbyqqfflxr.js"></script>
 </head>
-<body>
+<body class="index">
 <!--顶部-->
 <div id="main_menu_top">
     <div id="main_menu_top_left">
@@ -54,7 +54,8 @@
                 </svg>
                 <span>系统管理</span><i class="nav-more"></i>
                 <ul>
-                    <li><a href="javascript:void(0);" onclick="changeView('system/log-list.html')"><span>日志管理</span></a></li>
+                    <li><a href="javascript:void(0);" onclick="changeView('system/log-list.html')"><span>日志管理</span></a>
+                    </li>
                 </ul>
             </a>
         </li>
@@ -66,7 +67,8 @@
                 <span>考生管理</span><i class="nav-more"></i>
             </a>
             <ul>
-                <li><a href="javascript:void(0);" onclick="changeView('grade/grade-list.html')"><span>我的班级</span></a></li>
+                <li><a href="javascript:void(0);" onclick="changeView('grade/grade-list.html')"><span>我的班级</span></a>
+                </li>
                 <li><a href="javascript:void(0);"><span>我的考生</span></a></li>
                 <li><a href="javascript:void(0);"><span>添加考生</span></a></li>
                 <li><a href="javascript:void(0);"><span>申请列表</span></a></li>
@@ -132,7 +134,8 @@
 <div id="main_bg">
     <div id="main_show" class="left_show">
         <!--实验发现如果不加“../view”会出现问题-->
-        <iframe id="main_show_iframe" src="../view/firstContext.html" width="100%" height="100%" frameborder="0"
+        <iframe id="main_show_iframe" src="../view/firstContext.html" width="100%"
+                height="100%" frameborder="0"
                 marginwidth="0" marginheight="0"
                 scrolling="no">
         </iframe>
@@ -165,10 +168,10 @@
 
     //控制遮罩层
     function controlMask(num) {
-        if(num === 1){
+        if (num === 1) {
             $("#mask").show();
             $("#preloader_4").show();
-        }else {
+        } else {
             $("#mask").hide();
             $("#preloader_4").hide();
         }
@@ -187,9 +190,9 @@
             if (isConfirm === true) {
                 $.cookie('online_token', null, {path: "/"});
                 $.post("/Login/exeLoginOut.do", {token: token}, function () {
-                    if(user_type === "system_type"){
+                    if (user_type === "system_type") {
                         location.href = localhostPath + "/view/systemLogin.html";
-                    }else {
+                    } else {
                         location.href = localhostPath;
                     }
                 });
@@ -229,7 +232,7 @@
 
     // 切换页面
     function changeView(path) {
-        $("#main_show_iframe").attr("src", "../view/"+path);
+        $("#main_show_iframe").attr("src", "../view/" + path);
     }
 </script>
 </html>
