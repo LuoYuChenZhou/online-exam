@@ -11,7 +11,7 @@
     <script type="text/javascript" src="../style/js/jquery.cookie.js"></script>
     <script type="text/javascript" src="../style/js/nav.js"></script>
     <script type="text/javascript" src="../style/js/common-methods.js"></script>
-    <script type="text/javascript" src="//at.alicdn.com/t/font_533369_79yqgqfm3efgk3xr.js"></script>
+    <script type="text/javascript" src="//at.alicdn.com/t/font_533369_bpplghbbyqqfflxr.js"></script>
 </head>
 <body>
 <!--顶部-->
@@ -59,26 +59,27 @@
             </a>
         </li>
         <li class="nav-item er_have">
-            <a href="javascript:void(0);" onclick="changeView('grade/grade-list.html')">
-                <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-banji"></use>
-                </svg>
-                <span>班级管理</span><i class="nav-more"></i>
-            </a>
-        </li>
-        <li class="nav-item er_have">
             <a href="javascript:void(0);">
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-xuesheng"></use>
                 </svg>
-                <span>学生管理</span><i class="nav-more"></i>
+                <span>考生管理</span><i class="nav-more"></i>
             </a>
             <ul>
-                <li><a href="javascript:void(0);"><span>我的学生</span></a></li>
-                <li><a href="javascript:void(0);"><span>添加学生</span></a></li>
+                <li><a href="javascript:void(0);" onclick="changeView('grade/grade-list.html')"><span>我的班级</span></a></li>
+                <li><a href="javascript:void(0);"><span>我的考生</span></a></li>
+                <li><a href="javascript:void(0);"><span>添加考生</span></a></li>
                 <li><a href="javascript:void(0);"><span>申请列表</span></a></li>
                 <li><a href="javascript:void(0);"><span>历史动态</span></a></li>
             </ul>
+        </li>
+        <li class="nav-item er_have">
+            <a href="javascript:void(0);">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-shijuan"></use>
+                </svg>
+                <span>试卷管理</span><i class="nav-more"></i>
+            </a>
         </li>
         <li class="nav-item er_have">
             <a href="javascript:void(0);">
@@ -92,14 +93,6 @@
                 <li><a href="javascript:void(0);"><span>在线题库</span></a></li>
             </ul>
         </li>
-        <li class="nav-item er_have">
-            <a href="javascript:void(0);">
-                <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-shijuan"></use>
-                </svg>
-                <span>试卷管理</span><i class="nav-more"></i>
-            </a>
-        </li>
         <li class="nav-item ee_have">
             <a href="javascript:void(0);">
                 <svg class="icon" aria-hidden="true">
@@ -109,7 +102,7 @@
             </a>
             <ul>
                 <li><a href="javascript:void(0);"><span>考官列表</span></a></li>
-                <li><a href="javascript:void(0);"><span>申请列表</span></a></li>
+                <li><a href="javascript:void(0);"><span>邀请列表</span></a></li>
             </ul>
         </li>
         <li class="nav-item ee_have">
@@ -119,6 +112,19 @@
                 </svg>
                 <span>成绩信息</span><i class="nav-more"></i>
             </a>
+        </li>
+        <li class="nav-item ee_have">
+            <a href="javascript:void(0);">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-huishou"></use>
+                </svg>
+                <span>回收站</span><i class="nav-more"></i>
+            </a>
+            <ul>
+                <li><a href="javascript:void(0);"><span>班级回收站</span></a></li>
+                <li><a href="javascript:void(0);"><span>题库回收站</span></a></li>
+                <li><a href="javascript:void(0);"><span>试卷回收站</span></a></li>
+            </ul>
         </li>
     </ul>
 </div>
