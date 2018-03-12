@@ -8,6 +8,11 @@ public class CommonResult<T> implements Serializable {
     private String logMsg;//用于日志保存的信息（没有则记录msg）
     private T data;
 
+    public CommonResult() {
+        this.msg = "";
+        this.logMsg = "";
+    }
+
     public int getStatus() {
         return status;
     }
