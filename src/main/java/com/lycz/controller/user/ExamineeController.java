@@ -1,13 +1,19 @@
 package com.lycz.controller.user;
 
 import com.lycz.controller.common.CommonResult;
+import com.lycz.controller.common.FixPageInfo;
 import com.lycz.controller.common.annotation.Privilege;
+import com.lycz.service.user.ExamineeService;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * @author lizhenqing
@@ -17,16 +23,28 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("Examinee")
 public class ExamineeController {
+    @Resource
+    private ExamineeService examineeService;
+
 
     @RequestMapping(value = "/getEeListByNameNoClass", method = RequestMethod.GET)
     @Privilege(methodName = "根据考生姓名、考生号、所属班级查询学生列表")
     @ResponseBody
-    public JSONObject getEeListByNameNoClass(@RequestParam("token") String token) {
-        CommonResult<JSONObject> result = new CommonResult<>();
-        result.setData(JSONObject.fromObject("{}"));
-        result.setStatus(400);
-
-
-        return JSONObject.fromObject(result);
+    public JSONObject getEeListByNameNoClass(@RequestParam(value = "searchClass",required = false) String searchClass
+            ,@RequestParam(value = "examineeName",required = false) String examineeName
+            ,@RequestParam(value = "examineeNum",required = false) String examineeNum
+            ,@RequestParam("page") Integer page
+            ,@RequestParam("limit") Integer limit
+            ,@RequestParam("token") String token) {
+        FixPageInfo<Map<String, Object>> logInfo = examineeService.searchExamineeInfo(searchClass, examineeName, examineeNum, page, limit);
+        if(logInfo == null){
+            logInfo = new FixPageInfo<>();
+            logInfo.setCode(400);
+            logInfo.setMsg("没有数据");
+        }else {
+            logInfo.setCode(0);
+            logInfo.setMsg("查询成功");
+        }
+        return JSONObject.fromObject(logInfo);
     }
 }
