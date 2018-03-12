@@ -38,13 +38,13 @@ public class ExamineeServiceImpl extends BaseServiceTk<Examinee> implements Exam
     }
 
     @Override
-    public FixPageInfo<Map<String, Object>> searchExamineeInfo(String searchClass, String examineeName, String examineeNum,Integer page,Integer limit) {
+    public FixPageInfo<Map<String, Object>> getEeListByNameNoClass(String searchClass, String examineeName, String examineeNum, Integer page, Integer limit) {
         PageHelper.startPage(page, limit);
-        List<Map<String, Object>> gardeList = examineeMapper.searchExamineeInfo(searchClass,examineeName,examineeNum);
-        if (ToolUtil.isEmpty(gardeList)) {
+        List<Map<String, Object>> eeList = examineeMapper.getEeListByNameNoClass(searchClass, examineeName, examineeNum);
+        if (ToolUtil.isEmpty(eeList)) {
             return null;
         } else {
-            return new FixPageInfo<>(gardeList);
+            return new FixPageInfo<>(eeList);
         }
     }
 }

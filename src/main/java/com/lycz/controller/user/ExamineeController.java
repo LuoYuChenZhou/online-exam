@@ -26,22 +26,21 @@ public class ExamineeController {
     @Resource
     private ExamineeService examineeService;
 
-
     @RequestMapping(value = "/getEeListByNameNoClass", method = RequestMethod.GET)
     @Privilege(methodName = "根据考生姓名、考生号、所属班级查询学生列表")
     @ResponseBody
-    public JSONObject getEeListByNameNoClass(@RequestParam(value = "searchClass",required = false) String searchClass
-            ,@RequestParam(value = "examineeName",required = false) String examineeName
-            ,@RequestParam(value = "examineeNum",required = false) String examineeNum
-            ,@RequestParam("page") Integer page
-            ,@RequestParam("limit") Integer limit
-            ,@RequestParam("token") String token) {
-        FixPageInfo<Map<String, Object>> logInfo = examineeService.searchExamineeInfo(searchClass, examineeName, examineeNum, page, limit);
-        if(logInfo == null){
+    public JSONObject getEeListByNameNoClass(@RequestParam(value = "searchClass", required = false) String searchClass
+            , @RequestParam(value = "examineeName", required = false) String examineeName
+            , @RequestParam(value = "examineeNum", required = false) String examineeNum
+            , @RequestParam("page") Integer page
+            , @RequestParam("limit") Integer limit
+            , @RequestParam("token") String token) {
+        FixPageInfo<Map<String, Object>> logInfo = examineeService.getEeListByNameNoClass(searchClass, examineeName, examineeNum, page, limit);
+        if (logInfo == null) {
             logInfo = new FixPageInfo<>();
             logInfo.setCode(400);
             logInfo.setMsg("没有数据");
-        }else {
+        } else {
             logInfo.setCode(0);
             logInfo.setMsg("查询成功");
         }

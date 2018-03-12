@@ -6,7 +6,6 @@ import com.lycz.controller.common.annotation.Privilege;
 import com.lycz.model.Grade;
 import com.lycz.service.base.TokenService;
 import com.lycz.service.grade.GradeService;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +41,6 @@ public class GradeController {
      * "page":当前页
      * }
      */
-
     @RequestMapping(value = "/getGradeListByNameUser", method = RequestMethod.GET)
     @Privilege(methodName = "根据班级名称和当前用户搜索班级列表", privilegeLevel = 3)
     @ResponseBody

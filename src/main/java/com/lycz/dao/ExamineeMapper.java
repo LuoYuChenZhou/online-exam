@@ -11,8 +11,8 @@ import java.util.Map;
 @Repository
 public interface ExamineeMapper extends Mapper<Examinee> {
 
-    List<Map<String, Object>> searchExamineeInfo(@Param("searchClass") String searchClass,
-                                                 @Param("examineeName") String examineeName,
-                                                 @Param("examineeNum")String examineeNum
+    List<Map<String, Object>> getEeListByNameNoClass(@Param("searchClass") String searchClass,
+                                                     @Param("examineeName") String examineeName,
+                                                     @Param("examineeNum") String examineeNum
     );
 }
