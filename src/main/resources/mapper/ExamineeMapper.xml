@@ -16,4 +16,19 @@
     <result column="reg_time" jdbcType="TIMESTAMP" property="regTime" />
     <result column="status" jdbcType="VARCHAR" property="status" />
   </resultMap>
+  <select id="searchExamineeInfo" resultType="hashMap">
+  SELECT
+    real_name, ee_no,sex,phone,email,group_concat(gr.grade_name)
+  FROM
+    examinee ee
+    LEFT JOIN ee_grade eg ON ee.id = eg.ee_id
+    LEFT JOIN grade gr ON eg.grade_id = gr.id AND gr.status != '4'
+  WHERE
+    <if test=' examineeName != null and examineeName != "" '>
+      ee.real_name LIKE CONCAT('%',#{examineeName},'%')
+    </if>
+     AND
+    ee.ee_no LIKE CONCAT('%',#{examineeNum},'%') AND
+    gr.id = #{searchClass}
+  </select>
 </mapper>
