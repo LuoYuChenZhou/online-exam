@@ -120,7 +120,7 @@ public class ControllerLogsAspect {
                 status = jrtv.getInt("status");
             }
 
-            msg = StringUtil.isEmpty(jrtv.getString("msg")) ? "该错误没有返回msg" : jrtv.getString("msg");
+            msg = StringUtil.isEmpty(jrtv.getString("logMsg")) ? (StringUtil.isEmpty(jrtv.getString("msg")) ? "该错误没有返回msg" : jrtv.getString("msg")) : jrtv.getString("logMsg");
         } catch (Exception e) {
             e.printStackTrace();
         }
