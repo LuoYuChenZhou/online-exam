@@ -10,4 +10,7 @@
         <result column="grade_id" jdbcType="VARCHAR" property="gradeId"/>
         <result column="sort_no" jdbcType="SMALLINT" property="sortNo"/>
     </resultMap>
+    <insert id="insertGrade">
+        INSERT INTO ee_grade(id,ee_id,grade_id) VALUES (uuid(),#{eeId},#{gradeId})
+    </insert>
 </mapper>

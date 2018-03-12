@@ -5,6 +5,7 @@ import com.lycz.controller.common.FixPageInfo;
 import com.lycz.controller.common.annotation.Privilege;
 import com.lycz.model.Grade;
 import com.lycz.service.base.TokenService;
+import com.lycz.service.grade.EeGradeService;
 import com.lycz.service.grade.GradeService;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -25,16 +26,22 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "EeGrade")
 public class EeGradeController {
+    @Resource
+    private EeGradeService eeGradeService;
 
-    @RequestMapping(value = "/change", method = RequestMethod.POST)
-    @Privilege(methodName = "方法名称")
+    @RequestMapping(value = "/insertGrade", method = RequestMethod.POST)
+    @Privilege(methodName = "插入班级")
     @ResponseBody
-    public JSONObject change(@RequestParam("token") String token){
+    public JSONObject insertGrade(@RequestParam("eeId") String eeId, @RequestParam("gradeId") String gradeId, @RequestParam("token") String token) {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
-        result.setStatus(400);
-
-
+        if (eeGradeService.insertGrade(eeId, gradeId) > 0) {
+            result.setStatus(201);
+            result.setMsg("修改成功");
+        } else {
+            result.setStatus(400);
+            result.setMsg("修改失败");
+        }
         return JSONObject.fromObject(result);
     }
 }
