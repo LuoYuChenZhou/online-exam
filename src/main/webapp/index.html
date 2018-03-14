@@ -205,7 +205,8 @@
                         $.cookie('online_token', data.data.token, {path: "/"});
                         toMainMenu();
                     } else if (data.status === 400) {
-                        $("#message-div").html("<span style='display:block;color: Orange'>" + data.msg + "</span>");
+                        $("#message-div").html("<span style='display:block;color: Orange'>请确定右下角登录模式</span>");
+                        swal('错误', data.msg, 'error');
                     }
                 },
                 error: function () {
