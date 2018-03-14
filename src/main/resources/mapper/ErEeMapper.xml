@@ -1,16 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lycz.dao.ErEeMapper">
-  <resultMap id="BaseResultMap" type="com.lycz.model.ErEe">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="examiner_id" jdbcType="VARCHAR" property="examinerId" />
-    <result column="examinee_id" jdbcType="VARCHAR" property="examineeId" />
-    <result column="cur_status" jdbcType="VARCHAR" property="curStatus" />
-    <result column="his_status" jdbcType="VARCHAR" property="hisStatus" />
-    <result column="his_time" jdbcType="VARCHAR" property="hisTime" />
-    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.lycz.model.ErEe">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="examiner_id" jdbcType="VARCHAR" property="examinerId"/>
+        <result column="examinee_id" jdbcType="VARCHAR" property="examineeId"/>
+        <result column="cur_status" jdbcType="VARCHAR" property="curStatus"/>
+        <result column="his_status" jdbcType="VARCHAR" property="hisStatus"/>
+        <result column="his_time" jdbcType="VARCHAR" property="hisTime"/>
+        <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
+    </resultMap>
+
+    <select id="getExamineeNoRelation" resultType="hashMap">
+        SELECT
+        ee.id AS eeId,
+        ee.real_name AS realName,
+        ee.ee_no AS eeNo,
+        ee.sex AS sex,
+        ee.phone AS phone,
+        ee.email AS email
+        FROM
+        examinee ee
+        WHERE
+        ee.id NOT IN (
+        SELECT re.examinee_id FROM er_ee re WHERE re.examiner_id = #{userId} AND re.cur_status = '3'
+        )
+        <if test=' searchEeName != null and searchEeName != "" '>
+            AND ee.real_name LIKE CONCAT("%",#{searchEeName},"%")
+        </if>
+        <if test=' searchEeNo != null and searchEeNo != "" '>
+            AND ee.ee_no LIKE CONCAT("%",#{searchEeNo},"%")
+        </if>
+    </select>
+
 </mapper>

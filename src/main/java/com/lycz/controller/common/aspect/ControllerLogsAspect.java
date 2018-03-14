@@ -14,7 +14,6 @@ import org.aspectj.lang.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
-import tk.mybatis.mapper.util.StringUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -120,7 +119,25 @@ public class ControllerLogsAspect {
                 status = jrtv.getInt("status");
             }
 
-            msg = StringUtil.isEmpty(jrtv.getString("logMsg")) ? (StringUtil.isEmpty(jrtv.getString("msg")) ? "该错误没有返回msg" : jrtv.getString("msg")) : jrtv.getString("logMsg");
+            if (null == jrtv.get("logMsg")) {
+                if (null == jrtv.get("msg") || ToolUtil.isEmpty(jrtv.getString("msg"))) {
+                    msg = "该错误没有返回msg";
+                } else {
+                    msg = jrtv.getString("msg");
+                }
+            } else {
+                if (ToolUtil.isEmpty(jrtv.getString("logMsg"))) {
+                    if (null == jrtv.get("msg") || ToolUtil.isEmpty(jrtv.getString("msg"))) {
+                        msg = "该错误没有返回msg";
+                    } else {
+                        msg = jrtv.getString("msg");
+                    }
+                } else {
+                    msg = jrtv.getString("logMsg");
+                }
+            }
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }

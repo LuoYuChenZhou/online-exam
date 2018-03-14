@@ -10,6 +10,7 @@
     <title>班级列表</title>
     <script type="text/javascript" src="../../style/js/common-js-css.js"></script>
     <script type="text/javascript" src="../../style/js/grade/grade-list.js"></script>
+    <link rel="stylesheet" type="text/css" href="/style/css/htmlCss/grade.css"/>
 </head>
 <body>
 <div class="layui-form" id="grade_list_form">
@@ -29,13 +30,36 @@
 
         <div class="layui-inline" style="margin-left: -100px">
             <div class="layui-input-block">
-                <button class="layui-btn" style="background: #5FB878;" onclick="searchBtnClick()">新增</button>
+                <button class="layui-btn" style="background: #5FB878;" onclick="addGrade()">新增</button>
             </div>
         </div>
 
     </div>
 </div>
 <table id="grade_list_table" class="layui-table" lay-filter="grade-t"></table>
+<div id="add_form">
+    <div class="layui-form-item">
+        <label class="layui-form-label">班级名称：</label>
+        <div class="layui-input-block">
+            <input type="text" name="new_grade_name" required lay-verify="required" placeholder="请输入班级名称"
+                   autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序号 ：</label>
+        <div class="layui-input-block">
+            <input type="text" name="new_grade_sortNo" placeholder="排序号越大排列越前" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn">立即提交</button>
+            <button class="layui-btn layui-btn-primary">取消</button>
+        </div>
+    </div>
+</div>
 </body>
 </html>
 <script type="text/html" id="time2string">

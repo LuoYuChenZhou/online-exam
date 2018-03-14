@@ -10,6 +10,20 @@
 //     });
 // }
 
+function addGrade() {
+    layui.use('layer', function () {
+        layer.open({
+            type: 1,
+            title: '添加班级',
+            area: ['400px', '250px'],
+            offset: ['10%', '20%'],
+            shade: 0.6,
+            shadeClose: true,
+            content: $('#add_form')
+        });
+    });
+}
+
 layui.use('table', function () {
     let layer = layui.layer;
     let table = layui.table;

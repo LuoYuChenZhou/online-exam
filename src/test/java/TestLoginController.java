@@ -112,4 +112,13 @@ public class TestLoginController {
         RestTemplate restTemplate = new RestTemplate();
         System.out.println(restTemplate.getForObject(url, String.class));
     }
+
+    @Test
+    public void testThrowException() {
+
+        url = url + "/ErEe/change.do?aaa=5691c266-33e6-4cb3-8ed4-3deca6e6d3ee" ;
+        log.info(url);
+        RestTemplate restTemplate = new RestTemplate();
+        System.out.println(restTemplate.getForObject(url, String.class));
+    }
 }

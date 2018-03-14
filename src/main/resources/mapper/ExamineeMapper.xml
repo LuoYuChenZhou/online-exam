@@ -19,6 +19,7 @@
     <select id="getEeListByNameNoClass" resultType="hashMap">
         SELECT
         ee.id AS eeId,
+        eg.id AS egId,
         ee.real_name AS realName,
         ee.ee_no AS eeNo,
         ee.sex AS sex,

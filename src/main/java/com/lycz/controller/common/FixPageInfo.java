@@ -26,6 +26,8 @@ public class FixPageInfo<T> implements Serializable {
     private int code;
     //提示信息
     private String msg;
+    //日志记录信息
+    private String logMsg;
 
     public FixPageInfo() {
     }
@@ -36,6 +38,7 @@ public class FixPageInfo<T> implements Serializable {
      * @param list          page结果
      */
     public FixPageInfo(List<T> list) {
+        this.logMsg = "";
         if (list instanceof Page) {
             Page page = (Page) list;
             this.page = page.getPageNum();
@@ -97,6 +100,14 @@ public class FixPageInfo<T> implements Serializable {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public String getLogMsg() {
+        return logMsg;
+    }
+
+    public void setLogMsg(String logMsg) {
+        this.logMsg = logMsg;
     }
 
     @Override

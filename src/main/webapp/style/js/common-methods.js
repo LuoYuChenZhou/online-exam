@@ -90,10 +90,10 @@ function getLessMsg(sourceMsg, size) {
  * @returns {*}
  */
 function dtf(type, timeStamp) {
-    if(!timeStamp){
+    if (!timeStamp) {
         return "";
     }
-    let date = new Date(parseInt(timeStamp)*1000);
+    let date = new Date(parseInt(timeStamp) * 1000);
 
     let year = date.getFullYear();
     let month = add0(date.getMonth() + 1);
@@ -148,7 +148,7 @@ function add0(source, size) {
  */
 function getEntity(form) {
     let result = {};
-    $(form).find("[name]").each(function() {
+    $(form).find("[name]").each(function () {
         let field = $(this).attr("name");
         let val;
 
@@ -185,7 +185,7 @@ function getField(fieldNames, value, result) {
  * @param entity
  */
 function setEntity(form, entity) {
-    $(form).find("[name]").each(function() {
+    $(form).find("[name]").each(function () {
         let field = $(this).attr("name");
         fieldNames = field.split('.');
         let value = JSON.parse(JSON.stringify(entity));
@@ -206,4 +206,16 @@ function setEntity(form, entity) {
             }
         }
     })
+}
+
+/**
+ * 性别数字转文字
+ */
+function num2Sex(sexNum) {
+    switch (sexNum) {
+        case "0":
+            return "男";
+        case "1":
+            return "女";
+    }
 }
