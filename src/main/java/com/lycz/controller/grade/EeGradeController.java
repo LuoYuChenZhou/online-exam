@@ -29,19 +29,4 @@ public class EeGradeController {
     @Resource
     private EeGradeService eeGradeService;
 
-    @RequestMapping(value = "/insertGrade", method = RequestMethod.POST)
-    @Privilege(methodName = "插入班级")
-    @ResponseBody
-    public JSONObject insertGrade(@RequestParam("eeId") String eeId, @RequestParam("gradeId") String gradeId, @RequestParam("token") String token) {
-        CommonResult<JSONObject> result = new CommonResult<>();
-        result.setData(JSONObject.fromObject("{}"));
-        if (eeGradeService.insertGrade(eeId, gradeId) > 0) {
-            result.setStatus(201);
-            result.setMsg("修改成功");
-        } else {
-            result.setStatus(400);
-            result.setMsg("修改失败");
-        }
-        return JSONObject.fromObject(result);
-    }
 }

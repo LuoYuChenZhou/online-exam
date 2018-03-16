@@ -27,7 +27,7 @@ public class ExamineeController {
     private ExamineeService examineeService;
 
     @RequestMapping(value = "/getEeListByNameNoClass", method = RequestMethod.GET)
-    @Privilege(methodName = "根据考生姓名、考生号、所属班级查询学生列表")
+    @Privilege(methodName = "根据考生姓名、考生号、所属班级查询学生列表", privilegeLevel = Privilege.ER_TYPE)
     @ResponseBody
     public JSONObject getEeListByNameNoClass(@RequestParam(value = "searchClass", required = false) String searchClass
             , @RequestParam(value = "examineeName", required = false) String examineeName

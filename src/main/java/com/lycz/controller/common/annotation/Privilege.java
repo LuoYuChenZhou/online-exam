@@ -10,16 +10,19 @@ import java.lang.annotation.Target;
  * <p>
  * methodName 方法名称，建议填写，用于记录日志
  * privilegeLevel 权限等级
- * 0：无限制
- * 1：登录后可用
- * 2：考生、系统管理员可用
- * 3：考官、系统管理员可用
- * 4：仅系统管理员可用
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Privilege {
+
+    //权限等级(注解类的成员默认是 public static final 修饰)
+    int NO_LOGIN = 0;  //"不需要登录
+    int NEED_LOGIN = 1;  //"登录后可用
+    int EE_TYPE = 2;  //"考生、系统管理员可用
+    int ER_TYPE = 3;  //"考官、系统管理员可用
+    int SYS_TYPE = 4;  //"仅系统管理员可用
+
     String methodName() default "";
 
-    int privilegeLevel() default 1;
+    int privilegeLevel() default Privilege.NEED_LOGIN;
 }

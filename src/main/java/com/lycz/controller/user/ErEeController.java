@@ -36,7 +36,7 @@ public class ErEeController {
     private ErEeService erEeService;
 
     @RequestMapping(value = "/getExamineeNoRelation", method = RequestMethod.GET)
-    @Privilege(methodName = "获取与自己没有建立关系的考生列表")
+    @Privilege(methodName = "获取与自己没有建立关系的考生列表", privilegeLevel = Privilege.ER_TYPE)
     @ResponseBody
     public JSONObject getExamineeNoRelation(@RequestParam(value = "searchEeName", required = false) String searchEeName,
                                             @RequestParam(value = "searchEeNo", required = false) String searchEeNo,

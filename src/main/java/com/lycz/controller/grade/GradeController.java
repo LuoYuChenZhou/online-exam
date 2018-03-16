@@ -30,6 +30,17 @@ public class GradeController {
     @Resource
     private TokenService tokenService;
 
+    @RequestMapping(value = "/addGrade", method = RequestMethod.POST)
+    @Privilege(methodName = "方法名称", privilegeLevel = Privilege.ER_TYPE)
+    @ResponseBody
+    public JSONObject addGrade(@RequestParam("token") String token) {
+        CommonResult<JSONObject> result = new CommonResult<>();
+        result.setData(JSONObject.fromObject("{}"));
+        result.setStatus(400);
+
+        return JSONObject.fromObject(result);
+    }
+
     /**
      * @return {
      * "code":状态,
@@ -42,7 +53,7 @@ public class GradeController {
      * }
      */
     @RequestMapping(value = "/getGradeListByNameUser", method = RequestMethod.GET)
-    @Privilege(methodName = "根据班级名称和当前用户搜索班级列表", privilegeLevel = 3)
+    @Privilege(methodName = "根据班级名称和当前用户搜索班级列表", privilegeLevel = Privilege.ER_TYPE)
     @ResponseBody
     public JSONObject getGradeListByNameUser(@RequestParam(value = "searchGradeName", required = false) String searchGradeName,
                                              @RequestParam("page") Integer page, @RequestParam("limit") Integer limit, @RequestParam("token") String token) {
@@ -63,7 +74,7 @@ public class GradeController {
     }
 
     @RequestMapping(value = "changeGradeStatus", method = RequestMethod.POST)
-    @Privilege(methodName = "修改班级的状态", privilegeLevel = 3)
+    @Privilege(methodName = "修改班级的状态", privilegeLevel = Privilege.ER_TYPE)
     @ResponseBody
     public JSONObject changeGradeStatus(@RequestParam("id") String id, @RequestParam("status") String status) {
 

@@ -7,7 +7,7 @@
 
     <!-- 数据库驱动包位置 -->
     <classPathEntry
-            location="C:\Users\LuoYuChengZhou\.m2\repository\mysql\mysql-connector-java\5.1.40\mysql-connector-java-5.1.40.jar"/>
+            location="C:\Users\lzq11\.m2\repository\mysql\mysql-connector-java\5.1.40\mysql-connector-java-5.1.40.jar"/>
 
     <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
         <!-- TKmybatis配置 -->
@@ -37,9 +37,9 @@
         <!-- 要生成的那些表 -->
         <!--<table tableName="blank_questions"/>-->
         <!--<table tableName="choose_questions"/>-->
-        <table tableName="er_ee"/>
+        <!--<table tableName="er_ee"/>-->
         <!--<table tableName="essay_questions"/>-->
-        <!--<table tableName="examinee"/>-->
+        <table tableName="examinee"/>
         <!--<table tableName="examiner"/>-->
         <!--<table tableName="papers"/>-->
         <!--<table tableName="programming_questions"/>-->

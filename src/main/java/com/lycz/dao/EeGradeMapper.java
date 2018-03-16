@@ -7,5 +7,4 @@ import tk.mybatis.mapper.common.Mapper;
 
 @Repository
 public interface EeGradeMapper extends Mapper<EeGrade> {
-    Integer insertGrade(@Param("eeId") String eeId, @Param("gradeId") String gradeId);
 }

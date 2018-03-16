@@ -16,9 +16,4 @@ public class EeGradeServiceImpl extends BaseServiceTk<EeGrade> implements EeGrad
     @Resource
     private EeGradeMapper eeGradeMapper;
 
-    @Override
-    public Integer insertGrade(String eeId, String gradeId) {
-
-        return eeGradeMapper.insertGrade(eeId, gradeId);
-    }
 }

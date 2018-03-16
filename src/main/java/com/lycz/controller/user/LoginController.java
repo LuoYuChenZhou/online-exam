@@ -270,13 +270,14 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/exeLoginOut", method = RequestMethod.POST)
-    @Privilege(methodName = "注销")
+    @Privilege(methodName = "注销", privilegeLevel = Privilege.NO_LOGIN)
     @ResponseBody
     public JSONObject exeLoginOut(@RequestParam("token") String token) {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
         result.setStatus(200);
 
+        //从redis里面移除token
         tokenService.destroyToken(token);
 
         return JSONObject.fromObject(result);
