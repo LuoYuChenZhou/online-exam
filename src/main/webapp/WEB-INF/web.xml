@@ -56,10 +56,10 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    <!-- 拦截设置 -->
+    <!-- 拦截设置,使用swagger必须拦截所有，不能使用.do -->
     <servlet-mapping>
         <servlet-name>dispatcherServlet</servlet-name>
-        <url-pattern>*.do</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
 
     <!-- 错误跳转页面 -->

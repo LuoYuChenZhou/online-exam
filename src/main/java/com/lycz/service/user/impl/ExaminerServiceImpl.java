@@ -1,6 +1,6 @@
 package com.lycz.service.user.impl;
 
-import com.lycz.controller.common.ToolUtil;
+import com.lycz.configAndDesign.ToolUtil;
 import com.lycz.model.Examiner;
 import com.lycz.service.base.impl.BaseServiceTk;
 import com.lycz.service.user.ExaminerService;

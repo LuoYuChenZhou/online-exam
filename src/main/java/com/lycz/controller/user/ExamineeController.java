@@ -1,11 +1,9 @@
 package com.lycz.controller.user;
 
-import com.lycz.controller.common.CommonResult;
-import com.lycz.controller.common.FixPageInfo;
-import com.lycz.controller.common.annotation.Privilege;
+import com.lycz.configAndDesign.FixPageInfo;
+import com.lycz.configAndDesign.annotation.Privilege;
 import com.lycz.service.user.ExamineeService;
 import net.sf.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

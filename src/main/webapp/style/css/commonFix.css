@@ -1,3 +1,23 @@
 a .layui-btn {
     width: 28px;
 }
+
+/*处于禁用状态的背景颜色*/
+.disable_true {
+    background-color: #a5b5b7;
+}
+
+/*处于启用状态的背景颜色*/
+.disable_false {
+    background-color: mediumpurple;
+}
+
+/*删除按钮背景颜色*/
+.delete_bg {
+    background-color: #FF5823;
+}
+
+/*排序按钮背景颜色*/
+.sort_bg {
+    background-color: #FFB800;
+}

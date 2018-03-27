@@ -29,7 +29,7 @@ public class SysDict {
      * 排序号
      */
     @Column(name = "sort_no")
-    private Short sortNo;
+    private Integer sortNo;
 
     /**
      * 状态（014）
@@ -109,7 +109,7 @@ public class SysDict {
      *
      * @return sort_no - 排序号
      */
-    public Short getSortNo() {
+    public Integer getSortNo() {
         return sortNo;
     }
 
@@ -118,7 +118,7 @@ public class SysDict {
      *
      * @param sortNo 排序号
      */
-    public void setSortNo(Short sortNo) {
+    public void setSortNo(Integer sortNo) {
         this.sortNo = sortNo;
     }
 

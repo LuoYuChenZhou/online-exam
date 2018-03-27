@@ -1,6 +1,6 @@
-package com.lycz.controller.common.aspect;
+package com.lycz.configAndDesign.aspect;
 
-import com.lycz.controller.common.CommonResult;
+import com.lycz.configAndDesign.CommonResult;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.logging.log4j.Logger;

@@ -1,8 +1,8 @@
-package com.lycz.controller.common.aspect;
+package com.lycz.configAndDesign.aspect;
 
-import com.lycz.controller.common.GlobalConfig;
-import com.lycz.controller.common.ToolUtil;
-import com.lycz.controller.common.annotation.Privilege;
+import com.lycz.configAndDesign.ToolUtil;
+import com.lycz.configAndDesign.annotation.Privilege;
+import com.lycz.configAndDesign.GlobalConfig;
 import com.lycz.model.SysLog;
 import com.lycz.service.base.SysLogService;
 import com.lycz.service.base.TokenService;
@@ -51,8 +51,7 @@ public class ControllerLogsAspect {
      * 虽然指定了argNames，但是无效，只要是String放在最后都会被token获取到
      */
     @Pointcut(value = "execution(* com.lycz.controller..*Controller.*(..)) " +
-            "&& !execution(* com.lycz.controller.common..*.*(..)) " +
-            "&& !@annotation(com.lycz.controller.common.annotation.NoSaveLog)" +
+            "&& !@annotation(com.lycz.configAndDesign.annotation.NoSaveLog)" +
             "&& @annotation(org.springframework.web.bind.annotation.RequestMapping)" +
             "&& args(..,token)", argNames = "token")
     public void controllerAspect(String token) {

@@ -10,7 +10,7 @@
         <result column="grade_name" jdbcType="VARCHAR" property="gradeName"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
-        <result column="sort_no" jdbcType="SMALLINT" property="sortNo"/>
+        <result column="sort_no" jdbcType="INTEGER" property="sortNo"/>
         <result column="status" jdbcType="VARCHAR" property="status"/>
     </resultMap>
 
@@ -19,17 +19,20 @@
             g.id AS id,
             g.grade_name AS gradeName,
             COUNT(eg.id) AS studentNum,
-            UNIX_TIMESTAMP(g.create_time) AS createTime
+            UNIX_TIMESTAMP(g.create_time) AS createTime,
+            g.sort_no AS sortNo,
+            g.status AS status
         FROM
             grade g
         LEFT JOIN  ee_grade eg ON eg.grade_id = g.id
         WHERE
-            g.er_id = #{userId} AND g.id IS NOT NULL
+            g.er_id = #{userId}
+        AND g.status != '4'
         <if test=' searchGradeName != null and searchGradeName != "" '>
             AND g.grade_name LIKE CONCAT("%",#{searchGradeName},"%")
         </if>
-        HAVING id IS NOT NULL
-        ORDER BY g.sort_no DESC
+        GROUP BY g.id
+        ORDER BY g.sort_no ASC ,g.modify_time DESC
     </select>
 
 </mapper>

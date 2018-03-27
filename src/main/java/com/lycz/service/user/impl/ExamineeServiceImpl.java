@@ -1,8 +1,8 @@
 package com.lycz.service.user.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.lycz.controller.common.FixPageInfo;
-import com.lycz.controller.common.ToolUtil;
+import com.lycz.configAndDesign.FixPageInfo;
+import com.lycz.configAndDesign.ToolUtil;
 import com.lycz.dao.ExamineeMapper;
 import com.lycz.model.Examinee;
 import com.lycz.service.base.impl.BaseServiceTk;

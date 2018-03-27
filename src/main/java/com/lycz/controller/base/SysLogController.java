@@ -1,10 +1,8 @@
 package com.lycz.controller.base;
 
-import com.lycz.controller.common.CommonResult;
-import com.lycz.controller.common.FixPageInfo;
-import com.lycz.controller.common.ToolUtil;
-import com.lycz.controller.common.annotation.Privilege;
-import com.lycz.model.SysLog;
+import com.lycz.configAndDesign.FixPageInfo;
+import com.lycz.configAndDesign.ToolUtil;
+import com.lycz.configAndDesign.annotation.Privilege;
 import com.lycz.service.base.SysLogService;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -37,7 +35,7 @@ public class SysLogController {
      * @param limit 每页条数
      */
     @RequestMapping(value = "/getSysLogList", method = RequestMethod.GET)
-    @Privilege(methodName = "获取日志列表", privilegeLevel = 4)
+    @Privilege(methodName = "获取日志列表", privilegeLevel = Privilege.SYS_TYPE)
     @ResponseBody
     public JSONObject getSysLogList(@RequestParam(value = "searchStartTime", required = false) String searchStartTime,
                                     @RequestParam(value = "searchEndTime", required = false) String searchEndTime,

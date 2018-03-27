@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lycz.dao.CommonMapper">
+    <select id="setSortNoByLineNum" statementType="CALLABLE">
+       CALL setSortNoByLineNum(
+           #{tableName,jdbcType=VARCHAR,mode=IN},
+           #{operateId,jdbcType=VARCHAR,mode=IN},
+           #{sortNo,jdbcType=INTEGER,mode=IN},
+           #{orderTime,jdbcType=INTEGER,mode=IN},
+           #{otherWhere,jdbcType=VARCHAR,mode=IN}
+       );
+    </select>
+</mapper>

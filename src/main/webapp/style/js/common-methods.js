@@ -59,11 +59,12 @@ $.ajaxSetup({
     complete:
         function (data, status) {
             if (status === 1000) {
-                swal('服务器维护中。。。', 'error');
+                let layer = layui.layer;
+                layer.msg('服务器维护中。。', {icon: 5});
             }
             let obj = eval('(' + data.responseText + ')');
             if (obj.status === 1000) {
-                swal('服务器维护中。。。', 'error');
+                layer.msg('服务器维护中。。', {icon: 5});
             } else if (obj.status === 401) {
                 location.href = localhostPath;
             }
@@ -218,4 +219,9 @@ function num2Sex(sexNum) {
         case "1":
             return "女";
     }
+}
+
+//关闭弹出层
+function closeFloor(floorName) {
+    layer.close(floorName);
 }

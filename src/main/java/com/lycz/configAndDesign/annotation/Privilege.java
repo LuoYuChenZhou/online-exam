@@ -1,4 +1,4 @@
-package com.lycz.controller.common.annotation;
+package com.lycz.configAndDesign.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

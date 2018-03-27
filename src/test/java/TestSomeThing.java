@@ -1,4 +1,4 @@
-import com.lycz.controller.common.JedisUtil;
+import com.lycz.configAndDesign.JedisUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;

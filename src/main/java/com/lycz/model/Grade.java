@@ -1,5 +1,7 @@
 package com.lycz.model;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import java.util.Date;
 import javax.persistence.*;
 
@@ -20,6 +22,7 @@ public class Grade {
     /**
      * 班级名称
      */
+    @NotBlank(message = "班级名称不能为空")
     @Column(name = "grade_name")
     private String gradeName;
 
@@ -29,6 +32,9 @@ public class Grade {
     @Column(name = "create_time")
     private Date createTime;
 
+    /**
+     * 创建时间
+     */
     @Column(name = "modify_time")
     private Date modifyTime;
 
@@ -36,7 +42,7 @@ public class Grade {
      * 排序号，越大排越前
      */
     @Column(name = "sort_no")
-    private Short sortNo;
+    private Integer sortNo;
 
     /**
      * 状态（0-禁用，1-正常，4-删除）
@@ -134,7 +140,7 @@ public class Grade {
      *
      * @return sort_no - 排序号，越大排越前
      */
-    public Short getSortNo() {
+    public Integer getSortNo() {
         return sortNo;
     }
 
@@ -143,7 +149,7 @@ public class Grade {
      *
      * @param sortNo 排序号，越大排越前
      */
-    public void setSortNo(Short sortNo) {
+    public void setSortNo(Integer sortNo) {
         this.sortNo = sortNo;
     }
 

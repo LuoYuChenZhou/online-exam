@@ -24,8 +24,8 @@ function searchBtnClick() {
             , searchLevel: jsonFormData.searchLevel
             , searchTitle: jsonFormData.searchTitle
         },
-        page:{
-            curr:1
+        page: {
+            curr: 1
         }
     });
 }
@@ -40,27 +40,17 @@ layui.use('table', function () {
         , url: '../../SysLog/getSysLogList.do' //数据接口
         , page: true //开启分页
         , cols: [[ //表头
-            {field: 'logTitle', title: '标题', width: 180, fixed: 'left'}
-            , {field: 'moduleName', title: '模块', width: 200}
+            {field: 'logTitle', title: '标题', width: 180, fixed: 'left', sort: true}
+            , {field: 'moduleName', title: '模块', width: 200, sort: true}
             , {field: 'logLevel', title: '等级', width: 100, templet: '#levelName'}
             , {field: 'logDescription', title: '描述', width: 350}
-            , {field: 'createTime', title: '发生时间', width: 177, templet: '#time2string'}
+            , {field: 'createTime', title: '发生时间', width: 177, templet: '#time2string', sort: true}
             , {field: 'logUser', title: '操作人', width: 120}
             , {fixed: 'right', title: '操作', width: 100, align: 'center', toolbar: '#log_bar'}
         ]]
         , id: 'logTable'
         , where: {
             token: token
-        }
-    });
-
-    log_tab.reload({
-        where: {
-            token: token
-            , searchStartTime: $("#startTime").val()
-            , searchEndTime: $("#endTime").val()
-            , searchLevel: $("#logLevel").val()
-            , searchTitle: $("#logTitle").val()
         }
     });
 
@@ -88,10 +78,10 @@ layui.use('table', function () {
     });
 });
 
-layui.use('form', function(){
+layui.use('form', function () {
     let form = layui.form;
 
-    form.on('select(level-log)', function(){
+    form.on('select(level-log)', function () {
         searchBtnClick();
     });
 });
@@ -99,13 +89,13 @@ layui.use('form', function(){
 //实际上已使用
 function getLevelName(logLevel) {
     switch (logLevel) {
-    case "0":
-        return "系统信息";
-    case "1":
-        return "错误";
-    case "2":
-        return "严重错误";
-    default:
-        return "";
+        case "0":
+            return "系统信息";
+        case "1":
+            return "错误";
+        case "2":
+            return "严重错误";
+        default:
+            return "";
     }
 }

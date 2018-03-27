@@ -1,9 +1,9 @@
 package com.lycz.controller.user;
 
-import com.lycz.controller.common.CommonResult;
-import com.lycz.controller.common.FixPageInfo;
-import com.lycz.controller.common.ToolUtil;
-import com.lycz.controller.common.annotation.Privilege;
+import com.lycz.configAndDesign.CommonResult;
+import com.lycz.configAndDesign.FixPageInfo;
+import com.lycz.configAndDesign.ToolUtil;
+import com.lycz.configAndDesign.annotation.Privilege;
 import com.lycz.model.ErEe;
 import com.lycz.service.base.TokenService;
 import com.lycz.service.user.ErEeService;

@@ -1,4 +1,4 @@
-package com.lycz.controller.common;
+package com.lycz.configAndDesign;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +27,7 @@ public class JedisUtil {
     static {
         Properties prop = new Properties();
         //百度上使用getResourceAsStream会导致配置文件修改后不能重新读取而此方法可以，未实验
-        String path = CommonMethods.class.getResource("/config/redisPool.properties").getPath();
+        String path = JedisUtil.class.getResource("/config/redisPool.properties").getPath();
         try {
             InputStream inStream = new FileInputStream(path);
             prop.load(inStream);

@@ -26,7 +26,7 @@ public class EeGrade {
      * 排序号，越大排越前
      */
     @Column(name = "sort_no")
-    private Short sortNo;
+    private Integer sortNo;
 
     /**
      * 获取主键id
@@ -87,7 +87,7 @@ public class EeGrade {
      *
      * @return sort_no - 排序号，越大排越前
      */
-    public Short getSortNo() {
+    public Integer getSortNo() {
         return sortNo;
     }
 
@@ -96,7 +96,7 @@ public class EeGrade {
      *
      * @param sortNo 排序号，越大排越前
      */
-    public void setSortNo(Short sortNo) {
+    public void setSortNo(Integer sortNo) {
         this.sortNo = sortNo;
     }
 }

@@ -8,6 +8,9 @@
         <id column="id" jdbcType="VARCHAR" property="id"/>
         <result column="ee_id" jdbcType="VARCHAR" property="eeId"/>
         <result column="grade_id" jdbcType="VARCHAR" property="gradeId"/>
-        <result column="sort_no" jdbcType="SMALLINT" property="sortNo"/>
+        <result column="sort_no" jdbcType="INTEGER" property="sortNo"/>
     </resultMap>
+    <insert id="insertEeToGrade">
+        INSERT INTO ee_grade(id,ee_id,grade_id) VALUES (uuid(),#{eeId},#{gradeId})
+    </insert>
 </mapper>

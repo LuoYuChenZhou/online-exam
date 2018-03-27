@@ -1,6 +1,6 @@
 package com.lycz.service.user;
 
-import com.lycz.controller.common.FixPageInfo;
+import com.lycz.configAndDesign.FixPageInfo;
 import com.lycz.model.ErEe;
 import com.lycz.service.base.IBaseServiceTk;
 

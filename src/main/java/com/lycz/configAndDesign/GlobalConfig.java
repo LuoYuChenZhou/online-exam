@@ -1,4 +1,4 @@
-package com.lycz.controller.common;
+package com.lycz.configAndDesign;
 
 public enum GlobalConfig {
 

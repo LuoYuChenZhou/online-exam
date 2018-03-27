@@ -1,10 +1,9 @@
-package com.lycz.controller.common.aspect;
+package com.lycz.configAndDesign.aspect;
 
-import com.lycz.controller.common.CommonMethods;
-import com.lycz.controller.common.CommonResult;
-import com.lycz.controller.common.JedisUtil;
-import com.lycz.controller.common.ToolUtil;
-import com.lycz.controller.common.annotation.Privilege;
+import com.lycz.configAndDesign.ToolUtil;
+import com.lycz.configAndDesign.CommonResult;
+import com.lycz.configAndDesign.JedisUtil;
+import com.lycz.configAndDesign.annotation.Privilege;
 import com.lycz.service.base.TokenService;
 import net.sf.json.JSONObject;
 import org.apache.logging.log4j.LogManager;
@@ -15,7 +14,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import redis.clients.jedis.Jedis;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;
@@ -45,7 +43,7 @@ public class PrivilegeAspect {
      * 要求token放在最后
      * 虽然指定了argNames，但是无效，只要是String放在最后都会被token获取到
      */
-    @Pointcut(value = "@annotation(com.lycz.controller.common.annotation.Privilege) && args(..,token)", argNames = "token")
+    @Pointcut(value = "@annotation(com.lycz.configAndDesign.annotation.Privilege) && args(..,token)", argNames = "token")
     public void priAspect(String token) {
     }
 
@@ -89,7 +87,7 @@ public class PrivilegeAspect {
             result.setMsg("非法登录");
             return JSONObject.fromObject(result);
         }
-        String sys = CommonMethods.getProperty("config/sysLg.properties", "sys_user_type");
+        String sys = ToolUtil.getProperty("config/sysLg.properties", "sys_user_type");
         switch (privilegeLevel) {
             case 0:
                 canExe = true;
@@ -121,7 +119,7 @@ public class PrivilegeAspect {
         }
 
         if (canExe) {
-            JedisUtil.setOutTime(CommonMethods.getProperty("config/globalConfig.properties", "TOKEN_PRE") + token, 21600);
+            JedisUtil.setOutTime(ToolUtil.getProperty("config/globalConfig.properties", "TOKEN_PRE") + token, 21600);
             return joinPoint.proceed();
         } else {
             return JSONObject.fromObject(result);

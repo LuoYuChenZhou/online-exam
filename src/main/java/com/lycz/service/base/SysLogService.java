@@ -1,6 +1,6 @@
 package com.lycz.service.base;
 
-import com.lycz.controller.common.FixPageInfo;
+import com.lycz.configAndDesign.FixPageInfo;
 import com.lycz.model.SysLog;
 
 import java.util.Date;

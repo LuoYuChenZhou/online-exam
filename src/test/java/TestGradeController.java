@@ -9,6 +9,7 @@ public class TestGradeController {
 
     private Logger log = LogManager.getLogger();
     private String url = "http://localhost:2333";
+    private String token = "17c98a2c-c869-4d6e-9903-fe08a82fb23c";
 
     @Test
     public void exeLogin() {
@@ -26,11 +27,22 @@ public class TestGradeController {
     }
 
     @Test
+    public void addGrade() {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("gradeName", "星辰q");
+//        params.add("sortNo", "2");
+        params.add("token", token);
+
+        url = url + "/Grade/addGrade.do";
+        RestTemplate restTemplate = new RestTemplate();
+        System.out.println(restTemplate.postForObject(url, params, String.class));
+    }
+
+    @Test
     public void getGradeListByNameUser() {
         int page = 1;
-        int limit = 1000;
+        int limit = 1;
         String searchGradeName = "";
-        String token = "15c14518-3842-4f87-94f3-7376e7d66317";
 
         url = url + "/Grade/getGradeListByNameUser.do" +
                 "?page="+page +

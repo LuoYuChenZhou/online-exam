@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="/style/css/htmlCss/grade.css"/>
 </head>
 <body>
+
 <div class="layui-form" id="grade_list_form">
     <div class="layui-form-item" style="margin:10px 0 -10px -9px;">
 
@@ -22,26 +23,24 @@
                 <input type="text" name="searchGradeName" autocomplete="off" class="layui-input" id="search_grade_name">
             </div>
         </div>
-        <div class="layui-inline" style="margin-left: -60px">
+
+        <div class="layui-inline" style="margin-left: -60px;">
             <div class="layui-input-block">
                 <button class="layui-btn" style="background: #1E9FFF;" onclick="searchBtnClick()">搜索</button>
-            </div>
-        </div>
-
-        <div class="layui-inline" style="margin-left: -100px">
-            <div class="layui-input-block">
-                <button class="layui-btn" style="background: #5FB878;" onclick="addGrade()">新增</button>
+                <button class="layui-btn" style="background: #5FB878;" onclick="showAddGrade()">新增</button>
             </div>
         </div>
 
     </div>
 </div>
+
 <table id="grade_list_table" class="layui-table" lay-filter="grade-t"></table>
+<!--班级添加弹窗-->
 <div id="add_form">
     <div class="layui-form-item">
         <label class="layui-form-label">班级名称：</label>
         <div class="layui-input-block">
-            <input type="text" name="new_grade_name" required lay-verify="required" placeholder="请输入班级名称"
+            <input type="text" name="new_grade_name" required lay-verify="required" placeholder="请输入班级名称..."
                    autocomplete="off"
                    class="layui-input">
         </div>
@@ -49,14 +48,40 @@
     <div class="layui-form-item">
         <label class="layui-form-label">排序号 ：</label>
         <div class="layui-input-block">
-            <input type="text" name="new_grade_sortNo" placeholder="排序号越大排列越前" autocomplete="off"
+            <input type="text" name="new_grade_sortNo" placeholder="请输入排序号..." autocomplete="off"
                    class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn">立即提交</button>
-            <button class="layui-btn layui-btn-primary">取消</button>
+            <button class="layui-btn" onclick="addGrade()">立即提交</button>
+            <button class="layui-btn layui-btn-primary" onclick="closeFloor(FloorObject)">取消</button>
+        </div>
+    </div>
+</div>
+
+<!--排序号弹窗-->
+<div id="sort_form">
+    <div class="layui-form-item">
+        <label class="layui-form-label">当前班级：</label>
+        <div class="layui-input-block">
+            <input type="text" id="sort_cur_grade"
+                   autocomplete="off"
+                   disabled
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序号 ：</label>
+        <div class="layui-input-block">
+            <input type="text" id="sort_sortNo" placeholder="请输入排序号..." autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" onclick="setSortNo()">立即提交</button>
+            <button class="layui-btn layui-btn-primary" onclick="closeFloor(FloorObject)">取消</button>
         </div>
     </div>
 </div>
@@ -66,8 +91,12 @@
     {{ dtf("yMdHms",d.createTime) }}
 </script>
 <script type="text/html" id="grade_list_bar">
-    <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="iconfont icon-sousuo"></i></a>
-    <a class="layui-btn layui-btn-xs" lay-event="sort" style="background-color: #FFB800;"><i class="iconfont icon-paixu"></i></a>
-    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete"><i class="iconfont icon-delete"></i></a>
-    <a class="layui-btn layui-btn-xs" lay-event="delete" style="background-color: mediumpurple;" title="禁用"><i class="iconfont icon-jinyong"></i></a>
+    <a class="layui-btn layui-btn-xs" lay-event="detail" title="详情"><i class="iconfont icon-sousuo"></i></a>
+    <a class="layui-btn layui-btn-xs sort_bg" lay-event="sort" title="排序"><i class="iconfont icon-paixu"></i></a>
+    <a class="layui-btn layui-btn-xs delete_bg" lay-event="delete" title="删除"><i class="iconfont icon-delete"></i></a>
+    {{#  if(d.status == 1){ }}
+    <a class="layui-btn layui-btn-xs disable_false" lay-event="enOrDis" title="禁用"><i class="iconfont icon-jinyong"></i></a>
+    {{#  } else { }}
+    <a class="layui-btn layui-btn-xs disable_true" lay-event="enOrDis" title="启用"><i class="iconfont icon-jinyong"></i></a>
+    {{#  }   }}
 </script>

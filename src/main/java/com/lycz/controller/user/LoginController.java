@@ -1,10 +1,9 @@
 package com.lycz.controller.user;
 
-import com.lycz.controller.common.CommonMethods;
-import com.lycz.controller.common.CommonResult;
-import com.lycz.controller.common.ToolUtil;
-import com.lycz.controller.common.annotation.NoSaveLog;
-import com.lycz.controller.common.annotation.Privilege;
+import com.lycz.configAndDesign.CommonResult;
+import com.lycz.configAndDesign.ToolUtil;
+import com.lycz.configAndDesign.annotation.NoSaveLog;
+import com.lycz.configAndDesign.annotation.Privilege;
 import com.lycz.model.Examinee;
 import com.lycz.model.Examiner;
 import com.lycz.model.SysLog;
@@ -80,8 +79,8 @@ public class LoginController {
                 tokenObj = examinee;
                 break;
             case "99":
-                String serviceName = CommonMethods.getProperty("config/sysLg.properties", "sys_lg_na");
-                String servicePass = CommonMethods.getProperty("config/sysLg.properties", "sys_lg_pw");
+                String serviceName = ToolUtil.getProperty("config/sysLg.properties", "sys_lg_na");
+                String servicePass = ToolUtil.getProperty("config/sysLg.properties", "sys_lg_pw");
                 if (Objects.equals(serviceName, loginName) && Objects.equals(servicePass, loginPass)) {
                     tokenObj = "sysLog";
                 }
@@ -259,7 +258,7 @@ public class LoginController {
         String returnData = (String) jm.get(realType);
 
         //系统用户类型转换
-        if (returnData.equals(CommonMethods.getProperty("config/sysLg.properties", "sys_user_type"))) {
+        if (returnData.equals(ToolUtil.getProperty("config/sysLg.properties", "sys_user_type"))) {
             returnData = "system_type";
         }
 

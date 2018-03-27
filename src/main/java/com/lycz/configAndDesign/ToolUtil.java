@@ -1,7 +1,10 @@
-package com.lycz.controller.common;
+package com.lycz.configAndDesign;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
@@ -11,11 +14,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
-public class CommonMethods {
+public class ToolUtil extends StringUtils {
 
     private static Logger logger = LogManager.getLogger();
 
@@ -28,7 +29,7 @@ public class CommonMethods {
      */
     public static String getProperty(String fileName, String property) {
         Properties prop = new Properties();
-        String path = CommonMethods.class.getResource("/" + fileName).getPath();
+        String path = ToolUtil.class.getResource("/" + fileName).getPath();
         InputStream inStream;
         String propertiesValue;
         try {
@@ -130,6 +131,9 @@ public class CommonMethods {
         }
     }
 
+    /**
+     * 获取最小值
+     */
     private static int min(int one, int two, int three) {
         int min = one;
         if (two < min) {
@@ -141,5 +145,89 @@ public class CommonMethods {
         return min;
     }
 
+    @Contract("null -> true")
+    public static boolean isEmpty(Object obj) {
+        if (null == obj) return true;
+        if (obj instanceof String) {
+            return isEmpty((String) obj);
+        } else if (obj instanceof List) {
+            return ((List) obj).size() == 0;
+        }
+        return false;
+    }
 
+    @Contract("null -> false")
+    public static boolean isNotEmpty(Object obj) {
+        return !isEmpty(obj);
+    }
+
+
+    /**
+     * 如果比较字符串中有一个与被计较字符串相同，返回true
+     *
+     * @param compare 被比较字符串
+     * @param ss      数目不定的比较字符串
+     */
+    @Contract("null, _ -> fail")
+    public static boolean anyEqual(String compare, String... ss) throws Exception {
+        if (compare == null) throw new Exception("被比较字符串不能为空");
+        for (String s : ss) {
+            if (compare.equals(s)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 将字符串用0补到指定长度
+     *
+     * @param source 原字符串
+     * @param length 指定长度
+     * @return (3, 3) -> 003
+     */
+    @NotNull
+    public static String addZero(String source, int length) throws Exception {
+        if (isEmpty(source)) throw new Exception("原字符串不能为空");
+        StringBuilder targetStr = new StringBuilder(source);
+        int sourceLength = source.length();
+        if (sourceLength < length) {
+            for (int i = sourceLength; i < length; i++) {
+                targetStr.insert(0, "0");
+            }
+        }
+        return targetStr.toString();
+    }
+
+    /**
+     * 将列表根据父级id分级
+     *
+     * @param sourceList 原列表
+     * @param upperId    父级id
+     * @param idName     作为父级id的名字，不传默认id
+     * @param upperName  父级id在map中的名字，不传默认为upperId
+     * @ 如：t_avcenter_device表内,行a的id字段作为行b的父级id,放在b的access_device_id字段,
+     * 则idName字段传入id，upperName字段传入accessDeviceId
+     */
+    public static List<Map<String, Object>> getRatingList(List<Map<String, Object>> sourceList,
+                                                          String upperId, String idName, String upperName) throws Exception {
+        List<Map<String, Object>> targetList = new ArrayList<>();
+
+        idName = ToolUtil.isEmpty(idName) ? "id" : idName;
+        upperName = ToolUtil.isEmpty(upperName) ? "upperId" : upperName;
+
+        for (Map<String, Object> map : sourceList) {
+            if (ToolUtil.isEmpty(map.get(upperName))) {
+                throw new Exception("列表中没有" + upperName + "字段");
+            }
+
+            if (Objects.equals(upperId, map.get(upperName))) {
+                Map<String, Object> tempMap = new HashMap<>(map);
+                tempMap.put("children", getRatingList(sourceList, (String) map.get(idName), idName, upperName));
+                targetList.add(tempMap);
+            }
+        }
+
+        return targetList;
+    }
 }
