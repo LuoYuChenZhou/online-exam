@@ -48,7 +48,27 @@ public class ErEeController {
             "page：当前页<br/>" +
             "limit：每页条数<br/>" +
             "出参说明<br/>" +
-            "")
+            "\n" +
+            "{\n" +
+            "\n" +
+            "    \"code\":状态值，0为正常,\n" +
+            "    \"count\":总条数,\n" +
+            "    \"data\":[\n" +
+            "        {\n" +
+            "            \"eeId\":\"考生id\",\n" +
+            "            \"eeNo\":\"考生号\",\n" +
+            "            \"realName\":\"真实姓名\",\n" +
+            "            \"sex\":\"性别（0-男，1-女）\",\n" +
+            "            \"phone\":\"手机号\",\n" +
+            "            \"email\":\"电子邮箱\"\n" +
+            "        }\n" +
+            "    ],\n" +
+            "    \"limit\":每页条数,\n" +
+            "    \"logMsg\":\"日志信息（前端无意义）\",\n" +
+            "    \"msg\":\"提示信息\",\n" +
+            "    \"page\":当前页\n" +
+            "\n" +
+            "}\n")
     public JSONObject getExamineeNoRelation(@RequestParam(value = "searchEeName", required = false) String searchEeName,
                                             @RequestParam(value = "searchEeNo", required = false) String searchEeNo,
                                             @RequestParam("page") Integer page,

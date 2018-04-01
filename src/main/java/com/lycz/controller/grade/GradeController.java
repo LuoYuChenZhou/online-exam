@@ -133,11 +133,32 @@ public class GradeController {
     @ResponseBody
     @ApiOperation(value = "根据班级名称和当前用户搜索班级列表", notes = "" +
             "入参说明：<br/>" +
-            "searchGradeName:班级名称（必填）<br/>" +
+            "searchGradeName:班级名称<br/>" +
             "page:当前页<br/>" +
             "limit:每页条数<br/>" +
             "出参说明：<br/>" +
-            "201")
+            "\n" +
+            "{\n" +
+            "\n" +
+            "    \"code\":0,\n" +
+            "    \"count\":5,\n" +
+            "    \"data\":[\n" +
+            "        {\n" +
+            "            \"id\": \"班级id\",\n" +
+            "            \"gradeName\": \"班级名称\",\n" +
+            "            \"createTime\": 创建时间,\n" +
+            "            \"studentNum\": 班级当前人数,\n" +
+            "            \"sortNo\": 排序号,\n" +
+            "            \"status\": \"当前状态（0-禁用，1-正常）\"\n" +
+            "        }\n" +
+            "    ],\n" +
+            "    \"limit\":1,\n" +
+            "    \"logMsg\":\"\",\n" +
+            "    \"msg\":\"查询成功\",\n" +
+            "    \"page\":1\n" +
+            "\n" +
+            "}\n" +
+            "\n")
     public JSONObject getGradeListByNameUser(@RequestParam(value = "searchGradeName", required = false) String searchGradeName,
                                              @RequestParam("page") Integer page,
                                              @RequestParam("limit") Integer limit,

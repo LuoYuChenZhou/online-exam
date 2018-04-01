@@ -27,7 +27,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "SysLog")
-@Api(value = "SysLog",description = "系统日志相关api")
+@Api(value = "SysLog", description = "系统日志相关api")
 public class SysLogController {
 
     @Resource
@@ -40,14 +40,43 @@ public class SysLogController {
     @RequestMapping(value = "/getSysLogList", method = RequestMethod.GET)
     @Privilege(methodName = "获取日志列表", privilegeLevel = Privilege.SYS_TYPE)
     @ResponseBody
-    @ApiOperation(value = "获取日志列表",notes = "" +
+    @ApiOperation(value = "获取日志列表", notes = "" +
             "入参说明<br/>" +
-            "出参说明<br/>")
+            "searchStartTime：日志起时间<br/>" +
+            "searchEndTime：日志止时间<br/>" +
+            "searchLevel：传入数字，日志等级(0-系统信息，1-错误，2-严重错误)<br/>" +
+            "searchTitle：日志搜索标题<br/>" +
+            "page：当前页<br/>" +
+            "limit：每页大小<br/>" +
+            "出参说明<br/>" +
+            "\n" +
+            "{\n" +
+            "\n" +
+            "    \"code\":0,\n" +
+            "    \"count\":112,\n" +
+            "    \"data\":[\n" +
+            "        {\n" +
+            "            \"id\":\"日志id\"\n" +
+            "            \"logTitle\":\"日志标题\",\n" +
+            "            \"logDescription\":\"日志描述\",\n" +
+            "            \"logLevel\":\"日志等级(0-系统信息，1-错误，2-严重错误)\",\n" +
+            "            \"createTime\":发生时间,\n" +
+            "            \"moduleName\":\"模块名称\",\n" +
+            "        }\n" +
+            "    ],\n" +
+            "    \"limit\":1,\n" +
+            "    \"logMsg\":\"\",\n" +
+            "    \"msg\":\"查询成功\",\n" +
+            "    \"page\":1\n" +
+            "\n" +
+            "}\n")
     public JSONObject getSysLogList(@RequestParam(value = "searchStartTime", required = false) String searchStartTime,
                                     @RequestParam(value = "searchEndTime", required = false) String searchEndTime,
                                     @RequestParam(value = "searchLevel", required = false) String searchLevel,
                                     @RequestParam(value = "searchTitle", required = false) String searchTitle,
-                                    @RequestParam("page") Integer page, @RequestParam("limit") Integer limit, @RequestParam("token") String token) {
+                                    @RequestParam("page") Integer page,
+                                    @RequestParam("limit") Integer limit,
+                                    @RequestParam("token") String token) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date startDate = null;
         Date endDate = null;

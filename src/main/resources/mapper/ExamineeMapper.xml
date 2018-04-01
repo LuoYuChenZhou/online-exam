@@ -33,13 +33,13 @@
         LEFT JOIN grade gr ON eg.grade_id = gr.id AND gr.status != '4'
         <where>
             <if test=' examineeName != null and examineeName != "" '>
-             AND ee.real_name LIKE CONCAT('%',#{examineeName},'%')
+              AND ee.real_name LIKE CONCAT('%',#{examineeName},'%')
             </if>
             <if test=' examineeNum != null and examineeNum != "" '>
               AND ee.ee_no LIKE CONCAT('%',#{examineeNum},'%')
             </if>
             <if test=' searchClass != null and searchClass != "" '>
-            AND  gr.id = #{searchClass}
+              AND  gr.id = #{searchClass}
             </if>
         </where>
     </select>

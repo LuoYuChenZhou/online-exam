@@ -12,12 +12,14 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 public class ExamineeServiceImpl extends BaseServiceTk<Examinee> implements ExamineeService {
+    @Resource
     private ExamineeMapper examineeMapper;
 
     @Override

@@ -38,7 +38,27 @@ public class ExamineeController {
             "page：当前页<br/>" +
             "limit：每页条数<br/>" +
             "出参说明<br/>" +
-            "")
+            "\n" +
+            "{\n" +
+            "\n" +
+            "    \"code\":状态值，0为正常,\n" +
+            "    \"count\":总条数,\n" +
+            "    \"data\":[\n" +
+            "        {\n" +
+            "            \"eeId\":\"考生id\",\n" +
+            "            \"eeNo\":\"考生号\",\n" +
+            "            \"realName\":\"真实姓名\",\n" +
+            "            \"sex\":\"性别（0-男，1-女）\",\n" +
+            "            \"phone\":\"手机号\",\n" +
+            "            \"email\":\"电子邮箱\"\n" +
+            "        }\n" +
+            "    ],\n" +
+            "    \"limit\":每页条数,\n" +
+            "    \"logMsg\":\"日志信息（前端无意义）\",\n" +
+            "    \"msg\":\"提示信息\",\n" +
+            "    \"page\":当前页\n" +
+            "\n" +
+            "}\n")
     public JSONObject getEeListByNameNoClass(@RequestParam(value = "searchClass", required = false) String searchClass
             , @RequestParam(value = "examineeName", required = false) String examineeName
             , @RequestParam(value = "examineeNum", required = false) String examineeNum
@@ -48,7 +68,7 @@ public class ExamineeController {
         FixPageInfo<Map<String, Object>> logInfo = examineeService.getEeListByNameNoClass(searchClass, examineeName, examineeNum, page, limit);
         if (logInfo == null) {
             logInfo = new FixPageInfo<>();
-            logInfo.setCode(400);
+            logInfo.setCode(204);
             logInfo.setMsg("没有数据");
         } else {
             logInfo.setCode(0);

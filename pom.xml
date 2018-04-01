@@ -286,6 +286,12 @@
             <artifactId>springfox-swagger-ui</artifactId>
             <version>2.7.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.caspar-chen</groupId>
+            <artifactId>swagger-ui-layer</artifactId>
+            <version>0.0.3</version>
+        </dependency>
+
         <!-- swagger-springmvc dependencies end -->
 
     </dependencies>

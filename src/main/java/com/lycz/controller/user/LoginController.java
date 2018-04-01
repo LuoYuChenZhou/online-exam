@@ -259,9 +259,19 @@ public class LoginController {
     @ResponseBody
     @ApiOperation(value = "根据输入类型获取用户信息", notes = "" +
             "入参说明：<br/>" +
-            "searchType：（userType-用户类型，realName-用户姓名）<br/>" +
+            "searchType：（type-用户类型，name-用户姓名）<br/>" +
             "出参说明：<br/>" +
-            "")
+            "\n" +
+            "{\n" +
+            "\n" +
+            "    \"data\":{\n" +
+            "        \"returnData\":\"要查询的信息\"\n" +
+            "    },\n" +
+            "    \"logMsg\":\"\",\n" +
+            "    \"msg\":\"\",\n" +
+            "    \"status\":200\n" +
+            "\n" +
+            "}\n")
     public JSONObject getUserInfoByType(@RequestParam("searchType") String searchType,
                                         @RequestParam("token") String token) {
         CommonResult<JSONObject> result = new CommonResult<>();
@@ -299,6 +309,7 @@ public class LoginController {
     @RequestMapping(value = "/exeLoginOut", method = RequestMethod.POST)
     @Privilege(methodName = "注销", privilegeLevel = Privilege.NO_LOGIN)
     @ResponseBody
+    @ApiOperation(value = "注销")
     public JSONObject exeLoginOut(@RequestParam("token") String token) {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
