@@ -11,6 +11,8 @@ import com.lycz.service.base.SysLogService;
 import com.lycz.service.base.TokenService;
 import com.lycz.service.user.ExamineeService;
 import com.lycz.service.user.ExaminerService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import net.sf.json.JSONObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,6 +30,7 @@ import java.util.*;
 
 @Controller
 @RequestMapping("Login")
+@Api(value = "Login", description = "登录相关api")
 public class LoginController {
 
     private Logger log = LogManager.getLogger();
@@ -43,15 +46,19 @@ public class LoginController {
 
     /**
      * 登录
-     *
-     * @param type      登录类型（1-考官登录，2-考生登录，99-管理员登录）
-     * @param loginName 用户名
-     * @param loginPass 密码
      */
     @NoSaveLog
     @RequestMapping(value = "/exeLogin", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject exeLogin(@RequestParam("type") String type, @RequestParam("loginName") String loginName,
+    @ApiOperation(value = "登录", notes = "" +
+            "入参说明：<br/>" +
+            "type:登录类型（1-考官登录，2-考生登录，99-管理员登录）<br/>" +
+            "loginName:用户名<br/>" +
+            "loginPass:密码<br/>" +
+            "出参说明：<br/>" +
+            "")
+    public JSONObject exeLogin(@RequestParam("type") String type,
+                               @RequestParam("loginName") String loginName,
                                @RequestParam("loginPass") String loginPass) {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
@@ -114,6 +121,10 @@ public class LoginController {
     @NoSaveLog
     @RequestMapping(value = "/eeRegister", method = RequestMethod.POST)
     @ResponseBody
+    @ApiOperation(value = "考生注册", notes = "" +
+            "入参说明：<br/>" +
+            "出参说明：<br/>" +
+            "")
     public JSONObject eeRegister(@Valid Examinee examinee, BindingResult bindingResult, @RequestParam("password") String password) {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
@@ -160,6 +171,11 @@ public class LoginController {
     @NoSaveLog
     @RequestMapping(value = "/erRegister", method = RequestMethod.POST)
     @ResponseBody
+    @ApiOperation(value = "考官注册", notes = "" +
+            "入参说明：<br/>" +
+            "字段太多了， 不想写" +
+            "出参说明：<br/>" +
+            "")
     public JSONObject erRegister(@Valid Examiner examiner, BindingResult bindingResult, @RequestParam("password") String password) {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
@@ -208,6 +224,12 @@ public class LoginController {
      */
     @RequestMapping(value = "/userNameIsExist", method = RequestMethod.GET)
     @ResponseBody
+    @ApiOperation(value = "判断用户名是否被占用", notes = "" +
+            "入参说明：<br/>" +
+            "userName：用户名<br/>" +
+            "regType：注册类型（“1”-考官，“2”-考生）<br/>" +
+            "出参说明：<br/>" +
+            "data中的 isExist（“true”-占用，“false”-未占用）")
     public JSONObject userNameIsExist(@RequestParam("userName") String userName, @RequestParam("regType") String regType) {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
@@ -235,7 +257,13 @@ public class LoginController {
     @RequestMapping(value = "/getUserInfoByType", method = RequestMethod.GET)
     @Privilege(methodName = "根据输入类型获取用户信息")
     @ResponseBody
-    public JSONObject getUserInfoByType(@RequestParam("searchType") String searchType, @RequestParam("token") String token) {
+    @ApiOperation(value = "根据输入类型获取用户信息", notes = "" +
+            "入参说明：<br/>" +
+            "searchType：（userType-用户类型，realName-用户姓名）<br/>" +
+            "出参说明：<br/>" +
+            "")
+    public JSONObject getUserInfoByType(@RequestParam("searchType") String searchType,
+                                        @RequestParam("token") String token) {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
         result.setStatus(400);

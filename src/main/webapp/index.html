@@ -207,6 +207,8 @@
                     } else if (data.status === 400) {
                         $("#message-div").html("<span style='display:block;color: Orange'>请确定右下角登录模式</span>");
                         swal('错误', data.msg, 'error');
+                    } else {
+                        swal('错误', "服务器维护中", 'error');
                     }
                 },
                 error: function () {

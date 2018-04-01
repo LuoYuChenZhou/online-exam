@@ -3,6 +3,7 @@ package com.lycz.configAndDesign;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -20,6 +21,10 @@ public class Swagger2Config {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .genericModelSubstitutes(DeferredResult.class)
+                .useDefaultResponseMessages(false)
+                .forCodeGeneration(false)
+                .pathMapping("/")
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .build()

@@ -21,6 +21,23 @@ public class ToolUtil extends StringUtils {
     private static Logger logger = LogManager.getLogger();
 
     /**
+     * 传入十进制数，转化为二进制后，所有0变1，所有1变0，然后转成十进制输出
+     * 本工程中用于多选题输入正确答案的和，获取错误答案的和
+     *
+     * @param trueOptionsValue 正确答案的和
+     * @return 错误答案的和
+     */
+    public static Integer getWrongOptionsValue(Integer trueOptionsValue) {
+        if (isEmpty(trueOptionsValue)) return null;
+        StringBuilder sb = new StringBuilder();
+        char[] trueC = Integer.toBinaryString(trueOptionsValue).toCharArray();
+        for (char c : trueC) {
+            sb.append(Objects.equals(c, '1') ? "0" : "1");
+        }
+        return Integer.parseInt(sb.toString(), 2);
+    }
+
+    /**
      * 读取配置文件中某属性的值
      *
      * @param fileName 文件名

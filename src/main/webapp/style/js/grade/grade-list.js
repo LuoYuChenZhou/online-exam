@@ -116,7 +116,7 @@ function addGrade() {
         function (data) {
             if (data.status === 201) {
                 layer.msg("添加成功", {icon: 6, offset: ['100px']});
-                closeFloor(addGradeForm);
+                closeFloor(FloorObject);
                 searchBtnClick();
             } else {
                 layer.msg(data.msg);
@@ -134,7 +134,7 @@ function setSortNo() {
         },
         function (data) {
             if (data.status === 201) {
-                closeFloor(sortForm);
+                closeFloor(FloorObject);
                 searchBtnClick();
             } else {
                 layer.msg(data.msg);

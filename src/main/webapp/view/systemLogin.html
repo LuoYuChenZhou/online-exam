@@ -85,6 +85,8 @@
                     toMainMenu();
                 } else if (data.status === 400) {
                     swal('错误', '用户名或密码错误!', 'error');
+                } else {
+                    swal('错误', '可能redis没开!', 'error');
                 }
             },
             error: function () {

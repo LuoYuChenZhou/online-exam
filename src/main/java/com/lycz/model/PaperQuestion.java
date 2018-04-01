@@ -35,6 +35,18 @@ public class PaperQuestion {
     private String questionType;
 
     /**
+     * 得分模式，详见文档
+     */
+    @Column(name = "score_type")
+    private String scoreType;
+
+    /**
+     * 指定分数，配合得分模式的递进和指定使用
+     */
+    @Column(name = "assign_score")
+    private Integer assignScore;
+
+    /**
      * 获取主键id
      *
      * @return id - 主键id
@@ -122,5 +134,41 @@ public class PaperQuestion {
      */
     public void setQuestionType(String questionType) {
         this.questionType = questionType;
+    }
+
+    /**
+     * 获取得分模式，详见文档
+     *
+     * @return score_type - 得分模式，详见文档
+     */
+    public String getScoreType() {
+        return scoreType;
+    }
+
+    /**
+     * 设置得分模式，详见文档
+     *
+     * @param scoreType 得分模式，详见文档
+     */
+    public void setScoreType(String scoreType) {
+        this.scoreType = scoreType;
+    }
+
+    /**
+     * 获取指定分数，配合得分模式的递进和指定使用
+     *
+     * @return assign_score - 指定分数，配合得分模式的递进和指定使用
+     */
+    public Integer getAssignScore() {
+        return assignScore;
+    }
+
+    /**
+     * 设置指定分数，配合得分模式的递进和指定使用
+     *
+     * @param assignScore 指定分数，配合得分模式的递进和指定使用
+     */
+    public void setAssignScore(Integer assignScore) {
+        this.assignScore = assignScore;
     }
 }

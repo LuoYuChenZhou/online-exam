@@ -1,4 +1,5 @@
 import com.lycz.configAndDesign.JedisUtil;
+import com.lycz.configAndDesign.ToolUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
@@ -10,6 +11,17 @@ import org.junit.Test;
  */
 public class TestSomeThing {
     private Logger log = LogManager.getLogger();
+
+    @Test
+    public void testYu() {
+        int a = 1;
+        int b = 5;
+        String c = "1111";
+        log.warn(a&b);
+        log.warn(b & (b-1));
+        log.warn(Integer.toBinaryString(b));
+        log.warn(Integer.toBinaryString(ToolUtil.getWrongOptionsValue(b)));
+    }
 
     @Test
     public void testDestoryEmptyToken() {

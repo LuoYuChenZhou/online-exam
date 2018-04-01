@@ -18,12 +18,6 @@ public class ProgrammingQuestions {
     private String erId;
 
     /**
-     * 所属试卷id
-     */
-    @Column(name = "paper_id")
-    private String paperId;
-
-    /**
      * 分数
      */
     @Column(name = "question_score")
@@ -86,24 +80,6 @@ public class ProgrammingQuestions {
      */
     public void setErId(String erId) {
         this.erId = erId;
-    }
-
-    /**
-     * 获取所属试卷id
-     *
-     * @return paper_id - 所属试卷id
-     */
-    public String getPaperId() {
-        return paperId;
-    }
-
-    /**
-     * 设置所属试卷id
-     *
-     * @param paperId 所属试卷id
-     */
-    public void setPaperId(String paperId) {
-        this.paperId = paperId;
     }
 
     /**

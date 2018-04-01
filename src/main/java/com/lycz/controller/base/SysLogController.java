@@ -4,6 +4,8 @@ import com.lycz.configAndDesign.FixPageInfo;
 import com.lycz.configAndDesign.ToolUtil;
 import com.lycz.configAndDesign.annotation.Privilege;
 import com.lycz.service.base.SysLogService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +27,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "SysLog")
+@Api(value = "SysLog",description = "系统日志相关api")
 public class SysLogController {
 
     @Resource
@@ -37,6 +40,9 @@ public class SysLogController {
     @RequestMapping(value = "/getSysLogList", method = RequestMethod.GET)
     @Privilege(methodName = "获取日志列表", privilegeLevel = Privilege.SYS_TYPE)
     @ResponseBody
+    @ApiOperation(value = "获取日志列表",notes = "" +
+            "入参说明<br/>" +
+            "出参说明<br/>")
     public JSONObject getSysLogList(@RequestParam(value = "searchStartTime", required = false) String searchStartTime,
                                     @RequestParam(value = "searchEndTime", required = false) String searchEndTime,
                                     @RequestParam(value = "searchLevel", required = false) String searchLevel,

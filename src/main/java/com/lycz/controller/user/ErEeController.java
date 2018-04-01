@@ -7,6 +7,8 @@ import com.lycz.configAndDesign.annotation.Privilege;
 import com.lycz.model.ErEe;
 import com.lycz.service.base.TokenService;
 import com.lycz.service.user.ErEeService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +30,7 @@ import java.util.UUID;
  */
 @Controller
 @RequestMapping("ErEe")
+@Api(value = "ErEe", description = "考生考官关系相关api")
 public class ErEeController {
 
     @Resource
@@ -38,6 +41,14 @@ public class ErEeController {
     @RequestMapping(value = "/getExamineeNoRelation", method = RequestMethod.GET)
     @Privilege(methodName = "获取与自己没有建立关系的考生列表", privilegeLevel = Privilege.ER_TYPE)
     @ResponseBody
+    @ApiOperation(value = "获取与自己没有建立关系的考生列表", notes = "" +
+            "入参说明<br/>" +
+            "searchEeName：搜索的考生名称（可选）<br/>" +
+            "searchEeNo：搜索的考生号（可选）<br/>" +
+            "page：当前页<br/>" +
+            "limit：每页条数<br/>" +
+            "出参说明<br/>" +
+            "")
     public JSONObject getExamineeNoRelation(@RequestParam(value = "searchEeName", required = false) String searchEeName,
                                             @RequestParam(value = "searchEeNo", required = false) String searchEeNo,
                                             @RequestParam("page") Integer page,
@@ -60,14 +71,19 @@ public class ErEeController {
 
     /**
      * 请求建立考生考官关系,如果双方同时申请，直接建立关系
-     *
-     * @param targetId 对方id（考生申请填考官id）
-     * @param operate  操作类型（考生申请-eeRequest,考官邀请-erRequest）
      */
     @RequestMapping(value = "/requestEeEr", method = RequestMethod.POST)
     @Privilege(methodName = "请求建立考生考官关系")
     @ResponseBody
-    public JSONObject requestEeEr(@RequestParam("targetId") String targetId, @RequestParam("operate") String operate, @RequestParam("token") String token) throws Exception {
+    @ApiOperation(value = "请求建立考生考官关系", notes = "" +
+            "入参说明：<br/>" +
+            "targetId：对方id（如：考生申请填考官id）<br/>" +
+            "operate：操作类型（考生申请-eeRequest,考官邀请-erRequest）<br/>" +
+            "出参说明：<br/>" +
+            "201")
+    public JSONObject requestEeEr(@RequestParam("targetId") String targetId,
+                                  @RequestParam("operate") String operate,
+                                  @RequestParam("token") String token) throws Exception {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
         result.setStatus(400);
@@ -163,14 +179,19 @@ public class ErEeController {
 
     /**
      * 解除考生考官关系（正常返回值有200和201两种）
-     *
-     * @param erEeId  关系主键id
-     * @param operate 操作（eeRemove-考生退出，erRemove-考官踢出）
      */
     @RequestMapping(value = "/removeEeEr", method = RequestMethod.POST)
     @Privilege(methodName = "解除考生考官关系")
     @ResponseBody
-    public JSONObject removeEeEr(@RequestParam("erEeId") String erEeId, @RequestParam("operate") String operate, @RequestParam("token") String token) {
+    @ApiOperation(value = "解除考生考官关系", notes = "" +
+            "入参说明：<br/>" +
+            "erEeId：关系主键id<br/>" +
+            "operate：操作（eeRemove-考生退出，erRemove-考官踢出）<br/>" +
+            "出参说明：<br/>" +
+            "201")
+    public JSONObject removeEeEr(@RequestParam("erEeId") String erEeId,
+                                 @RequestParam("operate") String operate,
+                                 @RequestParam("token") String token) {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
         result.setStatus(400);

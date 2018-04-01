@@ -22,7 +22,7 @@ import javax.annotation.Resource;
  */
 @Controller
 @RequestMapping(value = "EeGrade")
-@Api(value = "EeGrade",description = "考生班级相关api")
+@Api(value = "EeGrade", description = "考生班级相关api")
 public class EeGradeController {
     @Resource
     private EeGradeService eeGradeService;
@@ -30,8 +30,15 @@ public class EeGradeController {
     @RequestMapping(value = "/insertEeToGrade", method = RequestMethod.POST)
     @Privilege(methodName = "将考生放入班级", privilegeLevel = Privilege.ER_TYPE)
     @ResponseBody
-    @ApiOperation(value = "将考生放入班级",notes = "")
-    public JSONObject insertEeToGrade(@RequestParam("eeId") String eeId, @RequestParam("gradeId") String gradeId, @RequestParam("token") String token) {
+    @ApiOperation(value = "将考生放入班级", notes = "" +
+            "入参说明<br/>" +
+            "eeId：考生id<br/>" +
+            "gradeId：班级id<br/>" +
+            "出参说明<br/>" +
+            "201")
+    public JSONObject insertEeToGrade(@RequestParam("eeId") String eeId,
+                                      @RequestParam("gradeId") String gradeId,
+                                      @RequestParam("token") String token) {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
 

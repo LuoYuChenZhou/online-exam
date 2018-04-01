@@ -16,6 +16,7 @@
         <result column="reg_time" jdbcType="TIMESTAMP" property="regTime"/>
         <result column="status" jdbcType="VARCHAR" property="status"/>
     </resultMap>
+
     <select id="getEeListByNameNoClass" resultType="hashMap">
         SELECT
         ee.id AS eeId,
@@ -42,4 +43,5 @@
             </if>
         </where>
     </select>
+
 </mapper>

@@ -8,6 +8,8 @@ import com.lycz.model.Grade;
 import com.lycz.service.base.CommonService;
 import com.lycz.service.base.TokenService;
 import com.lycz.service.grade.GradeService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -31,6 +33,7 @@ import java.util.UUID;
  */
 @Controller
 @RequestMapping(value = "Grade")
+@Api(value = "Grade", description = "班级相关api")
 public class GradeController {
 
     @Resource
@@ -41,8 +44,14 @@ public class GradeController {
     private CommonService commonService;
 
     @RequestMapping(value = "/setGradeSortNo", method = RequestMethod.POST)
-    @Privilege(methodName = "设置排序号")
+    @Privilege(methodName = "设置班级排序号")
     @ResponseBody
+    @ApiOperation(value = "设置班级排序号", notes = "" +
+            "入参说明：<br/>" +
+            "gradeId:班级id<br/>" +
+            "sortNo:要设置的排序号<br/>" +
+            "出参说明：<br/>" +
+            "201")
     public JSONObject setGradeSortNo(@RequestParam("gradeId") String gradeId,
                                      @RequestParam("sortNo") Integer sortNo,
                                      @RequestParam("token") String token) {
@@ -50,7 +59,7 @@ public class GradeController {
         result.setData(JSONObject.fromObject("{}"));
 
         //调用的是存储过程，编写时没有设置返回值，默认视为排序完成，排序失败会报错
-        commonService.setSortNoByLineNum("grade", gradeId, sortNo, 1, "er_id='" + tokenService.getUserId(token) + "'");
+        commonService.setSortNoByLineNum("grade", gradeId, sortNo, 1, "er_id='" + tokenService.getUserId(token) + "' AND status != '4' ");
 
         result.setMsg("排序完成");
         result.setStatus(201);
@@ -59,15 +68,16 @@ public class GradeController {
 
     /**
      * 添加班级
-     *
-     * @param grade 班级信息{
-     *              gradeName：班级名称（必填）
-     *              sortNo：排序号(可选，默认为1)
-     *              }
      */
     @RequestMapping(value = "/addGrade", method = RequestMethod.POST)
     @Privilege(methodName = "添加班级", privilegeLevel = Privilege.ER_TYPE)
     @ResponseBody
+    @ApiOperation(value = "添加班级", notes = "" +
+            "入参说明：<br/>" +
+            "gradeName:班级名称（必填）<br/>" +
+            "sortNo:排序号(可选，默认为1)<br/>" +
+            "出参说明：<br/>" +
+            "201")
     public JSONObject addGrade(@Valid Grade grade, BindingResult bindingResult, @RequestParam("token") String token) {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
@@ -121,8 +131,17 @@ public class GradeController {
     @RequestMapping(value = "/getGradeListByNameUser", method = RequestMethod.GET)
     @Privilege(methodName = "根据班级名称和当前用户搜索班级列表", privilegeLevel = Privilege.ER_TYPE)
     @ResponseBody
+    @ApiOperation(value = "根据班级名称和当前用户搜索班级列表", notes = "" +
+            "入参说明：<br/>" +
+            "searchGradeName:班级名称（必填）<br/>" +
+            "page:当前页<br/>" +
+            "limit:每页条数<br/>" +
+            "出参说明：<br/>" +
+            "201")
     public JSONObject getGradeListByNameUser(@RequestParam(value = "searchGradeName", required = false) String searchGradeName,
-                                             @RequestParam("page") Integer page, @RequestParam("limit") Integer limit, @RequestParam("token") String token) {
+                                             @RequestParam("page") Integer page,
+                                             @RequestParam("limit") Integer limit,
+                                             @RequestParam("token") String token) {
 
         String userId = tokenService.getUserId(token);
 
@@ -142,7 +161,15 @@ public class GradeController {
     @RequestMapping(value = "changeGradeStatus", method = RequestMethod.POST)
     @Privilege(methodName = "修改班级的状态", privilegeLevel = Privilege.ER_TYPE)
     @ResponseBody
-    public JSONObject changeGradeStatus(@RequestParam("id") String id, @RequestParam("status") String status,@RequestParam("token") String token) {
+    @ApiOperation(value = "修改班级的状态", notes = "" +
+            "入参说明：<br/>" +
+            "id:班级id<br/>" +
+            "status:目标状态，传入数字（0-禁用，1-启用，4-删除）<br/>" +
+            "出参说明：<br/>" +
+            "201")
+    public JSONObject changeGradeStatus(@RequestParam("id") String id,
+                                        @RequestParam("status") String status,
+                                        @RequestParam("token") String token) {
 
         CommonResult<Object> result = new CommonResult<>();
 

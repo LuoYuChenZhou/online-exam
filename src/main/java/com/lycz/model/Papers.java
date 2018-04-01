@@ -3,13 +3,18 @@ package com.lycz.model;
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "papers")
 public class Papers {
     /**
      * 试卷id
      */
     @Id
     private String id;
+
+    /**
+     * 创建者
+     */
+    @Column(name = "examiner_id")
+    private String examinerId;
 
     /**
      * 试卷名称
@@ -24,10 +29,16 @@ public class Papers {
     private Integer examTime;
 
     /**
-     * 创建者
+     * 满分
      */
-    @Column(name = "examiner_id")
-    private String examinerId;
+    @Column(name = "full_score")
+    private Integer fullScore;
+
+    /**
+     * 批改模式（0-手动批改，1-自动批改）
+     */
+    @Column(name = "correct_type")
+    private String correctType;
 
     /**
      * 创建时间
@@ -39,7 +50,7 @@ public class Papers {
     private Date modifyTime;
 
     /**
-     * 状态（0-禁用，1-正常，4-删除）
+     * 状态（1-编写，2-已发布，4-删除）
      */
     private String status;
 
@@ -59,6 +70,24 @@ public class Papers {
      */
     public void setId(String id) {
         this.id = id;
+    }
+
+    /**
+     * 获取创建者
+     *
+     * @return examiner_id - 创建者
+     */
+    public String getExaminerId() {
+        return examinerId;
+    }
+
+    /**
+     * 设置创建者
+     *
+     * @param examinerId 创建者
+     */
+    public void setExaminerId(String examinerId) {
+        this.examinerId = examinerId;
     }
 
     /**
@@ -98,21 +127,39 @@ public class Papers {
     }
 
     /**
-     * 获取创建者
+     * 获取满分
      *
-     * @return examiner_id - 创建者
+     * @return full_score - 满分
      */
-    public String getExaminerId() {
-        return examinerId;
+    public Integer getFullScore() {
+        return fullScore;
     }
 
     /**
-     * 设置创建者
+     * 设置满分
      *
-     * @param examinerId 创建者
+     * @param fullScore 满分
      */
-    public void setExaminerId(String examinerId) {
-        this.examinerId = examinerId;
+    public void setFullScore(Integer fullScore) {
+        this.fullScore = fullScore;
+    }
+
+    /**
+     * 获取批改模式（0-手动批改，1-自动批改）
+     *
+     * @return correct_type - 批改模式（0-手动批改，1-自动批改）
+     */
+    public String getCorrectType() {
+        return correctType;
+    }
+
+    /**
+     * 设置批改模式（0-手动批改，1-自动批改）
+     *
+     * @param correctType 批改模式（0-手动批改，1-自动批改）
+     */
+    public void setCorrectType(String correctType) {
+        this.correctType = correctType;
     }
 
     /**
@@ -148,18 +195,18 @@ public class Papers {
     }
 
     /**
-     * 获取状态（0-禁用，1-正常，4-删除）
+     * 获取状态（1-编写，2-已发布，4-删除）
      *
-     * @return status - 状态（0-禁用，1-正常，4-删除）
+     * @return status - 状态（1-编写，2-已发布，4-删除）
      */
     public String getStatus() {
         return status;
     }
 
     /**
-     * 设置状态（0-禁用，1-正常，4-删除）
+     * 设置状态（1-编写，2-已发布，4-删除）
      *
-     * @param status 状态（0-禁用，1-正常，4-删除）
+     * @param status 状态（1-编写，2-已发布，4-删除）
      */
     public void setStatus(String status) {
         this.status = status;

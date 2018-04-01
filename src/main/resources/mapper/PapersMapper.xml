@@ -6,9 +6,11 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="examiner_id" jdbcType="VARCHAR" property="examinerId" />
     <result column="papers_name" jdbcType="VARCHAR" property="papersName" />
     <result column="exam_time" jdbcType="INTEGER" property="examTime" />
-    <result column="examiner_id" jdbcType="VARCHAR" property="examinerId" />
+    <result column="full_score" jdbcType="INTEGER" property="fullScore" />
+    <result column="correct_type" jdbcType="VARCHAR" property="correctType" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
     <result column="status" jdbcType="VARCHAR" property="status" />
