@@ -5,7 +5,12 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
+import java.util.List;
+import java.util.Map;
+
 @Repository
 public interface EeGradeMapper extends Mapper<EeGrade> {
-    Integer insertEeToGrade(@Param("eeId") String eeId, @Param("gradeId") String gradeId);
+
+    List<Map<String, Object>> getEeListByNameNoClass(@Param("searchClass") String searchClass,
+                                                     @Param("searchString") String searchString);
 }

@@ -6,3 +6,7 @@
 #add_form input {
     width: 200px;
 }
+
+.layui-form-select {
+    width: 200px;
+}

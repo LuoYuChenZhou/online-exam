@@ -29,8 +29,9 @@ layui.use('table', function () {
         let layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
 
         if (layEvent === 'detail') { //查看详情
-            window.parent.changeView("grade/grade-detail.html");
             $.cookie("curOperateGradeId", data.id);
+            $.cookie("curOperateGradeName", data.gradeName);
+            window.parent.changeView("grade/grade-detail.html");
         } else if (layEvent === 'sort') { //排序
             $('#sort_cur_grade').val(data.gradeName);
             $('#sort_sortNo').val(data.sortNo);
@@ -135,6 +136,7 @@ function setSortNo() {
         },
         function (data) {
             if (data.status === 201) {
+                layer.msg("排序完成", {icon: 6, offset: ['100px']});
                 closeFloor(FloorObject);
                 searchBtnClick();
             } else {
@@ -153,6 +155,7 @@ function changeGradeStatus(status) {
         },
         function (data) {
             if (data.status === 201) {
+                layer.msg("操作成功", {icon: 6, offset: ['100px']});
                 closeFloor(FloorObject);
                 searchBtnClick();
             } else {

@@ -1,5 +1,6 @@
 let FloorObject = null;//弹出层对象
 let curGradeId = $.cookie("curOperateGradeId");//当前选中的班级的id
+let curEeId;
 
 layui.use('table', function () {
     let layer = layui.layer;
@@ -8,28 +9,30 @@ layui.use('table', function () {
     table.render({
         elem: '#main_show_table'
         , height: 'full-80'//高度设置为距底部30
-        , url: '../../Grade/getGradeListByNameUser.do' //数据接口
+        , url: '../../EeGrade/getEeListByNameNoClass.do' //数据接口
         , page: true //开启分页
         , cols: [[ //表头
-            {field: 'gradeName', title: '班级名称', width: 180, fixed: 'left'}
-            , {field: 'studentNum', title: '当前人数', width: 200}
-            , {field: 'createTime', title: '创建时间', width: 177, templet: '#time2string'}
-            , {fixed: 'right', title: '操作', width: 200, align: 'center', toolbar: '#grade_list_bar'}
+            {field: 'realName', title: '考生姓名', width: 130, fixed: 'left'}
+            , {field: 'eeNo', title: '考生号', width: 180}
+            , {field: 'sex', title: '性别', width: 80, templet: '#dtf'}
+            , {field: 'phone', title: '联系电话', width: 150}
+            , {field: 'email', title: '电子邮箱', width: 200}
+            , {title: '操作', width: 100, align: 'center', toolbar: '#main_table_bar'}
         ]]
         , where: {
-            token: token
+            searchClass: curGradeId
+            , token: token
         }
     });
 
     //监听工具条
-    table.on('tool(grade-t)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+    table.on('tool(main-filter)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
         let data = obj.data; //获得当前行数据
-        curGradeId = data.id;
+        curEeId = data.eeId;
         let layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
 
-        if (layEvent === 'detail') { //查看详情
-        } else if (layEvent === 'sort') { //排序
-            $('#sort_cur_grade').val(data.gradeName);
+        if (layEvent === 'sort') { //排序
+            $('#sort_cur_ee').val(data.realName);
             $('#sort_sortNo').val(data.sortNo);
             layui.use('layer', function () {
                 FloorObject = layer.open({
@@ -46,24 +49,7 @@ layui.use('table', function () {
             FloorObject = layer.confirm('确定删除？', {
                 btn: ['确定', '取消'] //按钮
             }, function () {
-                changeGradeStatus("4");
-            }, function () {
-                closeFloor(FloorObject);
-            });
-        } else if (layEvent === 'enOrDis') { //启用或禁用
-            let PromptMsg = null;
-            let GoalStatus = null;
-            if (data.status === "1") {
-                PromptMsg = "确定禁用？"
-                GoalStatus = "0";
-            } else {
-                PromptMsg = "确定启用？"
-                GoalStatus = "1";
-            }
-            FloorObject = layer.confirm(PromptMsg, {
-                btn: ['确定', '取消'] //按钮
-            }, function () {
-                changeGradeStatus(GoalStatus);
+                removeEeFromGrade("4");
             }, function () {
                 closeFloor(FloorObject);
             });
@@ -71,15 +57,21 @@ layui.use('table', function () {
     });
 });
 
+$(function () {
+    //默认值的赋值要在页面加载完成以后
+    $("#curGradeName").val($.cookie("curOperateGradeName"));
+});
+
 //搜索按钮点击
 function searchBtnClick() {
-    let jsonFormData = getEntity("#grade_list_form");
+    let jsonFormData = getEntity("#main_search_form");
     let table = layui.table;
 
-    table.reload('grade_list_table', {
+    table.reload('main_show_table', {
         where: {
-            token: token
-            , searchGradeName: jsonFormData.searchGradeName
+            searchClass: curGradeId
+            , token: token
+            , searchString: jsonFormData.searchString
         },
         page: {
             curr: 1
@@ -89,14 +81,16 @@ function searchBtnClick() {
 
 //设置排序号
 function setSortNo() {
-    $.post("/Grade/setGradeSortNo.do",
+    $.post("/EeGrade/setEeGradeSortNo.do",
         {
             gradeId: curGradeId
-            , sortNo: $("#sort_sortNo").val()
+            , targetSortNo: $("#sort_sortNo").val()
+            , eeId: curEeId
             , token: token
         },
         function (data) {
             if (data.status === 201) {
+                layer.msg("排序完成", {icon: 6, offset: ['100px']});
                 closeFloor(FloorObject);
                 searchBtnClick();
             } else {
@@ -105,16 +99,27 @@ function setSortNo() {
         });
 }
 
-//根据班级id获取班级信息
-function changeGradeStatus(status) {
-    $.get("/Grade/getGradeInfoById.do",
+//返回列表页
+function backToList() {
+    window.parent.changeView("grade/grade-list.html");
+}
+
+//跳转到添加考生页面
+function geToAddEe() {
+    window.parent.changeView("examinee/add-examinee-list.html");
+}
+
+//从班级内删除考生
+function removeEeFromGrade() {
+    $.post("/EeGrade/removeEeFromGrade.do",
         {
-            id: curGradeId
-            , status: status
+            gradeId: curGradeId
+            , eeId: curEeId
             , token: token
         },
         function (data) {
             if (data.status === 201) {
+                layer.msg("删除成功", {icon: 6, offset: ['100px']});
                 closeFloor(FloorObject);
                 searchBtnClick();
             } else {

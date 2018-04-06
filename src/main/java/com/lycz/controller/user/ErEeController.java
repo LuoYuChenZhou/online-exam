@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author lizhenqing
@@ -43,8 +40,7 @@ public class ErEeController {
     @ResponseBody
     @ApiOperation(value = "获取与自己没有建立关系的考生列表", notes = "" +
             "入参说明<br/>" +
-            "searchEeName：搜索的考生名称（可选）<br/>" +
-            "searchEeNo：搜索的考生号（可选）<br/>" +
+            "searchString：搜索字符，查询姓名、考生号、手机号（可选）<br/>" +
             "page：当前页<br/>" +
             "limit：每页条数<br/>" +
             "出参说明<br/>" +
@@ -69,14 +65,13 @@ public class ErEeController {
             "    \"page\":当前页\n" +
             "\n" +
             "}\n")
-    public JSONObject getExamineeNoRelation(@RequestParam(value = "searchEeName", required = false) String searchEeName,
-                                            @RequestParam(value = "searchEeNo", required = false) String searchEeNo,
+    public JSONObject getExamineeNoRelation(@RequestParam(value = "searchString", required = false) String searchString,
                                             @RequestParam("page") Integer page,
                                             @RequestParam("limit") Integer limit,
                                             @RequestParam("token") String token) {
 
         String userId = tokenService.getUserId(token);
-        FixPageInfo<Map<String, Object>> pageInfo = erEeService.getExamineeNoRelation(searchEeName, searchEeNo, page, limit, userId);
+        FixPageInfo<Map<String, Object>> pageInfo = erEeService.getExamineeNoRelation(searchString, page, limit, userId);
         if (pageInfo == null) {
             pageInfo = new FixPageInfo<>();
             pageInfo.setMsg("查询结束，但没有数据");
@@ -99,11 +94,15 @@ public class ErEeController {
             "入参说明：<br/>" +
             "targetId：对方id（如：考生申请填考官id）<br/>" +
             "operate：操作类型（考生申请-eeRequest,考官邀请-erRequest）<br/>" +
+            "gradeId：班级id（考官邀请传入，传入noAddToGrade表示不添加进班级）<br/>" +
+            "sortNo：考生在班级内的排序号（不传为1）<br/>" +
             "出参说明：<br/>" +
             "201")
     public JSONObject requestEeEr(@RequestParam("targetId") String targetId,
                                   @RequestParam("operate") String operate,
-                                  @RequestParam("token") String token) throws Exception {
+                                  @RequestParam(value = "gradeId", required = false) String gradeId,
+                                  @RequestParam(value = "sortNo", required = false) Integer sortNo,
+                                  @RequestParam("token") String token) {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
         result.setStatus(400);
@@ -172,13 +171,13 @@ public class ErEeController {
                 } else {
                     erEe = new ErEe();
                     erEe.setId(UUID.randomUUID().toString());
-                    erEe.setExaminerId(targetId);
-                    erEe.setExamineeId(userId);
+                    erEe.setExaminerId(userId);
+                    erEe.setExamineeId(targetId);
                     erEe.setCurStatus("2");
                     erEe.setHisStatus("2");
                     erEe.setHisTime(curTime + "");
                     erEe.setModifyTime(new Date());
-                    flag = erEeService.insertSelective(erEe) > 0;
+                    flag = erEeService.addEe(erEe, gradeId, sortNo);
                 }
                 break;
             default:

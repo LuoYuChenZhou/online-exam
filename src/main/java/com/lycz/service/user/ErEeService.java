@@ -8,5 +8,7 @@ import java.util.Map;
 
 public interface ErEeService extends IBaseServiceTk<ErEe> {
 
-    FixPageInfo<Map<String, Object>> getExamineeNoRelation(String searchEeName, String searchEeNo, Integer page, Integer limit, String userId);
+    FixPageInfo<Map<String, Object>> getExamineeNoRelation(String searchString, Integer page, Integer limit, String userId);
+
+    boolean addEe(ErEe erEe, String gradeId, Integer sortNo);
 }

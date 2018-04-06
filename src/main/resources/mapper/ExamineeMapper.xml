@@ -17,31 +17,4 @@
         <result column="status" jdbcType="VARCHAR" property="status"/>
     </resultMap>
 
-    <select id="getEeListByNameNoClass" resultType="hashMap">
-        SELECT
-        ee.id AS eeId,
-        eg.id AS egId,
-        ee.real_name AS realName,
-        ee.ee_no AS eeNo,
-        ee.sex AS sex,
-        ee.phone AS phone,
-        ee.email AS email,
-        group_concat(gr.grade_name) AS gradeNames
-        FROM
-        examinee ee
-        LEFT JOIN ee_grade eg ON ee.id = eg.ee_id
-        LEFT JOIN grade gr ON eg.grade_id = gr.id AND gr.status != '4'
-        <where>
-            <if test=' examineeName != null and examineeName != "" '>
-              AND ee.real_name LIKE CONCAT('%',#{examineeName},'%')
-            </if>
-            <if test=' examineeNum != null and examineeNum != "" '>
-              AND ee.ee_no LIKE CONCAT('%',#{examineeNum},'%')
-            </if>
-            <if test=' searchClass != null and searchClass != "" '>
-              AND  gr.id = #{searchClass}
-            </if>
-        </where>
-    </select>
-
 </mapper>

@@ -14,7 +14,10 @@ import org.aspectj.lang.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -52,13 +55,17 @@ public class ControllerLogsAspect {
      */
     @Pointcut(value = "execution(* com.lycz.controller..*Controller.*(..)) " +
             "&& !@annotation(com.lycz.configAndDesign.annotation.NoSaveLog)" +
-            "&& @annotation(org.springframework.web.bind.annotation.RequestMapping)" +
-            "&& args(..,token)", argNames = "token")
-    public void controllerAspect(String token) {
+            "&& @annotation(org.springframework.web.bind.annotation.RequestMapping)")
+    public void controllerAspect() {
     }
 
-    @After(value = "controllerAspect(token)", argNames = "joinPoint,token")
-    public void getInfo(JoinPoint joinPoint, String token) {
+    @After(value = "controllerAspect()", argNames = "joinPoint")
+    public void getInfo(JoinPoint joinPoint) {
+        //获取token
+        ServletRequestAttributes servletWebRequest = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = servletWebRequest.getRequest();
+        String token = request.getParameter("token");
+
         try {
             //获取控制类上的注解
             String currentClassName = joinPoint.getTarget().getClass().getName();
@@ -105,8 +112,8 @@ public class ControllerLogsAspect {
         }
     }
 
-    @AfterReturning(value = "controllerAspect(token) ", argNames = "rtv,token", returning = "rtv")
-    public void saveErrLogs(Object rtv, String token) {
+    @AfterReturning(value = "controllerAspect()", argNames = "rtv", returning = "rtv")
+    public void saveErrLogs(Object rtv) {
         String level;
         Integer status = null;
         String msg = null;
@@ -166,8 +173,8 @@ public class ControllerLogsAspect {
         }
     }
 
-    @AfterThrowing(value = "controllerAspect(token)", argNames = "token,ex", throwing = "ex")
-    public void exLogs(String token, Exception ex) {
+    @AfterThrowing(value = "controllerAspect()", argNames = "ex", throwing = "ex")
+    public void exLogs(Exception ex) {
         String level = (String) GlobalConfig.LOG_SERIOUS.getValue();
 
         try {

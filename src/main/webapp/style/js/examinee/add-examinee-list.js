@@ -1,3 +1,6 @@
+let FloorObject;
+let curEeId;//当前操作的考生的id
+let curChooseGradeId;//当前选中的班级id
 
 layui.use('table', function () {
     let layer = layui.layer;
@@ -27,11 +30,20 @@ layui.use('table', function () {
         let layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
         // let tr = obj.tr; //获得当前行 tr 的DOM对象
 
-        if (layEvent === 'detail') { //查看
+        if (layEvent === 'add') {
+            curEeId = data.id;
+            layui.use('form', function () {
+                let form = layui.form;
+                getAllGradeList(form);
+                form.on('select(grade_select_filter)', function (data) {
+                    curChooseGradeId = data.value;
+                });
+            });
+
             layui.use('layer', function () {
-                layer.open({
+                FloorObject = layer.open({
                     type: 1,
-                    title: '添加班级',
+                    title: '添加考生',
                     area: ['400px', '250px'],
                     offset: ['10%', '20%'],
                     shade: 0.6,
@@ -51,11 +63,57 @@ function searchBtnClick() {
     table.reload('main_table', {
         where: {
             token: token
-            , searchEeName: jsonFormData.searchEeName
-            , searchEeNo: jsonFormData.searchEeNo
+            , searchString: jsonFormData.searchString
         },
         page: {
             curr: 1
         }
     });
+}
+
+//获取所有班级列表
+function getAllGradeList(form) {
+    $.get("/Grade/getGradeListByNameUser.do",
+        {
+            page: 1
+            , limit: 10000
+            , token: token
+        },
+        function (data) {
+            let gradeListSelect = $("#gradeListSelect");
+            gradeListSelect.empty();
+            if (data.code === 0) {
+                gradeListSelect.append("<option value='noAddToGrade' selected>暂不添加进班级</option>");
+                for (let i = 0; i < data.data.length; i++) {
+                    gradeListSelect.append("<option value='" + data.data[i].id + "'>" + data.data[i].gradeName + "</option>");
+                }
+            } else if (data.code === 204) {
+                gradeListSelect.append("<option value='noAddToGrade' selected>暂不添加进班级</option>");
+            } else {
+                layer.msg(data.msg);
+            }
+            form.render();
+        });
+}
+
+//添加考生
+function addEe() {
+    $.post("/ErEe/requestEeEr.do",
+        {
+            targetId: curEeId
+            , operate: "erRequest"
+            , gradeId: curChooseGradeId
+            , sortNo: $("input[name='ee_add_sort']").val()
+            , token: token
+        },
+        function (data) {
+            if (data.status === 201) {
+                layer.msg("邀请成功，请等待考生回应", {icon: 6, offset: ['100px']});
+            } else {
+                layer.msg(data.msg, {icon: 4, offset: ['100px']});
+            }
+            closeFloor(FloorObject);
+            searchBtnClick();
+        });
+
 }

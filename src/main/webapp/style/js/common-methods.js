@@ -213,6 +213,8 @@ function setEntity(form, entity) {
  * 性别数字转文字
  */
 function num2Sex(sexNum) {
+    if(!sexNum)
+        return "";
     switch (sexNum) {
         case "0":
             return "男";

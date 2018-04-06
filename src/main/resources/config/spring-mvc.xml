@@ -18,9 +18,8 @@
 
     <!--将静态资源交由默认的servlet处理-->
     <mvc:default-servlet-handler/>
-    <!--配置swagger资源不被拦截,下面一行无故报错，注释起来也没影响-->
-    <!--<mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>-->
-    <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
+    <!--配置style目录下资源不被拦截-->
+    <mvc:resources mapping="/style/**" location="style/"/>
 
     <!-- 扫描controller（controller层注入） -->
     <context:component-scan base-package="com.lycz.controller"/>

@@ -10,7 +10,33 @@
         <result column="grade_id" jdbcType="VARCHAR" property="gradeId"/>
         <result column="sort_no" jdbcType="INTEGER" property="sortNo"/>
     </resultMap>
-    <insert id="insertEeToGrade">
-        INSERT INTO ee_grade(id,ee_id,grade_id) VALUES (uuid(),#{eeId},#{gradeId})
-    </insert>
+
+    <select id="getEeListByNameNoClass" resultType="hashMap">
+        SELECT
+        ee.id AS eeId,
+        eg.id AS egId,
+        ee.real_name AS realName,
+        ee.ee_no AS eeNo,
+        ee.sex AS sex,
+        ee.phone AS phone,
+        ee.email AS email,
+        group_concat(gr.grade_name) AS gradeNames,
+        eg.sort_no AS sortNo
+        FROM
+        examinee ee
+        LEFT JOIN ee_grade eg ON ee.id = eg.ee_id
+        LEFT JOIN grade gr ON eg.grade_id = gr.id AND gr.status != '4'
+        <where>
+            <if test=' searchString != null and searchString != "" '>
+                AND (
+                ee.real_name LIKE CONCAT('%',#{searchString},'%')
+                OR ee.ee_no LIKE CONCAT('%',#{searchString},'%')
+                OR ee.phone LIKE CONCAT('%',#{searchString},'%')
+                )
+            </if>
+            <if test=' searchClass != null and searchClass != "" '>
+                AND  gr.id = #{searchClass}
+            </if>
+        </where>
+    </select>
 </mapper>

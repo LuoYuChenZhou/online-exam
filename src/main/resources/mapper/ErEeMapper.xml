@@ -16,7 +16,7 @@
 
     <select id="getExamineeNoRelation" resultType="hashMap">
         SELECT
-        ee.id AS eeId,
+        ee.id AS id,
         ee.real_name AS realName,
         ee.ee_no AS eeNo,
         ee.sex AS sex,
@@ -28,11 +28,12 @@
         ee.id NOT IN (
         SELECT re.examinee_id FROM er_ee re WHERE re.examiner_id = #{userId} AND re.cur_status = '3'
         )
-        <if test=' searchEeName != null and searchEeName != "" '>
-            AND ee.real_name LIKE CONCAT("%",#{searchEeName},"%")
-        </if>
-        <if test=' searchEeNo != null and searchEeNo != "" '>
-            AND ee.ee_no LIKE CONCAT("%",#{searchEeNo},"%")
+        <if test=' searchString != null and searchString != "" '>
+            AND (
+                ee.real_name LIKE CONCAT('%',#{searchString},'%')
+                OR ee.ee_no LIKE CONCAT('%',#{searchString},'%')
+                OR ee.phone LIKE CONCAT('%',#{searchString},'%')
+                )
         </if>
     </select>
 

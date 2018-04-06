@@ -1,9 +1,13 @@
 package com.lycz.service.grade;
 
+import com.lycz.configAndDesign.FixPageInfo;
 import com.lycz.model.EeGrade;
 import com.lycz.service.base.IBaseServiceTk;
 
+import java.util.Map;
+
 public interface EeGradeService extends IBaseServiceTk<EeGrade> {
 
-    Integer insertEeToGrade(String eeId, String gradeId);
+    FixPageInfo<Map<String, Object>> getEeListByNameNoClass(String searchClass, String searchString, Integer page, Integer limit);
+
 }

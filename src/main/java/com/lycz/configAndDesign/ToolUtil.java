@@ -182,14 +182,12 @@ public class ToolUtil extends StringUtils {
     /**
      * 如果比较字符串中有一个与被计较字符串相同，返回true
      *
-     * @param compare 被比较字符串
+     * @param compare 被比较字符串,允许为null
      * @param ss      数目不定的比较字符串
      */
-    @Contract("null, _ -> fail")
-    public static boolean anyEqual(String compare, String... ss) throws Exception {
-        if (compare == null) throw new Exception("被比较字符串不能为空");
+    public static boolean anyEqual(String compare, String... ss) {
         for (String s : ss) {
-            if (compare.equals(s)) {
+            if (Objects.equals(compare, s)) {
                 return true;
             }
         }

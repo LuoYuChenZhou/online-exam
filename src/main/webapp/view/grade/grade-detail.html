@@ -14,20 +14,35 @@
 </head>
 <body>
 
-<div class="layui-form" id="grade_list_form">
-    <div class="layui-form-item" style="margin:10px 0 -10px -9px;">
+<div class="layui-form" id="main_search_form">
+    <div class="layui-form-item" style="margin:10px 0 -10px -30px;">
+
+        <div class="layui-inline" style="margin-left: -60px;">
+            <div class="layui-input-block">
+                <button class="layui-btn" style="background: #73aae1;" onclick="backToList()">&lt; 返回</button>
+            </div>
+        </div>
 
         <div class="layui-inline">
-            <label class="layui-form-label">班级名称：</label>
+            <label class="layui-form-label" for="curGradeName">当前班级：</label>
             <div class="layui-input-inline" style="width: 180px;">
-                <input type="text" readonly autocomplete="off" class="layui-input" id="cur-grade-name">
+                <input type="text" readonly autocomplete="off" class="layui-input" id="curGradeName"
+                       style="color: #bcbcbc;">
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">搜索条件：</label>
+            <div class="layui-input-inline" style="width: 220px;">
+                <input type="text" autocomplete="off" class="layui-input" name="searchString"
+                       placeholder="输入姓名、考生号、或手机号查询...">
             </div>
         </div>
 
         <div class="layui-inline" style="margin-left: -60px;">
             <div class="layui-input-block">
-                <button class="layui-btn" style="background: #1E9FFF;" onclick="searchBtnClick()">刷新</button>
-                <button class="layui-btn" style="background: #5FB878;" onclick="showAddGrade()">添加考生</button>
+                <button class="layui-btn" style="background: #1E9FFF;" onclick="searchBtnClick()">搜索</button>
+                <button class="layui-btn" style="background: #5FB878;" onclick="geToAddEe()">添加考生</button>
             </div>
         </div>
 
@@ -39,19 +54,15 @@
 <!--排序号弹窗-->
 <div id="sort_form">
     <div class="layui-form-item">
-        <label class="layui-form-label">当前班级：</label>
+        <label class="layui-form-label" for="sort_cur_ee">当前考生：</label>
         <div class="layui-input-block">
-            <input type="text" id="sort_cur_grade"
-                   autocomplete="off"
-                   disabled
-                   class="layui-input">
+            <input type="text" id="sort_cur_ee" autocomplete="off" disabled class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">排序号 ：</label>
         <div class="layui-input-block">
-            <input type="text" id="sort_sortNo" placeholder="请输入排序号..." autocomplete="off"
-                   class="layui-input">
+            <input type="text" id="sort_sortNo" placeholder="请输入排序号..." autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
@@ -63,10 +74,10 @@
 </div>
 </body>
 </html>
-<script type="text/html" id="time2string">
-    {{ dtf("yMdHms",d.createTime) }}
+<script type="text/html" id="dtf">
+    {{ dtf(d.sex) }}
 </script>
-<script type="text/html" id="grade_list_bar">
+<script type="text/html" id="main_table_bar">
     <a class="layui-btn layui-btn-xs sort_bg" lay-event="sort" title="排序"><i class="iconfont icon-paixu"></i></a>
     <a class="layui-btn layui-btn-xs delete_bg" lay-event="delete" title="删除"><i class="iconfont icon-delete"></i></a>
 </script>

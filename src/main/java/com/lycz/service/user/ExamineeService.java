@@ -18,6 +18,4 @@ public interface ExamineeService extends IBaseServiceTk<Examinee> {
      */
     boolean userNameIsExist(String userName);
 
-    FixPageInfo<Map<String, Object>> getEeListByNameNoClass(String searchClass, String examineeName, String examineeNum, Integer page, Integer limit);
-
 }

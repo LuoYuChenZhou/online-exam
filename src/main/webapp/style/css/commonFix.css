@@ -21,3 +21,53 @@ a .layui-btn {
 .sort_bg {
     background-color: #FFB800;
 }
+
+/*设置placeholder样式===============开始*/
+::-webkit-input-placeholder { /* WebKit browsers */
+    font-size: 12px;
+}
+
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    font-size: 12px;
+}
+
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    font-size: 12px;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    font-size: 12px;
+}
+
+/*设置placeholder样式===============结束*/
+
+/*将边框和整体背景一致*/
+.layui-table-view {
+    border: #E0FCFF;
+    margin-left: 20px;
+}
+
+/*表头背景设为和整体背景一致，使边框线看不出来*/
+.layui-table-header {
+    background-color: rgba(0, 0, 0, 0);
+    border-bottom-color: #E0FCFF;
+}
+
+/*表头样式*/
+.layui-table thead tr {
+    background-color: #73aae1;
+    color: #FFFFFF;
+}
+
+/*将表格莫名其妙多出来的一列删除*/
+.layui-table-patch div {
+    width: 0 !important;
+}
+
+.layui-form-label {
+    color: #6585BA;
+}
+
+dd{
+    font-size: 12px;
+}

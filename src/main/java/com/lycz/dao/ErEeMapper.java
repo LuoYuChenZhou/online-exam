@@ -9,7 +9,6 @@ import java.util.Map;
 
 public interface ErEeMapper extends Mapper<ErEe> {
 
-    List<Map<String, Object>> getExamineeNoRelation(@Param("searchEeName") String searchEeName,
-                                                    @Param("searchEeNo") String searchEeNo,
+    List<Map<String, Object>> getExamineeNoRelation(@Param("searchString") String searchString,
                                                     @Param("userId") String userId);
 }

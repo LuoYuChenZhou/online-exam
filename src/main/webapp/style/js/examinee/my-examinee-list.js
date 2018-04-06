@@ -1,11 +1,22 @@
-
-layui.use('form', function(){
+layui.use('form', function () {
     let form = layui.form;
 
-    getGradeList();
-    form.render('select','search_form'); //刷新select选择框渲染
+    $.get("/Grade/getGradeListByNameUser.do", {page: 1, limit: 1000, token: token}, function (data) {
+        $("#searchClass").empty();
+        if (data.code === 0) {
+            $("#searchClass").append("<option value=\"\"></option>");
 
-    form.on('select(searchClass)', function(){
+            $.each(data.data, function (index, val) {
+                $("#searchClass").append("<option value=" + val.id + ">" + val.gradeName + "</option>");
+            });
+        } else if (data.code === 204) {
+            $("#searchClass").html("<option value=\"\"></option>");
+        }
+        //如果将下面这句话放到方法外面，需要注意异步问题导致的页面渲染失败
+        form.render('select');
+    });
+
+    form.on('select(searchClass)', function () {
         searchBtnClick();
     });
 });
@@ -14,7 +25,7 @@ layui.use('table', function () {
     let layer = layui.layer;
     let table = layui.table;
 
-    let log_tab = table.render({
+    table.render({
         elem: '#log_table'
         , height: 'full-80'//高度设置为距底部30
         , url: '../../SysLog/getSysLogList.do' //数据接口
@@ -31,16 +42,6 @@ layui.use('table', function () {
         , id: 'logTable'
         , where: {
             token: token
-        }
-    });
-
-    log_tab.reload({
-        where: {
-            token: token
-            , searchStartTime: $("#startTime").val()
-            , searchEndTime: $("#endTime").val()
-            , searchLevel: $("#logLevel").val()
-            , searchTitle: $("#logTitle").val()
         }
     });
 
@@ -83,22 +84,6 @@ function searchBtnClick() {
         },
         page: {
             curr: 1
-        }
-    });
-}
-
-//获取班级列表
-function getGradeList() {
-    layui.msg("23");
-    $.get("/Grade/getGradeListByNameUser.do", {page: 1, limit: 1000, token: token}, function (data) {
-        if (data.code === 0) {
-            $("#searchClass").append("<option value=\"\"></option>");
-
-            $.each(data.data, function (index, val) {
-                $("#searchClass").append("<option value=" + val.id + ">" + val.gradeName + "</option>");
-            });
-        } else if (data.code === 204) {
-            $("#searchClass").html("<option value=\"\"></option>");
         }
     });
 }
