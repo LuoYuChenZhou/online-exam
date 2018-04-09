@@ -1,4 +1,4 @@
-package com.lycz.configAndDesign;
+package com.lycz.configAndDesign.Swagger2;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
