@@ -16,23 +16,17 @@
     <div class="layui-form-item" style="margin:10px 0 -10px -20px;">
 
         <div class="layui-inline">
-            <label class="layui-form-label">考生姓名：</label>
-            <div class="layui-input-inline" style="width: 150px;">
-                <input type="text" name="searchEeName" autocomplete="off" class="layui-input" id="searchEeName">
-            </div>
-        </div>
-
-        <div class="layui-inline">
-            <label class="layui-form-label">考生号：</label>
-            <div class="layui-input-inline" style="width: 150px;">
-                <input type="text" name="searchEeNo" autocomplete="off" class="layui-input" id="searchEeNo">
+            <label class="layui-form-label" for="searchString">搜索条件：</label>
+            <div class="layui-input-inline">
+                <input placeholder="输入姓名、考生号或手机号码查询..." style="width:240px" type="text" name="searchString"
+                       autocomplete="off" class="layui-input" id="searchString">
             </div>
         </div>
 
         <div class="layui-inline">
             <label class="layui-form-label">所属班级：</label>
             <div class="layui-input-block">
-                <select name="searchClass" id="searchClass" lay-filter="searchClass">
+                <select id="searchClass" lay-filter="searchClass">
                 </select>
             </div>
         </div>
@@ -47,6 +41,10 @@
 <table id="main_table" class="layui-table" lay-filter="main_table_filter"></table>
 </body>
 </html>
+<script type="text/html" id="num2Sex">
+    {{ num2Sex(d.sex) }}
+</script>
 <script type="text/html" id="main_table_bar">
-    <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="iconfont icon-sousuo"></i></a>
+    <a class="layui-btn layui-btn-xs" lay-event="addToGrade"><i class="iconfont icon-tianjia"></i></a>
+    <a class="layui-btn layui-btn-xs" lay-event="delete"><i class="iconfont icon-delete"></i></a>
 </script>
