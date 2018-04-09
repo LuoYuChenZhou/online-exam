@@ -6,6 +6,7 @@ import com.lycz.configAndDesign.ToolUtil;
 import com.lycz.configAndDesign.annotation.Privilege;
 import com.lycz.model.EeGrade;
 import com.lycz.service.base.CommonService;
+import com.lycz.service.base.TokenService;
 import com.lycz.service.grade.EeGradeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,6 +37,8 @@ public class EeGradeController {
     private EeGradeService eeGradeService;
     @Resource
     private CommonService commonService;
+    @Resource
+    private TokenService tokenService;
 
     @RequestMapping(value = "/insertEeToGrade", method = RequestMethod.POST)
     @Privilege(methodName = "将考生放入班级", privilegeLevel = Privilege.ER_TYPE)
@@ -80,9 +83,9 @@ public class EeGradeController {
     }
 
     @RequestMapping(value = "/getEeListByNameNoClass", method = RequestMethod.GET)
-    @Privilege(methodName = "根据考生姓名、考生号、手机号、所属班级查询学生列表", privilegeLevel = Privilege.ER_TYPE)
+    @Privilege(methodName = "根据考生姓名、考生号、手机号、所属班级查询当前考官所属考生列表", privilegeLevel = Privilege.ER_TYPE)
     @ResponseBody
-    @ApiOperation(value = "根据考生姓名、考生号、手机号、所属班级查询学生列表", notes = "" +
+    @ApiOperation(value = "根据考生姓名、考生号、手机号、所属班级查询当前考官所属考生列表", notes = "" +
             "入参说明<br/>" +
             "searchClass：班级id（可选）<br/>" +
             "searchString：搜索字符，可查询姓名、考生号、手机号（可选）<br/>" +
@@ -102,6 +105,8 @@ public class EeGradeController {
             "            \"sex\":\"性别（0-男，1-女）\",\n" +
             "            \"phone\":\"手机号\",\n" +
             "            \"email\":\"电子邮箱\"\n" +
+            "            \"gradeNames\":\"所属班级（逗号隔开）\"\n" +
+            "            \"sortNo\":\"排序号\"\n" +
             "        }\n" +
             "    ],\n" +
             "    \"limit\":每页条数,\n" +
@@ -115,7 +120,9 @@ public class EeGradeController {
             , @RequestParam("page") Integer page
             , @RequestParam("limit") Integer limit
             , @RequestParam("token") String token) {
-        FixPageInfo<Map<String, Object>> logInfo = eeGradeService.getEeListByNameNoClass(searchClass, searchString, page, limit);
+
+        String erId = tokenService.getUserId(token);
+        FixPageInfo<Map<String, Object>> logInfo = eeGradeService.getEeListByNameNoClass(erId, searchClass, searchString, page, limit);
         if (logInfo == null) {
             logInfo = new FixPageInfo<>();
             logInfo.setCode(204);

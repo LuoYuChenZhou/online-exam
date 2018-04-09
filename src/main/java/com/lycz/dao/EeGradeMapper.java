@@ -11,6 +11,7 @@ import java.util.Map;
 @Repository
 public interface EeGradeMapper extends Mapper<EeGrade> {
 
-    List<Map<String, Object>> getEeListByNameNoClass(@Param("searchClass") String searchClass,
+    List<Map<String, Object>> getEeListByNameNoClass(@Param("erId") String erId,
+                                                     @Param("searchClass") String searchClass,
                                                      @Param("searchString") String searchString);
 }

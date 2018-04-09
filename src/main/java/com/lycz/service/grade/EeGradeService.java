@@ -8,6 +8,6 @@ import java.util.Map;
 
 public interface EeGradeService extends IBaseServiceTk<EeGrade> {
 
-    FixPageInfo<Map<String, Object>> getEeListByNameNoClass(String searchClass, String searchString, Integer page, Integer limit);
+    FixPageInfo<Map<String, Object>> getEeListByNameNoClass(String erId, String searchClass, String searchString, Integer page, Integer limit);
 
 }

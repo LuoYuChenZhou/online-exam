@@ -14,7 +14,6 @@
     <select id="getEeListByNameNoClass" resultType="hashMap">
         SELECT
         ee.id AS eeId,
-        eg.id AS egId,
         ee.real_name AS realName,
         ee.ee_no AS eeNo,
         ee.sex AS sex,
@@ -27,6 +26,9 @@
         LEFT JOIN ee_grade eg ON ee.id = eg.ee_id
         LEFT JOIN grade gr ON eg.grade_id = gr.id AND gr.status != '4'
         <where>
+            ee.id IN (
+                SELECT examinee_id FROM er_ee WHERE examiner_id = #{erId} AND cur_status = '3'
+            )
             <if test=' searchString != null and searchString != "" '>
                 AND (
                 ee.real_name LIKE CONCAT('%',#{searchString},'%')
@@ -38,5 +40,7 @@
                 AND  gr.id = #{searchClass}
             </if>
         </where>
+        GROUP BY ee.id
+        ORDER BY gr.id ASC ,eg.sort_no ASC
     </select>
 </mapper>

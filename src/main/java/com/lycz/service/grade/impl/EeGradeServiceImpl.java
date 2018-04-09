@@ -22,9 +22,9 @@ public class EeGradeServiceImpl extends BaseServiceTk<EeGrade> implements EeGrad
     private EeGradeMapper eeGradeMapper;
 
     @Override
-    public FixPageInfo<Map<String, Object>> getEeListByNameNoClass(String searchClass, String searchString, Integer page, Integer limit) {
+    public FixPageInfo<Map<String, Object>> getEeListByNameNoClass(String erId, String searchClass, String searchString, Integer page, Integer limit) {
         PageHelper.startPage(page, limit);
-        List<Map<String, Object>> eeList = eeGradeMapper.getEeListByNameNoClass(searchClass, searchString);
+        List<Map<String, Object>> eeList = eeGradeMapper.getEeListByNameNoClass(erId, searchClass, searchString);
         if (ToolUtil.isEmpty(eeList)) {
             return null;
         } else {
