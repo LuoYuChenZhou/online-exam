@@ -15,4 +15,22 @@
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
     <result column="status" jdbcType="VARCHAR" property="status" />
   </resultMap>
+  <select id="searchExaminationName" resultType="hashMap">
+    SELECT
+    p.papers_name AS papersName,
+    p.exam_time AS examTime,
+    p.full_score AS fullScore,
+    p.status AS sataus,
+    count(* ) AS numberOf
+    FROM
+    papers p
+    LEFT JOIN score s ON p.id = s.paper_id
+    <where>
+      <if test=' papersName != null and papersName !="" '>
+        and  p.papers_name = #{papersName} and
+      </if>
+        p.examiner_id = #{teachersId}
+    </where>
+
+  </select>
 </mapper>
