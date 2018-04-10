@@ -9,6 +9,7 @@
         <result column="ee_id" jdbcType="VARCHAR" property="eeId"/>
         <result column="grade_id" jdbcType="VARCHAR" property="gradeId"/>
         <result column="sort_no" jdbcType="INTEGER" property="sortNo"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
     </resultMap>
 
     <select id="getEeListByNameNoClass" resultType="hashMap">

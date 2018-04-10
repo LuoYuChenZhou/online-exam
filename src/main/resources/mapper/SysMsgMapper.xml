@@ -9,6 +9,7 @@
     <result column="send_id" jdbcType="VARCHAR" property="sendId" />
     <result column="receive_id" jdbcType="VARCHAR" property="receiveId" />
     <result column="msg" jdbcType="VARCHAR" property="msg" />
+    <result column="msg_type" jdbcType="VARCHAR" property="msgType" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>

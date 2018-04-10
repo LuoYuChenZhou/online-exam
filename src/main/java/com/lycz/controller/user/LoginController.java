@@ -278,7 +278,7 @@ public class LoginController {
         result.setData(JSONObject.fromObject("{}"));
         result.setStatus(400);
 
-        Map<String, Object> jm = tokenService.getToken(token);
+        Map<String, Object> jm = tokenService.getTokenMap(token);
 
         String realType;
         switch (searchType) {

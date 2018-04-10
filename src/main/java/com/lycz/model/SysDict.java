@@ -20,6 +20,12 @@ public class SysDict {
     private String dictCode;
 
     /**
+     * 字典值
+     */
+    @Column(name = "dict_value")
+    private String dictValue;
+
+    /**
      * 父级id（0-顶级字典）
      */
     @Column(name = "upper_id")
@@ -84,6 +90,24 @@ public class SysDict {
      */
     public void setDictCode(String dictCode) {
         this.dictCode = dictCode;
+    }
+
+    /**
+     * 获取字典值
+     *
+     * @return dict_value - 字典值
+     */
+    public String getDictValue() {
+        return dictValue;
+    }
+
+    /**
+     * 设置字典值
+     *
+     * @param dictValue 字典值
+     */
+    public void setDictValue(String dictValue) {
+        this.dictValue = dictValue;
     }
 
     /**

@@ -36,17 +36,17 @@
 
         <!-- 要生成的那些表 -->
         <!--<table tableName="er_ee"/>-->
-        <table tableName="base_questions"/>
+        <!--<table tableName="base_questions"/>-->
         <!--<table tableName="examinee"/>-->
         <!--<table tableName="examiner"/>-->
-        <table tableName="papers"/>
-        <table tableName="programming_questions"/>
+        <!--<table tableName="papers"/>-->
+        <!--<table tableName="programming_questions"/>-->
         <!--<table tableName="ee_grade"/>-->
         <!--<table tableName="grade"/>-->
-        <table tableName="paper_question"/>
-        <!--<table tableName="sys_dict"/>-->
+        <!--<table tableName="paper_question"/>-->
+        <table tableName="sys_dict"/>
         <!--<table tableName="v_user"/>-->
         <table tableName="sys_msg"/>
-        <table tableName="score"/>
+        <!--<table tableName="score"/>-->
     </context>
 </generatorConfiguration>

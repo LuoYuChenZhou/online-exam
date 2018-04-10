@@ -4,7 +4,7 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "sys_msg")
-public class SysMsg {
+public class SysMsg implements Cloneable {
     @Id
     private String id;
 
@@ -24,6 +24,12 @@ public class SysMsg {
      * 信息内容
      */
     private String msg;
+
+    /**
+     * 信息类型（对应字典code为msgType的字典值）
+     */
+    @Column(name = "msg_type")
+    private String msgType;
 
     /**
      * 状态（0-未读，1-已读）
@@ -105,6 +111,24 @@ public class SysMsg {
     }
 
     /**
+     * 获取信息类型（对应字典code为msgType的字典值）
+     *
+     * @return msg_type - 信息类型（对应字典code为msgType的字典值）
+     */
+    public String getMsgType() {
+        return msgType;
+    }
+
+    /**
+     * 设置信息类型（对应字典code为msgType的字典值）
+     *
+     * @param msgType 信息类型（对应字典code为msgType的字典值）
+     */
+    public void setMsgType(String msgType) {
+        this.msgType = msgType;
+    }
+
+    /**
      * 获取状态（0-未读，1-已读）
      *
      * @return status - 状态（0-未读，1-已读）
@@ -138,5 +162,10 @@ public class SysMsg {
      */
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    @Override
+    public SysMsg clone() throws CloneNotSupportedException {
+        return (SysMsg) super.clone();
     }
 }

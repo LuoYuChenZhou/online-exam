@@ -45,13 +45,13 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public Map<String, Object> getToken(String token) {
+    public Map<String, Object> getTokenMap(String token) {
         return JedisUtil.getMap(tokenPre + token);
     }
 
     @Override
     public String getUserId(String token) {
-        Map<String, Object> tokenMap = getToken(token);
+        Map<String, Object> tokenMap = getTokenMap(token);
         return (String) tokenMap.get("id");
     }
 }

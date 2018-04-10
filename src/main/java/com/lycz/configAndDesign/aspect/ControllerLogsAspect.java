@@ -100,7 +100,7 @@ public class ControllerLogsAspect {
             }
 
             //获取当前操作人员
-            Map<String, Object> tokenMap = tokenService.getToken(token);
+            Map<String, Object> tokenMap = tokenService.getTokenMap(token);
             if (ToolUtil.isEmpty(tokenMap)) {
                 userId = "";
             } else {

@@ -8,7 +8,7 @@ public interface TokenService {
 
     void destroyToken(String token);
 
-    Map<String, Object> getToken(String token);
+    Map<String, Object> getTokenMap(String token);
 
     String getUserId(String token);
 }

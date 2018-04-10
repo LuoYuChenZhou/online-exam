@@ -8,6 +8,7 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="dict_name" jdbcType="VARCHAR" property="dictName" />
     <result column="dict_code" jdbcType="VARCHAR" property="dictCode" />
+    <result column="dict_value" jdbcType="VARCHAR" property="dictValue" />
     <result column="upper_id" jdbcType="VARCHAR" property="upperId" />
     <result column="sort_no" jdbcType="INTEGER" property="sortNo" />
     <result column="status" jdbcType="VARCHAR" property="status" />

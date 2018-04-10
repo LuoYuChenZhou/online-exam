@@ -218,9 +218,14 @@ public class ExceptionHandlers {
     public JSONObject requestUnknown(Exception ex) {
         ex.printStackTrace();
         log.error(ex.getMessage());
+        //如果异常提示信息包含!!noShow!!，则不显示到页面
+        if (ex.getMessage().matches(".*!!noShow!!.*")) {
+            result.setMsg("服务器维护中");
+        } else {
+            result.setMsg(ex.getMessage());
+        }
         result.setStatus(400);
         result.setData(JSONArray.fromObject("[]"));
-        result.setMsg(ex.getMessage());
         return JSONObject.fromObject(result);
     }
 }

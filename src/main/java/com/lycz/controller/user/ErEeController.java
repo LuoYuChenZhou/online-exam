@@ -96,20 +96,25 @@ public class ErEeController {
             "operate：操作类型（考生申请-eeRequest,考官邀请-erRequest）<br/>" +
             "gradeId：班级id（考官邀请传入，传入noAddToGrade表示不添加进班级）<br/>" +
             "sortNo：考生在班级内的排序号（不传为1）<br/>" +
+            "ExtraMsg：附加说明<br/>" +
             "出参说明：<br/>" +
             "201")
     public JSONObject requestEeEr(@RequestParam("targetId") String targetId,
                                   @RequestParam("operate") String operate,
                                   @RequestParam(value = "gradeId", required = false) String gradeId,
                                   @RequestParam(value = "sortNo", required = false) Integer sortNo,
-                                  @RequestParam("token") String token) {
+                                  @RequestParam(value = "ExtraMsg", required = false) String ExtraMsg,
+                                  @RequestParam("token") String token) throws Exception {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
         result.setStatus(400);
 
         long curTime = System.currentTimeMillis();
-        String userId = tokenService.getUserId(token);
-        boolean flag;//为false则操作失败
+        Map<String, Object> tokenMap = tokenService.getTokenMap(token);
+        String userId = (String) tokenMap.get("id");
+        String erSex = Objects.equals(tokenMap.get("sex"), "1") ? "她" : "他";
+        String sendName = (String) tokenMap.get("realName");//发送方姓名
+        String flag;
         ErEe erEe;
 
         switch (operate) {
@@ -132,7 +137,7 @@ public class ErEeController {
                             erEe.setCurStatus("3");
                             erEe.setHisStatus(erEe.getHisStatus() + "_1_3");
                             erEe.setHisTime(erEe.getHisTime() + "_" + curTime + "_" + curTime);
-                            flag = erEeService.updateByPrimaryKeySelective(erEe) > 0;
+                            flag = erEeService.eeErRq("eeRqOld", sendName, erSex, ExtraMsg, erEe, gradeId, sortNo);
                         }
                     }
                 } else {
@@ -144,7 +149,7 @@ public class ErEeController {
                     erEe.setHisStatus("1");
                     erEe.setHisTime(curTime + "");
                     erEe.setModifyTime(new Date());
-                    flag = erEeService.insertSelective(erEe) > 0;
+                    flag = erEeService.eeErRq("eeRqNoOld", sendName, erSex, ExtraMsg, erEe, gradeId, sortNo);
                 }
                 break;
             case "erRequest":
@@ -165,7 +170,7 @@ public class ErEeController {
                             erEe.setCurStatus("3");
                             erEe.setHisStatus(erEe.getHisStatus() + "_2_3");
                             erEe.setHisTime(erEe.getHisTime() + "_" + curTime + "_" + curTime);
-                            flag = erEeService.updateByPrimaryKeySelective(erEe) > 0;
+                            flag = erEeService.eeErRq("erRqOld", sendName, erSex, ExtraMsg, erEe, gradeId, sortNo);
                         }
                     }
                 } else {
@@ -177,7 +182,7 @@ public class ErEeController {
                     erEe.setHisStatus("2");
                     erEe.setHisTime(curTime + "");
                     erEe.setModifyTime(new Date());
-                    flag = erEeService.addEe(erEe, gradeId, sortNo);
+                    flag = erEeService.eeErRq("erRqNoOld", sendName, erSex, ExtraMsg, erEe, gradeId, sortNo);
                 }
                 break;
             default:
@@ -186,11 +191,23 @@ public class ErEeController {
                 return JSONObject.fromObject(result);
         }
 
-        if (flag) {
-            result.setMsg("操作成功");
-            result.setStatus(201);
-        } else {
-            result.setMsg("操作失败");
+        result.setMsg("服务器维护中");
+        switch (flag) {
+            case "1":
+                result.setMsg("操作成功");
+                result.setStatus(201);
+                break;
+            case "2":
+                result.setMsg("操作失败");
+                break;
+            case "3":
+                result.setLogMsg("未根据" + targetId + "找到对应用户");
+                break;
+            case "4":
+                result.setLogMsg("erErRq方法的reType入参错误（Service层）");
+                break;
+            default:
+                result.setLogMsg(flag);
         }
 
         return JSONObject.fromObject(result);

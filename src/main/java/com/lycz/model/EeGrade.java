@@ -29,6 +29,12 @@ public class EeGrade {
     private Integer sortNo;
 
     /**
+     * 状态（0-邀请了考生暂未答应，1-正常）
+     */
+    @Column(name = "status")
+    private String status;
+
+    /**
      * 获取主键id
      *
      * @return id - 主键id
@@ -98,5 +104,13 @@ public class EeGrade {
      */
     public void setSortNo(Integer sortNo) {
         this.sortNo = sortNo;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
