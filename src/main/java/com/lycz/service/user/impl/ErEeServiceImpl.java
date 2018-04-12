@@ -1,6 +1,7 @@
 package com.lycz.service.user.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.lycz.configAndDesign.FixPageInfo;
 import com.lycz.configAndDesign.ToolUtil;
 import com.lycz.dao.ErEeMapper;
@@ -38,6 +39,17 @@ public class ErEeServiceImpl extends BaseServiceTk<ErEe> implements ErEeService 
     private SysMsgService sysMsgService;
     @Resource
     private VUserService vUserService;
+
+    @Override
+    public PageInfo<Map<String, Object>> getInvitedList(Integer page, Integer limit, String userId) {
+        PageHelper.startPage(page, limit);
+        List<Map<String, Object>> invitedList = erEeMapper.getInvitedList(userId);
+        if (ToolUtil.isEmpty(invitedList)) {
+            return null;
+        } else {
+            return new PageInfo<>(invitedList);
+        }
+    }
 
     @Override
     public FixPageInfo<Map<String, Object>> getExamineeNoRelation(String searchString, Integer page, Integer limit, String userId) {
@@ -170,5 +182,108 @@ public class ErEeServiceImpl extends BaseServiceTk<ErEe> implements ErEeService 
             return "2";
         }
 
+    }
+
+    @Override
+    public String eeErRemove(String rmType, String sendName, ErEe erEe) throws Exception {
+        SysMsg sysMsg = new SysMsg();
+        sysMsg.setId(UUID.randomUUID().toString());
+        sysMsg.setStatus("0");
+        sysMsg.setCreateTime(new Date());
+        String msgCode = "msgType";
+        String msgValue;
+
+        switch (rmType) {
+            case "eeRemove":
+                erEe.setCurStatus("4");
+                erEe.setHisStatus(erEe.getHisStatus() + "_4");
+                msgValue = "MT_ER_RQ";
+                sysMsg.setSendId(erEe.getExamineeId());
+                sysMsg.setReceiveId(erEe.getExaminerId());
+                sysMsg.setMsg("”" + sendName + "“已解除了与您的考试关系");
+                break;
+            case "erRemove":
+                erEe.setCurStatus("5");
+                erEe.setHisStatus(erEe.getHisStatus() + "_5");
+                msgValue = "MT_ER_RM";
+                sysMsg.setSendId(erEe.getExaminerId());
+                sysMsg.setReceiveId(erEe.getExamineeId());
+                sysMsg.setMsg("”" + sendName + "“已解除了与您的考试关系");
+                break;
+            case "eeRefuse":
+                erEe.setCurStatus("6");
+                erEe.setHisStatus(erEe.getHisStatus() + "_6");
+                msgValue = "MT_EE_RE";
+                sysMsg.setSendId(erEe.getExamineeId());
+                sysMsg.setReceiveId(erEe.getExaminerId());
+                sysMsg.setMsg("”" + sendName + "“拒绝了您的邀请");
+                break;
+            case "erRefuse":
+                erEe.setCurStatus("7");
+                erEe.setHisStatus(erEe.getHisStatus() + "_7");
+                msgValue = "MT_ER_RE";
+                sysMsg.setSendId(erEe.getExaminerId());
+                sysMsg.setReceiveId(erEe.getExamineeId());
+                sysMsg.setMsg("”" + sendName + "“拒绝了您的申请");
+                break;
+            default:
+                return "删除类型错误:" + rmType;
+        }
+
+        long curTime = System.currentTimeMillis();
+        erEe.setHisTime(erEe.getHisTime() + "_" + curTime);
+
+        String dictId = sysDictService.selectIdByCodeValue(msgCode, msgValue);
+        if (ToolUtil.isEmpty(dictId)) {
+            return "code为" + msgCode + "，value为" + msgValue + "的字典未找到";
+        }
+        sysMsg.setMsgType(dictId);
+
+        if (sysMsgService.insertSelective(sysMsg) > 0 && updateByPrimaryKeySelective(erEe) > 0) {
+            return "1";
+        } else {
+            return "0";
+        }
+    }
+
+    @Override
+    public String acceptEeEr(String sendName, ErEe erEe) throws Exception {
+        SysMsg sysMsg = new SysMsg();
+        sysMsg.setId(UUID.randomUUID().toString());
+        sysMsg.setStatus("0");
+        sysMsg.setCreateTime(new Date());
+        String msgCode = "msgType";
+        String msgValue;
+
+        if (Objects.equals(erEe.getCurStatus(), "1")) {
+            msgValue = "MT_ER_AC";
+            sysMsg.setSendId(erEe.getExamineeId());
+            sysMsg.setReceiveId(erEe.getExaminerId());
+            sysMsg.setMsg("”" + sendName + "“同意了您的申请");
+        } else if (Objects.equals(erEe.getCurStatus(), "2")) {
+            msgValue = "MT_EE_AC";
+            sysMsg.setSendId(erEe.getExamineeId());
+            sysMsg.setReceiveId(erEe.getExaminerId());
+            sysMsg.setMsg("”" + sendName + "“接受了您的邀请");
+        } else {
+            return "接受时，当前状态错误" + erEe.getCurStatus();
+        }
+
+        long curTime = System.currentTimeMillis();
+        erEe.setCurStatus("3");
+        erEe.setHisStatus(erEe.getHisStatus() + "3");
+        erEe.setHisTime(erEe.getHisTime() + "_" + curTime);
+
+        String dictId = sysDictService.selectIdByCodeValue(msgCode, msgValue);
+        if (ToolUtil.isEmpty(dictId)) {
+            return "code为" + msgCode + "，value为" + msgValue + "的字典未找到";
+        }
+        sysMsg.setMsgType(dictId);
+
+        if (sysMsgService.insertSelective(sysMsg) > 0 && updateByPrimaryKeySelective(erEe) > 0) {
+            return "1";
+        } else {
+            return "0";
+        }
     }
 }

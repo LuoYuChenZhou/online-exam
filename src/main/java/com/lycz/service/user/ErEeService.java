@@ -1,5 +1,6 @@
 package com.lycz.service.user;
 
+import com.github.pagehelper.PageInfo;
 import com.lycz.configAndDesign.FixPageInfo;
 import com.lycz.model.ErEe;
 import com.lycz.service.base.IBaseServiceTk;
@@ -7,6 +8,8 @@ import com.lycz.service.base.IBaseServiceTk;
 import java.util.Map;
 
 public interface ErEeService extends IBaseServiceTk<ErEe> {
+
+    PageInfo<Map<String, Object>> getInvitedList(Integer page, Integer limit, String userId);
 
     FixPageInfo<Map<String, Object>> getExamineeNoRelation(String searchString, Integer page, Integer limit, String userId);
 
@@ -24,4 +27,12 @@ public interface ErEeService extends IBaseServiceTk<ErEe> {
      * @return （0-没找到字典，1-保存成功，2-保存失败，3-对方id错误，4-reType错误）
      */
     String eeErRq(String reType, String sendName, String erSex, String ExtraMsg, ErEe erEe, String gradeId, Integer sortNo) throws Exception;
+
+    /**
+     * @param rmType   操作（eeRefuse-考生拒绝邀请，erRefuse-考官拒绝申请，eeRemove-考生退出，erRemove-考官踢出）
+     * @param sendName 操作人姓名
+     */
+    String eeErRemove(String rmType, String sendName, ErEe erEe) throws Exception;
+
+    String acceptEeEr(String sendName, ErEe erEe) throws Exception;
 }

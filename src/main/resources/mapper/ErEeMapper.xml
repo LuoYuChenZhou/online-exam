@@ -37,4 +37,30 @@
         </if>
     </select>
 
+    <select id="getInvitedList" resultType="hashMap">
+        SELECT
+            re.id AS erEeId,
+            IFNULL( er.user_name, '' ) AS erName,
+            IFNULL(
+            (
+            SELECT
+                msg.msg
+            FROM
+                sys_msg msg
+            WHERE
+                re.examiner_id = msg.send_id
+                AND re.examinee_id = msg.receive_id
+                AND msg.msg_type = ( SELECT id FROM sys_dict WHERE dict_code = 'msgType' AND dict_value = 'MT_ER_RQ' )
+                ORDER BY msg.create_time DESC
+                LIMIT 0,1
+            ),
+            ''
+            ) AS extraMsg
+        FROM
+            er_ee re
+            LEFT JOIN v_user er ON re.examiner_id = er.user_id
+        WHERE
+            cur_status = '2'
+            AND re.examinee_id = #{userId}
+    </select>
 </mapper>

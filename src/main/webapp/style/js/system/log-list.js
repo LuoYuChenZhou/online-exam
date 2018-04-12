@@ -46,7 +46,7 @@ layui.use('table', function () {
             , {field: 'logDescription', title: '描述', width: 350}
             , {field: 'createTime', title: '发生时间', width: 177, templet: '#time2string', sort: true}
             , {field: 'logUser', title: '操作人', width: 120}
-            , {fixed: 'right', title: '操作', width: 100, align: 'center', toolbar: '#log_bar'}
+            , {title: '操作', width: 100, align: 'center', toolbar: '#log_bar'}
         ]]
         , id: 'logTable'
         , where: {

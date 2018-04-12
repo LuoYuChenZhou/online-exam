@@ -17,7 +17,7 @@ layui.use('table', function () {
             , {field: 'sex', title: '性别', width: 80, templet: '#num2Sex'}
             , {field: 'phone', title: '联系电话', width: 180}
             , {field: 'email', title: '电子邮箱', width: 240}
-            , {fixed: 'right', title: '操作', width: 100, align: 'center', toolbar: '#main_table_bar'}
+            , {title: '操作', width: 100, align: 'center', toolbar: '#main_table_bar'}
         ]]
         , where: {
             token: token
@@ -44,7 +44,7 @@ layui.use('table', function () {
                 FloorObject = layer.open({
                     type: 1,
                     title: '添加考生',
-                    area: ['400px', '250px'],
+                    area: ['400px', '320px'],
                     offset: ['10%', '20%'],
                     shade: 0.6,
                     shadeClose: true,
@@ -104,6 +104,7 @@ function addEe() {
             , operate: "erRequest"
             , gradeId: curChooseGradeId
             , sortNo: $("input[name='ee_add_sort']").val()
+            , extraMsg: $("#ee_add_extraMsg").val()
             , token: token
         },
         function (data) {

@@ -1,5 +1,9 @@
 package com.lycz.configAndDesign;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -244,5 +248,23 @@ public class ToolUtil extends StringUtils {
         }
 
         return targetList;
+    }
+
+    /**
+     * 含有时间的对象转json如果报错，使用此方法规避
+     *
+     * @param obj 含有时间的对象
+     */
+    public static String convertTime(Object obj) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        String listStr = null;
+        try {
+            listStr = objectMapper.writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return listStr;
     }
 }

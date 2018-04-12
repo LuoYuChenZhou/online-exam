@@ -15,7 +15,7 @@ layui.use('table', function () {
             {field: 'gradeName', title: '班级名称', width: 180, fixed: 'left'}
             , {field: 'studentNum', title: '当前人数', width: 200}
             , {field: 'createTime', title: '创建时间', width: 177, templet: '#time2string'}
-            , {fixed: 'right', title: '操作', width: 200, align: 'center', toolbar: '#grade_list_bar'}
+            , {title: '操作', width: 200, align: 'center', toolbar: '#grade_list_bar'}
         ]]
         , where: {
             token: token

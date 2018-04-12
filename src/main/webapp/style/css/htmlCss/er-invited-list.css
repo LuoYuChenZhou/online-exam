@@ -1,26 +1,118 @@
-.show_bak{
-    height: 650px;
-    background-color: red;
+.show_bak {
+    width: 1050px;
+    display: inline-block;
+    position: absolute;
+    left: 120px;
+}
+
+.show_bak_line {
+    height: 170px;
+    margin-top: 20px;
 }
 
 .invited_bak {
     width: 220px;
     height: 170px;
-    background-color: burlywood;
+    background-color: white;
+    border-radius: 5px;
+    display: inline-block;
+    margin-left: 100px;
 }
 
 .invited_user {
-
+    width: 220px;
+    height: 35px;
+    border-radius: 5px 5px 0 0;
+    background-color: #7098DA;
+    text-align: center;
+    color: white;
+    line-height: 35px;
 }
 
 .invited_extraMsg {
+    width: 220px;
+    height: 100px;
+    color: #7098DA;
+    font-size: 13px;
+}
 
+.button_group {
+    width: 219px;
+    height: 35px;
+    border-radius: 0 0 5px 5px;
+    border: #7098DA solid 1px;
 }
 
 .accept {
-
+    width: 110px;
+    height: 35px;
+    display: inline-block;
+    border-radius: 0 0 0 5px;
+    background-color: #7098DA;
+    color: white;
+    text-align: center;
+    line-height: 35px;
+    cursor: pointer;
 }
 
 .refuse {
+    width: 103px;
+    height: 35px;
+    display: inline-block;
+    color: #7098DA;
+    text-align: center;
+    line-height: 35px;
+    cursor: pointer;
+}
 
+.left_btn {
+    cursor: pointer;
+    position: absolute;
+    top: 240px;
+    left: 15px;
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    background-color: rgba(101, 133, 186, 0.8);
+    border-radius: 50px;
+}
+
+.right_btn {
+    cursor: pointer;
+    position: absolute;
+    top: 240px;
+    left: 1200px;
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    background-color: rgba(101, 133, 186, 0.8);
+    border-radius: 50px;
+}
+
+.left_btn span {
+    font-size: 100px;
+    color: white;
+    position: absolute;
+    top: -7px;
+    left: 16px;
+}
+
+.right_btn span {
+    font-size: 100px;
+    color: white;
+    position: absolute;
+    top: -7px;
+    left: 24px;
+}
+
+.canNotPress{
+    background-color: #D2D2D2;
+}
+
+.noInvite{
+    font-size: 100px;
+    color: rgba(210,210,210,0.6);
+    position: absolute;
+    top: 350px;
+    left: 320px;
 }

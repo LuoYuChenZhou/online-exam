@@ -94,7 +94,7 @@ function dtf(type, timeStamp) {
     if (!timeStamp) {
         return "";
     }
-    let date = new Date(parseInt(timeStamp) * 1000);
+    let date = new Date(parseInt(timeStamp));
 
     let year = date.getFullYear();
     let month = add0(date.getMonth() + 1);

@@ -19,7 +19,7 @@
             g.id AS id,
             g.grade_name AS gradeName,
             COUNT(eg.id) AS studentNum,
-            UNIX_TIMESTAMP(g.create_time) AS createTime,
+            g.create_time AS createTime,
             g.sort_no AS sortNo,
             g.status AS status
         FROM

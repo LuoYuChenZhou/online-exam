@@ -1,5 +1,6 @@
 package com.lycz.controller.user;
 
+import com.github.pagehelper.PageInfo;
 import com.lycz.configAndDesign.CommonResult;
 import com.lycz.configAndDesign.FixPageInfo;
 import com.lycz.configAndDesign.ToolUtil;
@@ -34,6 +35,55 @@ public class ErEeController {
     private TokenService tokenService;
     @Resource
     private ErEeService erEeService;
+
+    @RequestMapping(value = "/getInvitedList", method = RequestMethod.GET)
+    @Privilege(methodName = "根据考生id（token中）获取邀请列表")
+    @ResponseBody
+    @ApiOperation(value = "根据考生id（token中）获取邀请列表", notes = "" +
+            "入参说明:<br/>" +
+            "page:当前页<br/>" +
+            "limit:每页大小<br/>" +
+            "token:token<br/>" +
+            "出参说明:<br/>" +
+            "\n" +
+            "{\n" +
+            "\n" +
+            "    \"data\":{\n" +
+            "        \"hasNextPage\":是否有下一页（true或false）,\n" +
+            "        \"hasPreviousPage\":是否有前一页（true或false）,\n" +
+            "        \"list\":[\n" +
+            "            {\n" +
+            "                \"erEeId\":\"关系id\"\n" +
+            "                \"erName\":\"邀请人姓名\"\n" +
+            "                \"extraMsg\":\"附加信息，【\\<\\b\\r\\/\\>附加说明：】后面的是真的附加信息\",\n" +
+            "            }\n" +
+            "        ],\n" +
+            "    },\n" +
+            "    \"logMsg\":\"\",\n" +
+            "    \"msg\":\"查询成功\",\n" +
+            "    \"status\":200\n" +
+            "\n" +
+            "}\n")
+    public JSONObject getInvitedList(@RequestParam("page") Integer page,
+                                     @RequestParam("limit") Integer limit,
+                                     @RequestParam("token") String token) {
+        String userId = tokenService.getUserId(token);
+
+        CommonResult<JSONObject> result = new CommonResult<>();
+        result.setData(JSONObject.fromObject("{}"));
+
+        PageInfo<Map<String, Object>> pageInfo = erEeService.getInvitedList(page, limit, userId);
+        if (pageInfo == null) {
+            result.setMsg("查询结束，但没有数据");
+            result.setStatus(204);
+        } else {
+            result.setMsg("查询成功");
+            result.setStatus(200);
+            result.setData(JSONObject.fromObject(pageInfo));
+        }
+
+        return JSONObject.fromObject(result);
+    }
 
     @RequestMapping(value = "/getExamineeNoRelation", method = RequestMethod.GET)
     @Privilege(methodName = "获取与自己没有建立关系的考生列表", privilegeLevel = Privilege.ER_TYPE)
@@ -103,7 +153,7 @@ public class ErEeController {
                                   @RequestParam("operate") String operate,
                                   @RequestParam(value = "gradeId", required = false) String gradeId,
                                   @RequestParam(value = "sortNo", required = false) Integer sortNo,
-                                  @RequestParam(value = "ExtraMsg", required = false) String ExtraMsg,
+                                  @RequestParam(value = "extraMsg", required = false) String extraMsg,
                                   @RequestParam("token") String token) throws Exception {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
@@ -117,10 +167,10 @@ public class ErEeController {
         String flag;
         ErEe erEe;
 
+        Example example = new Example(ErEe.class);
         switch (operate) {
             case "eeRequest":
                 //查找是否存在对方申请(只查询当前状态小于4的)
-                Example example = new Example(ErEe.class);
                 example.or().andEqualTo("examinerId", targetId).andEqualTo("examineeId", userId).andLessThan("curStatus", "4");
                 List<ErEe> oldErEeList = erEeService.selectByExample(example);
                 if (ToolUtil.isNotEmpty(oldErEeList)) {
@@ -137,7 +187,7 @@ public class ErEeController {
                             erEe.setCurStatus("3");
                             erEe.setHisStatus(erEe.getHisStatus() + "_1_3");
                             erEe.setHisTime(erEe.getHisTime() + "_" + curTime + "_" + curTime);
-                            flag = erEeService.eeErRq("eeRqOld", sendName, erSex, ExtraMsg, erEe, gradeId, sortNo);
+                            flag = erEeService.eeErRq("eeRqOld", sendName, erSex, extraMsg, erEe, gradeId, sortNo);
                         }
                     }
                 } else {
@@ -149,11 +199,10 @@ public class ErEeController {
                     erEe.setHisStatus("1");
                     erEe.setHisTime(curTime + "");
                     erEe.setModifyTime(new Date());
-                    flag = erEeService.eeErRq("eeRqNoOld", sendName, erSex, ExtraMsg, erEe, gradeId, sortNo);
+                    flag = erEeService.eeErRq("eeRqNoOld", sendName, erSex, extraMsg, erEe, gradeId, sortNo);
                 }
                 break;
             case "erRequest":
-                example = new Example(ErEe.class);
                 example.or().andEqualTo("examinerId", userId).andEqualTo("examineeId", targetId).andLessThan("curStatus", "4");
                 oldErEeList = erEeService.selectByExample(example);
                 if (ToolUtil.isNotEmpty(oldErEeList)) {
@@ -170,7 +219,7 @@ public class ErEeController {
                             erEe.setCurStatus("3");
                             erEe.setHisStatus(erEe.getHisStatus() + "_2_3");
                             erEe.setHisTime(erEe.getHisTime() + "_" + curTime + "_" + curTime);
-                            flag = erEeService.eeErRq("erRqOld", sendName, erSex, ExtraMsg, erEe, gradeId, sortNo);
+                            flag = erEeService.eeErRq("erRqOld", sendName, erSex, extraMsg, erEe, gradeId, sortNo);
                         }
                     }
                 } else {
@@ -182,7 +231,7 @@ public class ErEeController {
                     erEe.setHisStatus("2");
                     erEe.setHisTime(curTime + "");
                     erEe.setModifyTime(new Date());
-                    flag = erEeService.eeErRq("erRqNoOld", sendName, erSex, ExtraMsg, erEe, gradeId, sortNo);
+                    flag = erEeService.eeErRq("erRqNoOld", sendName, erSex, extraMsg, erEe, gradeId, sortNo);
                 }
                 break;
             default:
@@ -214,7 +263,7 @@ public class ErEeController {
     }
 
     /**
-     * 解除考生考官关系（正常返回值有200和201两种）
+     * 解除考生考官关系
      */
     @RequestMapping(value = "/removeEeEr", method = RequestMethod.POST)
     @Privilege(methodName = "解除考生考官关系")
@@ -222,18 +271,16 @@ public class ErEeController {
     @ApiOperation(value = "解除考生考官关系", notes = "" +
             "入参说明：<br/>" +
             "erEeId：关系主键id<br/>" +
-            "operate：操作（eeRemove-考生退出，erRemove-考官踢出）<br/>" +
+            "operate：操作（eeRefuse-考生拒绝邀请，erRefuse-考官拒绝申请，eeRemove-考生退出，erRemove-考官踢出）<br/>" +
             "出参说明：<br/>" +
             "201")
     public JSONObject removeEeEr(@RequestParam("erEeId") String erEeId,
                                  @RequestParam("operate") String operate,
-                                 @RequestParam("token") String token) {
+                                 @RequestParam("token") String token) throws Exception {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
         result.setStatus(400);
-
-        long curTime = System.currentTimeMillis();
-        boolean flag;
+        result.setMsg("系统繁忙");
 
         ErEe erEe = erEeService.selectByKey(erEeId);
         if (ToolUtil.isEmpty(erEe)) {
@@ -241,37 +288,75 @@ public class ErEeController {
             return JSONObject.fromObject(result);
         }
         if (Integer.parseInt(erEe.getCurStatus()) > 3) {
-            result.setMsg("关系已解除");
-            result.setStatus(200);
+            result.setMsg("不存在改关系");
             return JSONObject.fromObject(result);
         }
-        switch (operate) {
-            case "eeRemove":
-                erEe.setCurStatus("4");
-                erEe.setHisStatus(erEe.getHisStatus() + "_4");
-                erEe.setHisTime(erEe.getHisTime() + "_" + curTime);
-                flag = erEeService.updateByPrimaryKeySelective(erEe) > 0;
+
+        Map<String, Object> tokenMap = tokenService.getTokenMap(token);
+        String sendName = (String) tokenMap.get("realName");//发送方姓名
+
+        String resStr = erEeService.eeErRemove(operate, sendName, erEe);
+        switch (resStr) {
+            case "0":
+                result.setMsg("操作失败");
                 break;
-            case "erRemove":
-                erEe.setCurStatus("5");
-                erEe.setHisStatus(erEe.getHisStatus() + "_5");
-                erEe.setHisTime(erEe.getHisTime() + "_" + curTime);
-                flag = erEeService.updateByPrimaryKeySelective(erEe) > 0;
+            case "1":
+                result.setMsg("操作成功");
+                result.setStatus(201);
                 break;
             default:
-                result.setMsg("操作类型错误");
-                result.setLogMsg("操作类型错误：" + operate + "操作人：" + tokenService.getUserId(token));
-                return JSONObject.fromObject(result);
-        }
-
-        if (flag) {
-            result.setMsg("已解除关系");
-            result.setStatus(201);
-        } else {
-            result.setMsg("操作失败");
+                result.setLogMsg(resStr);
         }
 
         return JSONObject.fromObject(result);
     }
+
+    /**
+     * 接受邀请或接受申请
+     */
+    @RequestMapping(value = "/acceptEeEr", method = RequestMethod.POST)
+    @Privilege(methodName = "接受邀请或接受申请")
+    @ResponseBody
+    @ApiOperation(value = "接受邀请或接受申请", notes = "" +
+            "入参说明：<br/>" +
+            "erEeId：关系主键id<br/>" +
+            "出参说明：<br/>" +
+            "201")
+    public JSONObject acceptEeEr(@RequestParam("erEeId") String erEeId,
+                                 @RequestParam("token") String token) throws Exception {
+        CommonResult<JSONObject> result = new CommonResult<>();
+        result.setData(JSONObject.fromObject("{}"));
+        result.setStatus(400);
+        result.setMsg("系统繁忙");
+
+        ErEe erEe = erEeService.selectByKey(erEeId);
+        if (ToolUtil.isEmpty(erEe)) {
+            result.setMsg("关系id错误");
+            return JSONObject.fromObject(result);
+        }
+        if (Integer.parseInt(erEe.getCurStatus()) > 3) {
+            result.setMsg("不存在改关系");
+            return JSONObject.fromObject(result);
+        }
+
+        Map<String, Object> tokenMap = tokenService.getTokenMap(token);
+        String sendName = (String) tokenMap.get("realName");//发送方姓名
+
+        String resStr = erEeService.acceptEeEr(sendName, erEe);
+        switch (resStr) {
+            case "0":
+                result.setMsg("操作失败");
+                break;
+            case "1":
+                result.setMsg("操作成功");
+                result.setStatus(201);
+                break;
+            default:
+                result.setLogMsg(resStr);
+        }
+
+        return JSONObject.fromObject(result);
+    }
+
 
 }

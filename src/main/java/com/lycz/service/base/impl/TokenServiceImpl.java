@@ -28,7 +28,7 @@ public class TokenServiceImpl implements TokenService {
             tokenMap.put("userType", entity instanceof Examinee ? "Examinee" : "Examiner");
         } else if (entity.equals("sysLog")) {
             tokenMap.put("id", "sys_id");
-            tokenMap.put("realName", "超级管理员");
+            tokenMap.put("realName", "系统管理员");
             tokenMap.put("userType", ToolUtil.getProperty("config/sysLg.properties", "sys_user_type"));
         } else {
             return null;
