@@ -51,7 +51,7 @@ body {
     color: red;
 }
 
-.effect-17{
+.effect-17 {
     width: 100%;
 }
 
@@ -76,7 +76,7 @@ body {
     border-right: 2px solid white;
 }
 
-.tab-click{
+.tab-click {
     color: yellowgreen;
     background-color: #EDEFF2;
 }
@@ -196,57 +196,18 @@ button {
     height: 4em;
 }
 
+/*切换按钮*/
+.layui-form{
+    display: inline-block;
+    margin-top: 15px;
+}
+
+.layui-input-block {
+    margin-left: 40px !important;
+    margin-top: 5px;
+}
+
 /* 注册按钮 */
-
-#seventh > .border:nth-of-type(1) {
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 0;
-    border-top: 2px solid #C0FF3E;
-}
-
-#seventh > .border:nth-of-type(2) {
-    top: 0;
-    right: 0;
-    width: 10px;
-    height: 0;
-    border-right: 2px solid #C0FF3E;
-}
-
-#seventh > .border:nth-of-type(3) {
-    bottom: 0;
-    right: 0;
-    width: 0;
-    height: 0;
-    border-bottom: 2px solid #C0FF3E;
-}
-
-#seventh > .border:nth-of-type(4) {
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 0;
-    border-left: 2px solid #C0FF3E;
-}
-
-#seventh:hover .border:nth-of-type(1) {
-    width: 6.56em;
-}
-
-#seventh:hover .border:nth-of-type(2) {
-    height: 3.2em;
-}
-
-#seventh:hover .border:nth-of-type(3) {
-    width: 6.56em;
-}
-
-#seventh:hover .border:nth-of-type(4) {
-    height: 3.2em;
-}
-
-/* 切换登录类型按钮 */
 
 #fourth > button {
     width: 10em;
@@ -353,3 +314,7 @@ button {
 }
 
 /*登录注册、切换登录类型等按钮结束*/
+
+.swal2-spacer{
+    background-color: transparent !important;
+}

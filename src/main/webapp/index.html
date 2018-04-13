@@ -3,19 +3,21 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>欢迎使用，请登录</title>
-    <link rel="icon" href="/style/image/favicon.ico" type="image/x-icon" />
-    <link rel="shortcut icon" href="/style/image/favicon.ico" type="image/x-icon" />
-    <link rel="bookmark" href="/style/image/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/style/image/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="/style/image/favicon.ico" type="image/x-icon"/>
+    <link rel="bookmark" href="/style/image/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="style/css/inputTextStyle.css"/>
     <link rel="stylesheet" type="text/css" href="style/css/checkbox.css"/>
     <link rel="stylesheet" type="text/css" href="style/css/input-style.css"/>
     <link rel="stylesheet" type="text/css" href="style/css/loadStyle.css"/>
     <link rel="stylesheet" type="text/css" href="style/css/index/login.css"/>
     <link rel="stylesheet" type="text/css" href="style/css/sweetalert2.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/style/layui/css/layui.css" media="all"/>
     <script type="text/javascript" src="style/js/jquery-3.2.1.js"></script>
     <script type="text/javascript" src="style/js/sweetalert2.min.js"></script>
     <script type="text/javascript" src="style/js/es6-promise.min.js"></script>
     <script type="text/javascript" src="style/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/style/layui/layui.js"></script>
     <script type="text/javascript" src="style/js/common-methods.js"></script>
 </head>
 <body>
@@ -39,12 +41,12 @@
         <div class="border"></div>
         <div class="border"></div>
     </div>
-    <div id="seventh" class="buttonBox">
-        <button id="goalName"></button>
-        <div class="border"></div>
-        <div class="border"></div>
-        <div class="border"></div>
-        <div class="border"></div>
+    <div class="layui-form">
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <input type="checkbox" lay-filter="erLogin" title="考官登录">
+            </div>
+        </div>
     </div>
 </div>
 <div id="message-div"></div>
@@ -161,10 +163,25 @@
         load.hide();
 
         //设置默认值
-        $("#goalName").html("切换至<br/><span style='color: #3ba0d4'>考官登录</span>");
         $(".for-reset input").val("");
         mask.css("height", $(document).height());
         mask.css("width", $(document).width());
+
+        layui.use('form', function () {
+            let form = layui.form;
+
+            //监听
+            form.on('checkbox(erLogin)', function (data) {
+                console.log(data.elem.checked);
+
+                if(data.elem.checked === true){
+                    loginType = "1";
+                }else {
+                    loginType = "2";
+                }
+                console.log(loginType);
+            });
+        });
 
         //判断输入框是否有内容
         $(".for-reset input").focusout(function () {
@@ -221,17 +238,6 @@
                     load.hide();
                 }
             })
-        });
-
-        //切换登录模式
-        $("#seventh").click(function () {
-            if (loginType === "2") {
-                $("#goalName").html("切换至<br/><span style='color: mediumpurple'>考生登录</span>");
-                loginType = "1";
-            } else if (loginType === "1") {
-                $("#goalName").html("切换至<br/><span style='color: #3ba0d4'>考官登录</span>");
-                loginType = "2";
-            }
         });
 
         //点击注册按钮显示隐藏层和弹出层
