@@ -270,11 +270,14 @@ public class ErEeController {
     @ResponseBody
     @ApiOperation(value = "解除考生考官关系", notes = "" +
             "入参说明：<br/>" +
-            "erEeId：关系主键id<br/>" +
+            "erEeId：关系主键id（可选）<br/>" +
+            "targetId：对方id（可选）<br/>" +
+            "<span style='color:red'>上面两个可选的至少选择一个传入，都传入按照关系主键id处理</span><br/>" +
             "operate：操作（eeRefuse-考生拒绝邀请，erRefuse-考官拒绝申请，eeRemove-考生退出，erRemove-考官踢出）<br/>" +
             "出参说明：<br/>" +
             "201")
-    public JSONObject removeEeEr(@RequestParam("erEeId") String erEeId,
+    public JSONObject removeEeEr(@RequestParam(value = "erEeId", required = false) String erEeId,
+                                 @RequestParam(value = "targetId", required = false) String targetId,
                                  @RequestParam("operate") String operate,
                                  @RequestParam("token") String token) throws Exception {
         CommonResult<JSONObject> result = new CommonResult<>();
@@ -282,18 +285,60 @@ public class ErEeController {
         result.setStatus(400);
         result.setMsg("系统繁忙");
 
-        ErEe erEe = erEeService.selectByKey(erEeId);
+        Map<String, Object> tokenMap = tokenService.getTokenMap(token);
+        String sendName = (String) tokenMap.get("realName");//发送方姓名
+        String userId = (String) tokenMap.get("id");//发送方姓名
+
+        ErEe erEe;
+        if (ToolUtil.isEmpty(erEeId)) {
+            if (ToolUtil.isEmpty(targetId)) {
+                result.setLogMsg("关系主键id和对方id至少传入一个");
+                return JSONObject.fromObject(result);
+            }
+            Example example = new Example(ErEe.class);
+            Example.Criteria criteria = example.createCriteria();
+            boolean isEe = ToolUtil.anyEqual(operate, "eeRefuse", "eeRemove");//当前是否是考生操作
+            if (isEe) {
+                criteria.andEqualTo("examinerId", targetId)
+                        .andEqualTo("examineeId", userId)
+                        .andLessThan("curStatus", "4");
+            } else {
+                criteria.andEqualTo("examineeId", targetId)
+                        .andEqualTo("examinerId", userId)
+                        .andLessThan("curStatus", "4");
+            }
+            List<ErEe> list = erEeService.selectByExample(example);
+            if (ToolUtil.isEmpty(list)) {
+                if (isEe) {
+                    result.setLogMsg("根据考生id：【" + userId + "】和考官id【" + targetId + "】没有找到关系");
+                } else {
+                    result.setLogMsg("根据考官id：【" + userId + "】和考生id【" + targetId + "】没有找到关系");
+                }
+                result.setMsg("操作失败");
+                return JSONObject.fromObject(result);
+            } else if (list.size() > 1) {
+                if (isEe) {
+                    result.setLogMsg("根据考生id：【" + userId + "】和考官id【" + targetId + "】找到“当前关系小于4的”大于一条");
+                } else {
+                    result.setLogMsg("根据考官id：【" + userId + "】和考生id【" + targetId + "】找到”当前关系小于4的“大于一条");
+                }
+                result.setMsg("操作失败");
+                return JSONObject.fromObject(result);
+            } else {
+                erEe = list.get(0);
+            }
+        } else {
+            erEe = erEeService.selectByKey(erEeId);
+        }
+
         if (ToolUtil.isEmpty(erEe)) {
             result.setMsg("关系id错误");
             return JSONObject.fromObject(result);
         }
         if (Integer.parseInt(erEe.getCurStatus()) > 3) {
-            result.setMsg("不存在改关系");
+            result.setMsg("不存在该关系");
             return JSONObject.fromObject(result);
         }
-
-        Map<String, Object> tokenMap = tokenService.getTokenMap(token);
-        String sendName = (String) tokenMap.get("realName");//发送方姓名
 
         String resStr = erEeService.eeErRemove(operate, sendName, erEe);
         switch (resStr) {

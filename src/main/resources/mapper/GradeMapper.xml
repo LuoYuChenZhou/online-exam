@@ -24,7 +24,7 @@
             g.status AS status
         FROM
             grade g
-        LEFT JOIN  ee_grade eg ON eg.grade_id = g.id
+        LEFT JOIN  ee_grade eg ON eg.grade_id = g.id AND eg.status = '1'
         WHERE
             g.er_id = #{userId}
         AND g.status != '4'

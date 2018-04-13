@@ -5,11 +5,13 @@ import com.lycz.configAndDesign.FixPageInfo;
 import com.lycz.configAndDesign.ToolUtil;
 import com.lycz.configAndDesign.annotation.Privilege;
 import com.lycz.model.EeGrade;
+import com.lycz.model.Grade;
 import com.lycz.service.base.CommonService;
 import com.lycz.service.base.TokenService;
 import com.lycz.service.grade.EeGradeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +42,46 @@ public class EeGradeController {
     @Resource
     private TokenService tokenService;
 
+    @RequestMapping(value = "/getNoEeGradeList", method = RequestMethod.GET)
+    @Privilege(methodName = "根据考官id获取不含有特定考生的班级列表(不分页)")
+    @ResponseBody
+    @ApiOperation(value = "根据考官id获取不含有特定考生的班级列表", notes = "" +
+            "入参说明:<br/>" +
+            "eeId:当前操作考生id<br/>" +
+            "token:token<br/>" +
+            "出参说明:<br/>" +
+            "\n" +
+            "{\n" +
+            "\n" +
+            "    \"data\":[\n" +
+            "        {\n" +
+            "            \"gradeName\":\"班级名称\",\n" +
+            "            \"gradeId\":\"班级id\"\n" +
+            "        },\n" +
+            "    ],\n" +
+            "    \"msg\":\"查询成功\",\n" +
+            "    \"status\":200\n" +
+            "\n" +
+            "}\n")
+    public JSONObject getNoEeGradeList(@RequestParam("eeId") String eeId,
+                                       @RequestParam("token") String token) {
+        CommonResult<JSONArray> result = new CommonResult<>();
+        result.setData(JSONArray.fromObject("[]"));
+        result.setStatus(400);
+
+        List<Map<String, Object>> gradeList = eeGradeService.getNoEeGradeList(tokenService.getUserId(token), eeId);
+        if(ToolUtil.isEmpty(gradeList)){
+            result.setMsg("查询结束，但没有结果");
+            result.setStatus(204);
+        }else {
+            result.setStatus(200);
+            result.setMsg("查询成功");
+            result.setData(JSONArray.fromObject(gradeList));
+        }
+
+        return JSONObject.fromObject(result);
+    }
+
     @RequestMapping(value = "/insertEeToGrade", method = RequestMethod.POST)
     @Privilege(methodName = "将考生放入班级", privilegeLevel = Privilege.ER_TYPE)
     @ResponseBody
@@ -61,7 +103,7 @@ public class EeGradeController {
         //查询该班级是否存在该考生
         Example example = new Example(EeGrade.class);
         example.or().andEqualTo("eeId", eeId).andEqualTo("gradeId", gradeId);
-        if (ToolUtil.isEmpty(eeGradeService.selectByExample(example))) {
+        if (ToolUtil.isNotEmpty(eeGradeService.selectByExample(example))) {
             result.setMsg("考生已经在班级内！");
             return JSONObject.fromObject(result);
         }

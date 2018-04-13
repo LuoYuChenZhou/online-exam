@@ -1,7 +1,12 @@
 let curChooseGradeId;//当前选中的班级id
+let curAddFormGradeId;//考生添加到班级表单当前所选班级id
+let curOperateEeId;//当前操作的考生
+let floorObject;//弹出层对象
 
+
+let form;
 layui.use('form', function () {
-    let form = layui.form;
+    form = layui.form;
 
     $.get("/Grade/getGradeListByNameUser.do", {page: 1, limit: 1000, token: token}, function (data) {
         let searchClass = $("#searchClass");
@@ -22,6 +27,10 @@ layui.use('form', function () {
     form.on('select(searchClass)', function (data) {
         curChooseGradeId = data.value;
         searchBtnClick();
+    });
+    form.on('select(grade_select_filter)', function (data) {
+        console.log(111);
+        curAddFormGradeId = data.value;
     });
 });
 
@@ -55,19 +64,47 @@ layui.use('table', function () {
         let layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
         // let tr = obj.tr; //获得当前行 tr 的DOM对象
 
+        curOperateEeId = data.eeId;
+
         if (layEvent === 'addToGrade') { //添加到班级
-            layui.use('layer', function () {
-                layer.open({
-                    type: 0,
-                    title: '日志详情',
-                    area: ['600px', '400px'],
-                    offset: ['10%', '20%'],
-                    shade: 0.6,
-                    shadeClose: true,
-                    content: '日志标题：<span style="color: #1E9FFF">' + data.logTitle + "</span><hr/>" +
-                    "模块：<span style=\"color: #1E9FFF\">" + data.moduleName + "</span><hr/>" +
-                    "描述：<div style='border: 1px solid #E6E6E6;border-radius: 5px; height: 150px; overflow: auto;font-size:12px;color: #1E9FFF;'>" + data.logDescription + "</div>"
+            //获取考生不在的班级列表(异步问题搬进来)
+            $.get("/EeGrade/getNoEeGradeList.do", {eeId: data.eeId, token: token}, function (data) {
+                let otherGradeListSelect = $("#otherGradeListSelect");
+                otherGradeListSelect.empty();
+                if (data.status === 200) {
+                    curAddFormGradeId = data.data[0].gradeId;
+                    $.each(data.data, function (index, val) {
+                        otherGradeListSelect.append("<option value=" + val.gradeId + ">" + val.gradeName + "</option>");
+                    });
+                } else if (data.status === 204) {
+                    //没有班级列表时，返回false不展开弹层
+                    layer.msg("该考生没有需要加入的班级", {icon: 0, offset: ["100px"]});
+                    return;
+                } else {
+                    layer.msg("系统繁忙", {icon: 5, offset: ["100px"]});
+                    return;
+                }
+                //如果执行到了这步，表示没有问题，展示弹层
+                form.render('select', 'addToGradeFormFilter');
+                layui.use('layer', function () {
+                    floorObject = layer.open({
+                        type: 1,
+                        title: '添加到班级',
+                        area: ['400px', '260px'],
+                        offset: ['10%', '20%'],
+                        shade: 0.6,
+                        shadeClose: true,
+                        content: $('#addToGradeForm')
+                    });
                 });
+            });
+        } else if (layEvent === 'delete') {
+            floorObject = layer.confirm('确认删除？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                deleteEe();
+            }, function () {
+                layer.close(floorObject);
             });
         }
     });
@@ -89,3 +126,44 @@ function searchBtnClick() {
         }
     });
 }
+
+//将考生添加到其它班级中
+function insertEeToGrade() {
+    $.post("/EeGrade/insertEeToGrade.do"
+        , {
+            eeId: curOperateEeId
+            , gradeId: curAddFormGradeId
+            , sortNo: $("#ee_add_sort").val()
+            , token: token
+        }
+        , function (data) {
+            if (data.status === 201) {
+                layer.msg("添加成功", {icon: 1, offset: ["100px"]});
+                closeFloor(floorObject);
+            } else {
+                layer.msg(data.msg, {icon: 5, offset: ["100px"]});
+            }
+            searchBtnClick();
+        });
+}
+
+//删除考生
+function deleteEe() {
+    $.post("/ErEe/removeEeEr.do"
+        , {
+            targetId: curOperateEeId
+            , operate: "erRemove"
+            , token: token
+        }
+        , function (data) {
+            if (data.status === 201) {
+                layer.msg("删除成功", {icon: 1, offset: ["100px"]});
+                closeFloor(floorObject);
+            } else {
+                layer.msg(data.msg, {icon: 5, offset: ["100px"]});
+            }
+            searchBtnClick();
+        });
+}
+
+

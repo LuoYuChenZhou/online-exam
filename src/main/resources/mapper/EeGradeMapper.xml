@@ -12,6 +12,20 @@
         <result column="status" jdbcType="VARCHAR" property="status"/>
     </resultMap>
 
+    <select id="getNoEeGradeList" resultType="hashMap">
+        SELECT
+            gr.id AS gradeId,
+            gr.grade_name AS gradeName
+        FROM
+            grade gr
+        WHERE
+            gr.er_id = #{erId}
+            and gr.`status` = '1'
+            AND gr.id NOT IN ( SELECT grade_id FROM ee_grade WHERE ee_id = #{eeId} )
+        ORDER BY
+	        gr.sort_no ASC
+    </select>
+
     <select id="getEeListByNameNoClass" resultType="hashMap">
         SELECT
         ee.id AS eeId,
@@ -24,11 +38,11 @@
         eg.sort_no AS sortNo
         FROM
         examinee ee
-        LEFT JOIN ee_grade eg ON ee.id = eg.ee_id
-        LEFT JOIN grade gr ON eg.grade_id = gr.id AND gr.status != '4'
+        LEFT JOIN ee_grade eg ON ee.id = eg.ee_id AND eg.status = '1'
+        LEFT JOIN grade gr ON eg.grade_id = gr.id AND gr.status != '4' AND gr.er_id = #{erId}
         <where>
             ee.id IN (
-                SELECT examinee_id FROM er_ee WHERE examiner_id = #{erId} AND cur_status = '3'
+            SELECT examinee_id FROM er_ee WHERE examiner_id = #{erId} AND cur_status = '3'
             )
             <if test=' searchString != null and searchString != "" '>
                 AND (
@@ -37,11 +51,19 @@
                 OR ee.phone LIKE CONCAT('%',#{searchString},'%')
                 )
             </if>
-            <if test=' searchClass != null and searchClass != "" '>
+            <if test=' searchClass != null and searchClass != "" and searchClass != "allGrade" '>
                 AND  gr.id = #{searchClass}
             </if>
         </where>
         GROUP BY ee.id
         ORDER BY gr.id ASC ,eg.sort_no ASC
     </select>
+
+    <delete id="deleteByEeEr">
+        DELETE eg FROM ee_grade eg
+        WHERE eg.ee_id = #{eeId}
+        AND eg.grade_id IN (
+            SELECT id FROM grade where er_id = #{erId}
+        )
+    </delete>
 </mapper>

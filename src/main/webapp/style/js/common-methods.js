@@ -59,12 +59,11 @@ $.ajaxSetup({
     complete:
         function (data, status) {
             if (status === 1000) {
-                let layer = layui.layer;
-                layer.msg('服务器维护中。。', {icon: 5});
+                layer.msg('系统繁忙。。', {icon: 5});
             }
             let obj = eval('(' + data.responseText + ')');
             if (obj.status === 1000) {
-                layer.msg('服务器维护中。。', {icon: 5});
+                layer.msg('系统繁忙。。', {icon: 5});
             } else if (obj.status === 401) {
                 location.href = localhostPath;
             }

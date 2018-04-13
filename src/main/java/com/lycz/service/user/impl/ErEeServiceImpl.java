@@ -239,6 +239,8 @@ public class ErEeServiceImpl extends BaseServiceTk<ErEe> implements ErEeService 
         }
         sysMsg.setMsgType(dictId);
 
+        //由于可能没有要删除的，所以不做大于0的判断
+        eeGradeService.deleteByEeEr(erEe.getExaminerId(), erEe.getExamineeId());
         if (sysMsgService.insertSelective(sysMsg) > 0 && updateByPrimaryKeySelective(erEe) > 0) {
             return "1";
         } else {

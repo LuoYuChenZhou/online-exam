@@ -31,4 +31,14 @@ public class EeGradeServiceImpl extends BaseServiceTk<EeGrade> implements EeGrad
             return new FixPageInfo<>(eeList);
         }
     }
+
+    @Override
+    public List<Map<String, Object>> getNoEeGradeList(String erId, String eeId) {
+        return eeGradeMapper.getNoEeGradeList(erId, eeId);
+    }
+
+    @Override
+    public Integer deleteByEeEr(String erId, String eeId) {
+        return eeGradeMapper.deleteByEeEr(erId, eeId);
+    }
 }

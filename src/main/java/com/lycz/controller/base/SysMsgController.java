@@ -23,8 +23,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "SysMsg")
-@Api(value = "SysMsg", description = "系统日志相关api")
+@Api(value = "SysMsg", description = "系统信息相关api")
 public class SysMsgController {
-
 
 }

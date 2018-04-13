@@ -10,6 +10,7 @@
     <title>我的考生</title>
     <script type="text/javascript" src="../../style/js/common-js-css.js"></script>
     <script type="text/javascript" src="../../style/js/examinee/my-examinee-list.js"></script>
+    <link rel="stylesheet" type="text/css" href="/style/css/htmlCss/examinee.css"/>
 </head>
 <body>
 <div class="layui-form" id="search_form" lay-filter="form_filter">
@@ -39,6 +40,26 @@
     </div>
 </div>
 <table id="main_table" class="layui-table" lay-filter="main_table_filter"></table>
+<div id="addToGradeForm" class="layui-form" lay-filter="addToGradeFormFilter">
+    <div class="layui-form-item">
+        <label class="layui-form-label">添加进：</label>
+        <div class="layui-input-block">
+            <select name="ee_add_grade" lay-filter="grade_select_filter" id="otherGradeListSelect" lay-search></select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序号 ：</label>
+        <div class="layui-input-block">
+            <input type="text" id="ee_add_sort" autocomplete="off" class="layui-input" value="1">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" onclick="insertEeToGrade()">立即提交</button>
+            <button class="layui-btn layui-btn-primary" onclick="closeFloor(floorObject)">取消</button>
+        </div>
+    </div>
+</div>
 </body>
 </html>
 <script type="text/html" id="num2Sex">

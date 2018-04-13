@@ -220,7 +220,8 @@ public class ExceptionHandlers {
         log.error(ex.getMessage());
         //如果异常提示信息包含!!noShow!!，则不显示到页面
         if (ex.getMessage().matches(".*!!noShow!!.*")) {
-            result.setMsg("服务器维护中");
+            result.setMsg("系统繁忙");
+            result.setLogMsg(ex.getMessage());
         } else {
             result.setMsg(ex.getMessage());
         }

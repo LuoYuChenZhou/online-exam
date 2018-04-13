@@ -14,4 +14,9 @@ public interface EeGradeMapper extends Mapper<EeGrade> {
     List<Map<String, Object>> getEeListByNameNoClass(@Param("erId") String erId,
                                                      @Param("searchClass") String searchClass,
                                                      @Param("searchString") String searchString);
+
+    List<Map<String, Object>> getNoEeGradeList(@Param("erId") String erId, @Param("eeId") String eeId);
+
+    Integer deleteByEeEr(@Param("erId") String erId, @Param("eeId") String eeId);
+
 }
