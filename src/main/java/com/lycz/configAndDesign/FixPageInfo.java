@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * 分页插件返回值修改版，针对LayUI
+ *
  * @author lizhenqing
  * @version 1.0
  * @data 2018/2/24 10:45
@@ -35,7 +36,7 @@ public class FixPageInfo<T> implements Serializable {
     /**
      * 包装Page对象
      *
-     * @param list          page结果
+     * @param list page结果
      */
     public FixPageInfo(List<T> list) {
         this.logMsg = "";
@@ -45,7 +46,7 @@ public class FixPageInfo<T> implements Serializable {
             this.limit = page.getPageSize();
             this.data = page;
             this.count = page.getTotal();
-        } else if (list instanceof Collection) {
+        } else if (list != null) {
             this.page = 1;
             this.limit = list.size();
             this.data = list;
@@ -112,12 +113,10 @@ public class FixPageInfo<T> implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("PageInfo{");
-        sb.append("page=").append(page);
-        sb.append(", limit=").append(limit);
-        sb.append(", count=").append(count);
-        sb.append(", data=").append(data);
-        sb.append('}');
-        return sb.toString();
+        return "PageInfo{" + "page=" + page +
+                ", limit=" + limit +
+                ", count=" + count +
+                ", data=" + data +
+                '}';
     }
 }

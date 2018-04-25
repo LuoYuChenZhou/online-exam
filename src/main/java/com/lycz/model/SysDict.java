@@ -1,5 +1,7 @@
 package com.lycz.model;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.*;
 
 @Table(name = "sys_dict")
@@ -8,34 +10,32 @@ public class SysDict {
     private String id;
 
     /**
-     * 字典值
+     * 字典名
      */
+    @NotBlank(message = "字典名不能为空")
     @Column(name = "dict_name")
     private String dictName;
 
     /**
      * 字典编码
      */
+    @NotBlank(message = "字典编码不能为空")
     @Column(name = "dict_code")
     private String dictCode;
 
     /**
      * 字典值
      */
+    @NotBlank(message = "字典值不能为空")
     @Column(name = "dict_value")
     private String dictValue;
 
     /**
      * 父级id（0-顶级字典）
      */
+    @NotBlank(message = "父级id不能为空")
     @Column(name = "upper_id")
     private String upperId;
-
-    /**
-     * 排序号
-     */
-    @Column(name = "sort_no")
-    private Integer sortNo;
 
     /**
      * 状态（014）
@@ -126,24 +126,6 @@ public class SysDict {
      */
     public void setUpperId(String upperId) {
         this.upperId = upperId;
-    }
-
-    /**
-     * 获取排序号
-     *
-     * @return sort_no - 排序号
-     */
-    public Integer getSortNo() {
-        return sortNo;
-    }
-
-    /**
-     * 设置排序号
-     *
-     * @param sortNo 排序号
-     */
-    public void setSortNo(Integer sortNo) {
-        this.sortNo = sortNo;
     }
 
     /**

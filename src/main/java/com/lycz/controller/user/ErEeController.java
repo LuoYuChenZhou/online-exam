@@ -37,7 +37,7 @@ public class ErEeController {
     private ErEeService erEeService;
 
     @RequestMapping(value = "/getInvitedList", method = RequestMethod.GET)
-    @Privilege(methodName = "根据考生id（token中）获取邀请列表")
+    @Privilege(methodName = "根据考生id（token中）获取邀请列表", privilegeLevel = Privilege.EE_TYPE)
     @ResponseBody
     @ApiOperation(value = "根据考生id（token中）获取邀请列表", notes = "" +
             "入参说明:<br/>" +

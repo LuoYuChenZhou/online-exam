@@ -1,5 +1,8 @@
 package com.lycz.service.paper.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.lycz.configAndDesign.FixPageInfo;
+import com.lycz.configAndDesign.ToolUtil;
 import com.lycz.dao.PapersMapper;
 import com.lycz.model.Papers;
 import com.lycz.service.base.impl.BaseServiceTk;
@@ -19,7 +22,12 @@ public class PapersServiceImpl extends BaseServiceTk<Papers> implements PapersSe
     private PapersMapper papersMapper;
 
     @Override
-    public List<Map<String, Object>> searchExaminationName(String papersName, String teachersId) {
-        return papersMapper.searchExaminationName(papersName,teachersId);
+    public FixPageInfo<Map<String, Object>> selectPapersByName(String papersName, String teachersId, Integer page, Integer limit) {
+        PageHelper.startPage(page, limit);
+        List<Map<String, Object>> tempList = papersMapper.selectPapersByName(papersName, teachersId);
+        if (ToolUtil.isEmpty(tempList)) {
+            return null;
+        }
+        return new FixPageInfo<>(tempList);
     }
 }

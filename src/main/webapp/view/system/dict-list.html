@@ -1,0 +1,105 @@
+<!--
+  User: lzq11
+  Date: 2018/4/17
+  Time: 10:19
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>字典列表</title>
+    <script type="text/javascript" src="/style/js/common/common-js-css.js"></script>
+    <script type="text/javascript" src="/style/js/system/dict-list.js"></script>
+</head>
+<body>
+<!--主搜索框-->
+<div class="layui-form" id="mainSearchForm" lay-filter="mainSearchFormFilter">
+    <div class="layui-form-item" style="margin:15px 0;">
+
+        <div class="layui-inline">
+            <label class="layui-form-label" for="searchString">综合搜索：</label>
+            <div class="layui-input-inline">
+                <input type="text" autocomplete="off" class="layui-input" id="searchString">
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label" for="upperId">父级字典：</label>
+            <div class="layui-input-inline">
+                <select id="upperId" lay-filter="upperId"></select>
+            </div>
+        </div>
+
+        <div class="layui-inline" style="margin-left: -60px;">
+            <div class="layui-input-block">
+                <button class="layui-btn" style="background: #1E9FFF;" onclick="searchBtnClick()">搜索</button>
+                <button class="layui-btn" style="background: #5FB878;" onclick="openAddFloor()">新增</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--主显示区-->
+<table id="mainTable" class="layui-table" lay-filter="mainTableFilter"></table>
+
+<!--字典编辑弹层-->
+<div id="dictEditFloor" style="display:none;" class="layui-form">
+
+    <div class="layui-form-item" style="margin: 23px 0 0 20px;">
+        <label class="layui-form-label" for="editUpperId">父级字典：</label>
+        <div class="layui-input-inline">
+            <select id="editUpperId" name="editUpperId" lay-filter="editUpperId"></select>
+        </div>
+    </div>
+
+    <div class="layui-form-item" style="margin-top: 15px;">
+        <label class="layui-form-label" for="editDictName" style="width: 100px;">字典名：</label>
+        <div class="layui-input-block">
+            <input type="text" id="editDictName" lay-verify="require" name="editDictName" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label" for="editDictCode" style="width: 100px;">字典编码 ：</label>
+        <div class="layui-input-block">
+            <input type="text" id="editDictCode" name="editDictCode" lay-verify="require" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label" for="editDictValue" style="width: 100px;">字典值 ：</label>
+        <div class="layui-input-block">
+            <input type="text" id="editDictValue" name="editDictValue" lay-verify="require" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block" style="margin-top: 20px;">
+            <button class="layui-btn" onclick="editDictCommit()">立即提交</button>
+            <button class="layui-btn layui-btn-primary" onclick="closeFloor(FloorObject)">取消</button>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
+
+<script type="text/html" id="getStatusText">
+    {{ normalStatusText(d.status) }}
+</script>
+
+<script type="text/html" id="mainTableBar">
+    <a class="layui-btn layui-btn-xs" lay-event="edit" title="编辑"><i class="iconfont icon-xiugai2"></i></a>
+    <a class="layui-btn layui-btn-xs delete_bg" lay-event="delete" title="删除"><i class="iconfont icon-delete"></i></a>
+    {{#  if(d.status == 1){ }}
+    <a class="layui-btn layui-btn-xs disable_false" lay-event="enOrDis" title="禁用"><i
+            class="iconfont icon-jinyong"></i></a>
+    {{#  } else { }}
+    <a class="layui-btn layui-btn-xs disable_true" lay-event="enOrDis" title="启用"><i
+            class="iconfont icon-jinyong"></i></a>
+    {{#  }   }}
+</script>

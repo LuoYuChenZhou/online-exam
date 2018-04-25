@@ -33,7 +33,7 @@ import java.util.UUID;
  */
 @Controller
 @RequestMapping(value = "Grade")
-@Api(value = "Grade", description = "班级相关api")
+@Api(description = "班级相关api")
 public class GradeController {
 
     @Resource
@@ -210,5 +210,6 @@ public class GradeController {
 
         return JSONObject.fromObject(result);
     }
+
 }
 

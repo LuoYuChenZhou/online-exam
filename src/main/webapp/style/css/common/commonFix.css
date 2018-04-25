@@ -22,6 +22,11 @@ a .layui-btn {
     background-color: #FFB800;
 }
 
+/*还原按钮背景颜色*/
+.reduction_bg {
+    background-color: #2b524f;
+}
+
 /*设置placeholder样式===============开始*/
 ::-webkit-input-placeholder { /* WebKit browsers */
     font-size: 12px;
@@ -44,7 +49,7 @@ a .layui-btn {
 /*将边框和整体背景一致*/
 .layui-table-view {
     border: #E0FCFF;
-    margin-left: 20px;
+    margin-left: 25px;
 }
 
 /*表头背景设为和整体背景一致，使边框线看不出来*/
@@ -68,6 +73,12 @@ a .layui-btn {
     color: #6585BA;
 }
 
-dd{
+/*下拉列表选项字体缩小*/
+dd {
     font-size: 12px;
+}
+
+/*系统默认input宽度是100%，会出问题，这里设置成200px*/
+.layui-input, .layui-textarea {
+    width: 200px;
 }

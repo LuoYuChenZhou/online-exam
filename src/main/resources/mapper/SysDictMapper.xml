@@ -1,16 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lycz.dao.SysDictMapper">
-  <resultMap id="BaseResultMap" type="com.lycz.model.SysDict">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="dict_name" jdbcType="VARCHAR" property="dictName" />
-    <result column="dict_code" jdbcType="VARCHAR" property="dictCode" />
-    <result column="dict_value" jdbcType="VARCHAR" property="dictValue" />
-    <result column="upper_id" jdbcType="VARCHAR" property="upperId" />
-    <result column="sort_no" jdbcType="INTEGER" property="sortNo" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.lycz.model.SysDict">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="dict_name" jdbcType="VARCHAR" property="dictName"/>
+        <result column="dict_code" jdbcType="VARCHAR" property="dictCode"/>
+        <result column="dict_value" jdbcType="VARCHAR" property="dictValue"/>
+        <result column="upper_id" jdbcType="VARCHAR" property="upperId"/>
+        <result column="sort_no" jdbcType="INTEGER" property="sortNo"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+    </resultMap>
+
+    <select id="getDictListByNameValueCodeUpperId" resultType="hashMap">
+        SELECT
+            sd.id AS id,
+            sd.dict_name AS dictName,
+            sd.dict_code AS dictCode,
+            sd.dict_value AS dictValue,
+            sd.upper_id AS upperId,
+            sd.`status` AS `status`
+        FROM
+            sys_dict sd
+        WHERE
+            sd.`status` != '4'
+        <if test=' upperId != null and upperId != "" '>
+            AND sd.upper_id = #{upperId}
+        </if>
+        <if test=' searchString != null and searchString != "" '>
+            AND (
+                (sd.dict_name LIKE CONCAT("%",#{searchString},"%")) OR
+                (sd.dict_code LIKE CONCAT("%",#{searchString},"%")) OR
+                (sd.dict_value LIKE CONCAT("%",#{searchString},"%"))
+            )
+        </if>
+        GROUP BY sd.id
+        ORDER BY sd.upper_id ASC ,sd.dict_value ASC
+    </select>
 </mapper>

@@ -5,16 +5,16 @@
     <link rel="icon" href="/style/image/favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="/style/image/favicon.ico" type="image/x-icon" />
     <link rel="bookmark" href="/style/image/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" type="text/css" href="../style/css/nav.css"/>
-    <link rel="stylesheet" type="text/css" href="../style/css/loadStyle.css"/>
+    <link rel="stylesheet" type="text/css" href="../style/css/common/nav.css"/>
+    <link rel="stylesheet" type="text/css" href="../style/css/common/loadStyle.css"/>
     <link rel="stylesheet" type="text/css" href="../style/css/index/mainMenu.css"/>
-    <link rel="stylesheet" type="text/css" href="../style/css/sweetalert2.min.css"/>
-    <script type="text/javascript" src="../style/js/sweetalert2.min.js"></script>
-    <script type="text/javascript" src="../style/js/jquery-3.2.1.js"></script>
-    <script type="text/javascript" src="../style/js/jquery.cookie.js"></script>
-    <script type="text/javascript" src="../style/js/common-methods.js"></script>
-    <script type="text/javascript" src="../style/js/nav.js"></script>
-    <script type="text/javascript" src="//at.alicdn.com/t/font_533369_jsxgdfhoqdxi529.js"></script>
+    <link rel="stylesheet" type="text/css" href="../style/css/common/sweetalert2.min.css"/>
+    <script type="text/javascript" src="../style/js/common/sweetalert2.min.js"></script>
+    <script type="text/javascript" src="../style/js/common/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="../style/js/common/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../style/js/common/common-methods.js"></script>
+    <script type="text/javascript" src="../style/js/common/nav.js"></script>
+    <script type="text/javascript" src="//at.alicdn.com/t/font_533369_4s3w2umbswjhsemi.js"></script>
 </head>
 <body class="index">
 <!--顶部-->
@@ -59,6 +59,7 @@
                 <ul>
                     <li><a href="javascript:void(0);"><span>用户管理</span></a></li>
                     <li><a href="javascript:void(0);" onclick="changeView('system/log-list.html')"><span>日志管理</span></a></li>
+                    <li><a href="javascript:void(0);" onclick="changeView('system/dict-list.html')"><span>字典管理</span></a></li>
                 </ul>
             </a>
         </li>
@@ -78,7 +79,7 @@
             </ul>
         </li>
         <li class="nav-item er_have">
-            <a href="javascript:void(0);">
+            <a href="javascript:void(0);" onclick="changeView('papers/paper-list.html')">
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-shijuan"></use>
                 </svg>

@@ -212,13 +212,29 @@ function setEntity(form, entity) {
  * 性别数字转文字
  */
 function num2Sex(sexNum) {
-    if(!sexNum)
+    if (!sexNum)
         return "";
     switch (sexNum) {
         case "0":
             return "男";
         case "1":
             return "女";
+    }
+}
+
+/**
+ * 普通状态转文字（014）
+ */
+function normalStatusText(status) {
+    switch (status) {
+        case "0" :
+            return "禁用";
+        case "1" :
+            return "启用";
+        case "4" :
+            return "删除";
+        default:
+            return "";
     }
 }
 

@@ -1,0 +1,80 @@
+<!--
+  User: lzq11
+  Date: 2018/4/15
+  Time: 17:08
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>试卷列表</title>
+    <script type="text/javascript" src="../../style/js/common/common-js-css.js"></script>
+    <script type="text/javascript" src="../../style/js/papers/paper-list.js"></script>
+</head>
+<body>
+<!--主搜索框-->
+<div class="layui-form" id="mainSearchForm">
+    <div class="layui-form-item" style="margin:15px 0;">
+
+        <div class="layui-inline">
+            <label class="layui-form-label">试卷名称：</label>
+            <div class="layui-input-inline" style="width: 180px;">
+                <input type="text" name="searchPaperName" autocomplete="off" class="layui-input" id="searchPaperName">
+            </div>
+        </div>
+
+        <div class="layui-inline" style="margin-left: -60px;">
+            <div class="layui-input-block">
+                <button class="layui-btn" style="background: #1E9FFF;" onclick="searchBtnClick()">搜索</button>
+                <button class="layui-btn" style="background: #5FB878;" onclick="toPaperAddForm('add',null)">新增</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--主显示区-->
+<table id="mainTable" class="layui-table" lay-filter="mainTableFilter"></table>
+
+<!--修改试卷名称弹层-->
+<div id="changeNameForm" style="display:none;">
+    <div class="layui-form-item" style="margin-top: 23px;">
+        <label class="layui-form-label" for="curPaperName" style="width: 100px;">原试卷名称：</label>
+        <div class="layui-input-block">
+            <input type="text" id="curPaperName" readonly autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" for="newPaperName" style="width: 100px;">新试卷名 ：</label>
+        <div class="layui-input-block">
+            <input type="text" id="newPaperName" required lay-verify="require" placeholder="请输入新试卷名..."
+                   autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block" style="margin-top: 20px;">
+            <button class="layui-btn" onclick="changePaperName()">立即提交</button>
+            <button class="layui-btn layui-btn-primary" onclick="closeFloor(FloorObject)">取消</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<script type="text/html" id="getPaperStatus">
+    {{ getPaperStatus(d.status) }}
+</script>
+
+<script type="text/html" id="mainTableBar">
+    <a class="layui-btn layui-btn-xs" lay-event="changeName" title="修改名称"><i class="iconfont icon-xiugai1"></i></a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit" title="编辑"><i class="iconfont icon-xiugai2"></i></a>
+    <a class="layui-btn layui-btn-xs delete_bg" lay-event="delete" title="删除"><i class="iconfont icon-delete"></i></a>
+    {{#  if(d.status == 1){ }}
+    <a class="layui-btn layui-btn-xs disable_false" lay-event="enOrDis" title="发布"><i
+            class="iconfont icon-fabu"></i></a>
+    {{#  } else { }}
+    <a class="layui-btn layui-btn-xs reduction_bg" lay-event="enOrDis" title="取消发布"><i
+            class="iconfont icon-fabu"></i></a>
+    {{#  }   }}
+</script>
