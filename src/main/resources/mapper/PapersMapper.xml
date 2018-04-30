@@ -10,7 +10,8 @@
         <result column="papers_name" jdbcType="VARCHAR" property="papersName"/>
         <result column="exam_time" jdbcType="INTEGER" property="examTime"/>
         <result column="full_score" jdbcType="INTEGER" property="fullScore"/>
-        <result column="correct_type" jdbcType="VARCHAR" property="correctType"/>
+        <result column="default_correct_type" jdbcType="VARCHAR" property="defaultCorrectType"/>
+        <result column="default_subject" jdbcType="VARCHAR" property="defaultSubject"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
         <result column="status" jdbcType="VARCHAR" property="status"/>

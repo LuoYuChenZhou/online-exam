@@ -1,0 +1,120 @@
+.layui-form {
+    background-color: white;
+    position: relative;
+    left: 5%;
+    width: 1200px;
+    margin-top: 10px;
+    text-align: center;
+    height: 670px;
+    /*height: 400px;*/
+    overflow-y: auto;
+}
+
+.paperName {
+    color: #6585BA;
+    font-size: 40px;
+    border-width: 0 0 5px 0;
+    border-color: #499cff;
+    background: rgba(0, 0, 0, 0);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+label {
+    color: #6585BA;
+}
+
+.examTimeDiv {
+    margin: 0 160px 20px 0;
+    text-align: right;
+}
+
+.examTimeNum {
+    height: 35px;
+    width: 80px;
+    border: solid 1px #E6E6E6;
+    border-radius: 2px;
+}
+
+.question_bg {
+    background-color: #fff9e7;
+    border-radius: 3px 0 0 3px;
+    width: 760px;
+    margin: 0 auto 20px;
+    text-align: left;
+    padding: 12px 0;
+}
+
+.layui-form-radio {
+    margin-top: 0;
+}
+
+.flag .layui-form-radio {
+    margin-top: 6px;
+}
+
+.question_text {
+    width: auto;
+    margin-left: 10px;
+}
+
+.question_input {
+    width: 70px;
+}
+
+.separate {
+    margin: 14px 0 0 0;
+}
+
+.question_desc {
+    width: 556px;
+    min-height: 80px;
+}
+
+.chooseLeftText {
+    vertical-align: top;
+    width: 77px;
+    display: inline-block;
+}
+
+.chooseCenterOptions {
+    width: 585px;
+    display: inline-block;
+}
+
+.chooseRightButton {
+    width: 85px;
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 9px;
+}
+
+.blankCenterOptions {
+    width: 613px;
+    display: inline-block;
+}
+
+.blankRightButton{
+    width: 30px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.smallML {
+    margin-left: 29px;
+    width: auto !important;
+}
+
+.smallText {
+    width: auto;
+    padding-left: 0;
+    padding-right: 0
+}
+
+.icon {
+    width: 1.5em;
+    height: 1.5em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+}

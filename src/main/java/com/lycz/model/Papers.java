@@ -35,10 +35,16 @@ public class Papers {
     private Integer fullScore;
 
     /**
-     * 批改模式（0-手动批改，1-自动批改）
+     * 默认批改模式（0-手动批改，1-自动批改）
      */
-    @Column(name = "correct_type")
-    private String correctType;
+    @Column(name = "default_correct_type")
+    private String defaultCorrectType;
+
+    /**
+     * 默认科目（存字典值）
+     */
+    @Column(name = "default_subject")
+    private String defaultSubject;
 
     /**
      * 创建时间
@@ -145,21 +151,39 @@ public class Papers {
     }
 
     /**
-     * 获取批改模式（0-手动批改，1-自动批改）
+     * 获取默认批改模式（0-手动批改，1-自动批改）
      *
-     * @return correct_type - 批改模式（0-手动批改，1-自动批改）
+     * @return default_correct_type - 默认批改模式（0-手动批改，1-自动批改）
      */
-    public String getCorrectType() {
-        return correctType;
+    public String getDefaultCorrectType() {
+        return defaultCorrectType;
     }
 
     /**
-     * 设置批改模式（0-手动批改，1-自动批改）
+     * 设置默认批改模式（0-手动批改，1-自动批改）
      *
-     * @param correctType 批改模式（0-手动批改，1-自动批改）
+     * @param defaultCorrectType 默认批改模式（0-手动批改，1-自动批改）
      */
-    public void setCorrectType(String correctType) {
-        this.correctType = correctType;
+    public void setDefaultCorrectType(String defaultCorrectType) {
+        this.defaultCorrectType = defaultCorrectType;
+    }
+
+    /**
+     * 获取默认科目（存字典值）
+     *
+     * @return default_subject - 默认科目（存字典值）
+     */
+    public String getDefaultSubject() {
+        return defaultSubject;
+    }
+
+    /**
+     * 设置默认科目（存字典值）
+     *
+     * @param defaultSubject 默认科目（存字典值）
+     */
+    public void setDefaultSubject(String defaultSubject) {
+        this.defaultSubject = defaultSubject;
     }
 
     /**

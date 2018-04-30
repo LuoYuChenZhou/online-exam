@@ -35,6 +35,11 @@ public class BaseQuestions {
     @Column(name = "is_multi")
     private String isMulti;
 
+    /**
+     * 科目（存字典id）
+     */
+    private String subject;
+
     @Column(name = "create_time")
     private Date createTime;
 
@@ -150,6 +155,24 @@ public class BaseQuestions {
      */
     public void setIsMulti(String isMulti) {
         this.isMulti = isMulti;
+    }
+
+    /**
+     * 获取科目（存字典id）
+     *
+     * @return subject - 科目（存字典id）
+     */
+    public String getSubject() {
+        return subject;
+    }
+
+    /**
+     * 设置科目（存字典id）
+     *
+     * @param subject 科目（存字典id）
+     */
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     /**

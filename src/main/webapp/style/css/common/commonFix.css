@@ -78,7 +78,7 @@ dd {
     font-size: 12px;
 }
 
-/*系统默认input宽度是100%，会出问题，这里设置成200px*/
+/*layui默认input宽度是100%，会出问题，这里设置成200px*/
 .layui-input, .layui-textarea {
     width: 200px;
 }

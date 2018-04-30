@@ -47,6 +47,12 @@ public class PaperQuestion {
     private Integer assignScore;
 
     /**
+     * 批改模式（0-手动批改，1-自动批改）
+     */
+    @Column(name = "correct_type")
+    private String correctType;
+
+    /**
      * 获取主键id
      *
      * @return id - 主键id
@@ -170,5 +176,13 @@ public class PaperQuestion {
      */
     public void setAssignScore(Integer assignScore) {
         this.assignScore = assignScore;
+    }
+
+    public String getCorrectType() {
+        return correctType;
+    }
+
+    public void setCorrectType(String correctType) {
+        this.correctType = correctType;
     }
 }

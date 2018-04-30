@@ -12,7 +12,7 @@ let form;
 layui.use('form', function () {
     form = layui.form;
 
-    getUpperZeroDictList("");
+    getUpperZeroDictList("", "");
 
     form.on('select(upperId)', function (data) {
         curChooseUpperId = data.value;
@@ -37,7 +37,7 @@ layui.use('table', function () {
             , {title: '操作', width: 150, align: 'center', toolbar: '#mainTableBar'}
         ]]
         , where: {
-            upperId: '0'
+            upperId: ''
             , token: token
         }
     });
@@ -49,10 +49,9 @@ layui.use('table', function () {
 
         curOperateDictId = data.id;
 
-        if (layEvent === 'edit') { //修改试卷名称
+        if (layEvent === 'edit') { //修改字典名称
             curEditType = "modify";
-            getUpperZeroDictList(data.id);
-            $("#editUpperId option[value='" + data.upperId + "']").attr("selected", "selected");
+            getUpperZeroDictList(data.id, data.upperId);
             $("#editDictName").val(data.dictName);
             $("#editDictCode").val(data.dictCode);
             $("#editDictValue").val(data.dictValue);
@@ -135,6 +134,7 @@ function editDictCommit() {
                 layer.msg(data.msg, {icon: 6, offset: ['100px']});
                 closeFloor(FloorObject);
                 searchBtnClick();
+                getUpperZeroDictList("", "");
             } else {
                 layer.msg(data.msg);
             }
@@ -154,6 +154,7 @@ function modifyDictStatus(targetStatus) {
                 layer.msg(data.msg, {icon: 6, offset: ['100px']});
                 closeFloor(FloorObject);
                 searchBtnClick();
+                getUpperZeroDictList("", "");
             } else {
                 layer.msg(data.msg);
             }
@@ -161,7 +162,8 @@ function modifyDictStatus(targetStatus) {
 }
 
 //获取父级id为0的字典列表
-function getUpperZeroDictList(verifyDictId) {
+//verifyDictId为校验id，输入了表示要更新的是编辑弹窗内的下拉，没输入表示要更新首页下拉
+function getUpperZeroDictList(verifyDictId, oldUpperId) {
     $.get("/SysDict/getUpperZeroDictList.do",
         {
             verifyDictId: verifyDictId
@@ -178,12 +180,15 @@ function getUpperZeroDictList(verifyDictId) {
             if (data.status === 200) {
                 upperIdObj.attr("disabled", false);
                 if (verifyDictId === "") {
-                    upperIdObj.append("<option value=''>全部</option>");
+                    upperIdObj.append("<option value='' selected='selected'>全部</option>");
                 }
                 upperIdObj.append("<option value='0'>顶级字典</option>");
                 $.each(data.data, function (index, val) {
                     upperIdObj.append("<option value='" + val.id + "'>" + val.dictName + "</option>");
                 });
+                if (verifyDictId !== "") {
+                    $("#editUpperId option[value=\"" + oldUpperId + "\"]").attr("selected", "selected");
+                }
             } else if (data.status === 204) {
                 upperIdObj.attr("disabled", false);
                 upperIdObj.append("<option value='0'>顶级字典</option>");
@@ -198,8 +203,7 @@ function getUpperZeroDictList(verifyDictId) {
 //打开新增弹窗
 function openAddFloor() {
     curEditType = "add";
-    getUpperZeroDictList();
-    $("#editUpperId option[value='0']").attr("selected", "selected");
+    getUpperZeroDictList("1", "0");
     $("#editDictName").val("");
     $("#editDictCode").val("");
     $("#editDictValue").val("");
