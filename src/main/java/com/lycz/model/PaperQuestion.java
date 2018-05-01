@@ -23,12 +23,6 @@ public class PaperQuestion {
     private String questionId;
 
     /**
-     * 题号，题目的展示顺序
-     */
-    @Column(name = "question_no")
-    private Byte questionNo;
-
-    /**
      * 问题类型（1-选择，2-填空，3-简答，4-编程）
      */
     @Column(name = "question_type")
@@ -104,24 +98,6 @@ public class PaperQuestion {
      */
     public void setQuestionId(String questionId) {
         this.questionId = questionId;
-    }
-
-    /**
-     * 获取题号，题目的展示顺序
-     *
-     * @return question_no - 题号，题目的展示顺序
-     */
-    public Byte getQuestionNo() {
-        return questionNo;
-    }
-
-    /**
-     * 设置题号，题目的展示顺序
-     *
-     * @param questionNo 题号，题目的展示顺序
-     */
-    public void setQuestionNo(Byte questionNo) {
-        this.questionNo = questionNo;
     }
 
     /**
