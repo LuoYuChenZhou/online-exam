@@ -1,0 +1,282 @@
+<!--
+  User: lzq11
+  Date: 2018/5/1
+  Time: 14:39
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<!--选择题div-->
+<div class="question_bg" id="qa1">
+
+    <!--题号、分数、批改类型-->
+    <div>
+        <div class="layui-inline">
+            <label class="layui-form-label question_text">分数:</label>
+            <div class="layui-input-inline">
+                <input type="text" name="qa1Score" required lay-verify="required" autocomplete="off"
+                       class="layui-input question_input" style="margin-left: 39px">
+            </div>
+        </div>
+
+        <div class="layui-inline flag">
+            <label class="layui-form-label" style="margin-left: 199px;">批改模式：</label>
+            <input type="radio" name="correct1" value="0" title="手动">
+            <input type="radio" name="correct1" value="1" title="自动">
+        </div>
+
+        <div class="layui-inline" style="margin-left: 62px;">
+            <a href="javascript:void(0);">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-guanbi"></use>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <!--题目类型、科目-->
+    <div class="separate">
+        <div class="layui-inline flag">
+            <label class="layui-form-label">题目类型：</label>
+            <input type="radio" name="qType1" value="0" title="选择">
+            <input type="radio" name="qType1" value="1" title="填空">
+            <input type="radio" name="qType1" value="2" title="简答">
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">科目：</label>
+            <div class="layui-input-block">
+                <select name="subject1"></select>
+            </div>
+        </div>
+    </div>
+
+    <!--问题描述-->
+    <div class="separate">
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label question_text">问题描述:</label>
+            <div class="layui-input-block">
+                        <textarea name="question_desc" placeholder="请输入内容"
+                                  class="layui-textarea question_desc"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="choose_edit">
+        <!--选项-->
+        <div class="separate">
+            <!--左边文字-->
+            <div class="chooseLeftText">
+                <label class="layui-form-label question_text" style="padding-right: 0;">选项：</label>
+            </div>
+            <div class="chooseCenterOptions">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"
+                           style="width: auto;padding-left: 0;padding-right: 0">A</label>
+                    <div class="layui-input-block smallML">
+                        <input type="text" name="qa1A" required lay-verify="required" placeholder="请输入内容"
+                               autocomplete="off" class="layui-input" style="width: 556px;">
+                    </div>
+                    <label class="layui-form-label"
+                           style="width: auto;padding-left: 0;padding-right: 0">B</label>
+                    <div class="layui-input-block smallML">
+                        <input type="text" name="qa1B" required lay-verify="required" placeholder="请输入内容"
+                               autocomplete="off" class="layui-input" style="width: 556px;">
+                    </div>
+                    <label class="layui-form-label"
+                           style="width: auto;padding-left: 0;padding-right: 0">C</label>
+                    <div class="layui-input-block smallML">
+                        <input type="text" name="qa1C" required lay-verify="required" placeholder="请输入内容"
+                               autocomplete="off" class="layui-input" style="width: 556px;">
+                    </div>
+                    <label class="layui-form-label"
+                           style="width: auto;padding-left: 0;padding-right: 0">D</label>
+                    <div class="layui-input-block smallML">
+                        <input type="text" name="qa1D" required lay-verify="required" placeholder="请输入内容"
+                               autocomplete="off" class="layui-input" style="width: 556px;">
+                    </div>
+                </div>
+            </div>
+            <div class="chooseRightButton">
+                <a href="javascript:void(0);" style="margin-left:20px;">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-tianjia"></use>
+                    </svg>
+                </a>
+                <a href="javascript:void(0);">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-jianshao"></use>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <!--答案-->
+        <div class="layui-form-item separate">
+            <label class="layui-form-label question_text">答案：</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="qa1An" title="A" value=1>
+                <input type="checkbox" name="qa1An" title="B" value=2>
+                <input type="checkbox" name="qa1An" title="C" value=4>
+                <input type="checkbox" name="qa1An" title="D" value=8>
+            </div>
+        </div>
+
+        <!--自动批改多选得分模式-->
+        <div class="separate">
+            <label class="layui-form-label question_text">多选得分模式：</label>
+            <div>
+                <input type="radio" name="qa1Co" value="1" checked title="全部正确选项选中才得分">
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="radio" name="qa1Co" value="2" title="选中部分正确选项且无错误选项得">
+                </div>
+                <div class="layui-input-inline">
+                    <input type="text" name="qa1CoScore" autocomplete="off" class="layui-input"
+                           style="width: 70px;">
+                </div>
+            </div>
+            <span class="question_text">分</span>
+        </div>
+    </div>
+</div>
+
+<!--填空题div-->
+<div class="question_bg" id="qa2">
+
+    <!--题号、分数、批改类型-->
+    <div>
+        <div class="layui-inline">
+            <label class="layui-form-label question_text">分数:</label>
+            <div class="layui-input-inline">
+                <input type="text" name="qa2Score" required lay-verify="required" autocomplete="off"
+                       class="layui-input question_input" style="margin-left: 39px">
+            </div>
+        </div>
+
+        <div class="layui-inline flag">
+            <label class="layui-form-label" style="margin-left: 199px;">批改模式：</label>
+            <input type="radio" name="correct2" value="0" title="手动">
+            <input type="radio" name="correct2" value="1" title="自动">
+        </div>
+
+        <div class="layui-inline" style="margin-left: 62px;">
+            <a href="javascript:void(0);">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-guanbi"></use>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <!--题目类型、科目-->
+    <div class="separate">
+        <div class="layui-inline flag">
+            <label class="layui-form-label">题目类型：</label>
+            <input type="radio" name="qType2" value="0" title="选择">
+            <input type="radio" name="qType2" value="1" title="填空">
+            <input type="radio" name="qType2" value="2" title="简答">
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">科目：</label>
+            <div class="layui-input-block">
+                <select name="subject2"></select>
+            </div>
+        </div>
+    </div>
+
+    <!--问题描述-->
+    <div class="separate">
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label question_text">问题描述:</label>
+            <div class="layui-input-block">
+                        <textarea name="question_desc" placeholder="请输入内容"
+                                  class="layui-textarea question_desc"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="blank_edit">
+        <!--选项-->
+        <div class="separate">
+            <!--左边文字-->
+            <div class="chooseLeftText" style="width: 99px;">
+                <label class="layui-form-label question_text" style="padding-right: 0;">答案/要点：</label>
+            </div>
+            <div class="blankCenterOptions">
+                <div>
+                    <div class="layui-inline" style="width: 418px;">
+                        <div class="layui-input-inline smallML" style="margin-left: 7px;">
+                            <input type="text" name="" autocomplete="off" class="layui-input" required
+                                   lay-verify="required" style="width: 392px;" placeholder="请输入内容">
+                        </div>
+                    </div>
+                    <div class="layui-inline" style="width: 150px;margin-right:0;">
+                        <label class="layui-form-label smallText">分数</label>
+                        <div class="layui-input-inline smallML">
+                            <input type="text" name="" autocomplete="off" class="layui-input"
+                                   style="width: 83px;">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <a href="javascript:void(0);">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-jianshao"></use>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <div class="layui-inline" style="width: 418px;">
+                        <div class="layui-input-inline smallML" style="margin-left: 7px;">
+                            <input type="text" name="" autocomplete="off" class="layui-input" required
+                                   lay-verify="required" style="width: 392px;" placeholder="请输入内容">
+                        </div>
+                    </div>
+                    <div class="layui-inline" style="width: 150px;margin-right:0;">
+                        <label class="layui-form-label smallText">分数</label>
+                        <div class="layui-input-inline smallML">
+                            <input type="text" name="" autocomplete="off" class="layui-input"
+                                   style="width: 83px;">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <a href="javascript:void(0);">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-jianshao"></use>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="blankRightButton" style="margin-top: 8px;">
+                <a href="javascript:void(0);">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-tianjia"></use>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <!--自动批改得分模式-->
+        <div class="separate">
+            <label class="layui-form-label question_text">要点得分模式：</label>
+            <div>
+                <input type="radio" name="qa2Co" value="2" checked title="填入文字与预设答案近似就得分">
+            </div>
+            <div>
+                <input type="radio" name="qa2Co" value="1" title="填入文字与预设答案完全相同才得分">
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -79,6 +79,50 @@ public class SysDictController {
         return JSONObject.fromObject(result);
     }
 
+    @RequestMapping(value = "/getIdValueNameByCode", method = RequestMethod.GET)
+    @Privilege(methodName = "根据字典code获取id、value和name")
+    @ResponseBody
+    @ApiOperation(value = "根据字典code获取id、value和name(状态为1的,不分页)", notes = "" +
+            "入参说明:<br/>" +
+            "dictCode:字典编码<br/>" +
+            "出参说明:<br/>" +
+            "\n" +
+            "{\n" +
+            "\n" +
+            "    \"data\":[\n" +
+            "        {\n" +
+            "            \"dictName\":\"字典名\",\n" +
+            "            \"dictValue\":\"字典值\",\n" +
+            "            \"id\":\"字典id\",\n" +
+            "        }\n" +
+            "    ],\n" +
+            "    \"logMsg\":\"\",\n" +
+            "    \"msg\":\"查询成功\",\n" +
+            "    \"status\":200\n" +
+            "\n" +
+            "}\n")
+    public JSONObject getIdValueNameByCode(@RequestParam("dictCode") String dictCode,
+                                           @RequestParam("token") String token) {
+        CommonResult<JSONArray> result = new CommonResult<>();
+        result.setData(JSONArray.fromObject("[]"));
+        result.setStatus(400);
+
+        Example example = new Example(SysDict.class);
+        example.or().andEqualTo("dictCode", dictCode).andEqualTo("status", "1");
+        List<SysDict> dictList = sysDictService.selectByExample(example);
+
+        if (ToolUtil.isEmpty(dictList)) {
+            result.setStatus(204);
+            result.setMsg("查询结束，但没有结果");
+        } else {
+            result.setData(JSONArray.fromObject(dictList));
+            result.setMsg("查询成功");
+            result.setStatus(200);
+        }
+
+        return JSONObject.fromObject(result);
+    }
+
     @RequestMapping(value = "/getDictListByNameValueCodeUpperId", method = RequestMethod.GET)
     @Privilege(methodName = "根据字典名、字典值、字典编码、父级id查询字典列表", privilegeLevel = Privilege.SYS_TYPE)
     @ResponseBody

@@ -1,4 +1,4 @@
-.layui-form {
+.basicForm {
     background-color: white;
     position: relative;
     left: 5%;
@@ -22,11 +22,6 @@
 
 label {
     color: #6585BA;
-}
-
-.examTimeDiv {
-    margin: 0 160px 20px 0;
-    text-align: right;
 }
 
 .examTimeNum {
@@ -94,7 +89,7 @@ label {
     display: inline-block;
 }
 
-.blankRightButton{
+.blankRightButton {
     width: 30px;
     display: inline-block;
     vertical-align: top;
