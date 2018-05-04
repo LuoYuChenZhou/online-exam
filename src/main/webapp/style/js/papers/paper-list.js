@@ -89,11 +89,11 @@ function searchBtnClick() {
     });
 }
 
-//跳转到表单页面
+//跳转到试卷新增页面
 function toPaperAddForm(type, id) {
     $.cookie("paperFormType", type);
     $.cookie("paperFormId", id);
-    window.parent.changeView("papers/paper-form.html");
+    window.parent.changeView("papers/paper-add-form.html");
 }
 
 //修改试卷名称

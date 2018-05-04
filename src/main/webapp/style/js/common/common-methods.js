@@ -155,7 +155,12 @@ function getEntity(form) {
         if ($(this).attr('type') === 'checkbox') {
             val = $(this).prop('checked');
         } else if ($(this).attr('type') === 'radio') {
-            val = $(this).prop('checked');
+            if ($(this).prop('checked') === true) {
+                val = $(this).val();
+            } else {
+                // each方法里面，return表示continue，return false 表示break
+                return;
+            }
         } else {
             val = $(this).val();
         }
@@ -241,4 +246,9 @@ function normalStatusText(status) {
 //关闭弹出层
 function closeFloor(floorName) {
     layer.close(floorName);
+}
+
+//校验是否是数字
+function isNum(source) {
+    return /^\d+$/.test(source);
 }

@@ -10,6 +10,7 @@
         <result column="question_id" jdbcType="VARCHAR" property="questionId"/>
         <result column="question_type" jdbcType="VARCHAR" property="questionType"/>
         <result column="score_type" jdbcType="VARCHAR" property="scoreType"/>
+        <result column="question_score" jdbcType="VARCHAR" property="questionScore"/>
         <result column="assign_score" jdbcType="INTEGER" property="assignScore"/>
         <result column="correct_type" jdbcType="VARCHAR" property="correctType"/>
     </resultMap>

@@ -7,7 +7,7 @@
     text-align: center;
     height: 670px;
     /*height: 400px;*/
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 
 .paperName {

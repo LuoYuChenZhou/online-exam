@@ -24,12 +24,6 @@ public class BaseQuestions {
     private String questionType;
 
     /**
-     * 分数
-     */
-    @Column(name = "question_score")
-    private Integer questionScore;
-
-    /**
      * 是否多选（0-否，1-是），专用于选择题
      */
     @Column(name = "is_multi")
@@ -119,24 +113,6 @@ public class BaseQuestions {
      */
     public void setQuestionType(String questionType) {
         this.questionType = questionType;
-    }
-
-    /**
-     * 获取分数
-     *
-     * @return question_score - 分数
-     */
-    public Integer getQuestionScore() {
-        return questionScore;
-    }
-
-    /**
-     * 设置分数
-     *
-     * @param questionScore 分数
-     */
-    public void setQuestionScore(Integer questionScore) {
-        this.questionScore = questionScore;
     }
 
     /**

@@ -82,3 +82,7 @@ dd {
 .layui-input, .layui-textarea {
     width: 200px;
 }
+
+.inputDisable{
+    background-color: #f4f4f4;
+}

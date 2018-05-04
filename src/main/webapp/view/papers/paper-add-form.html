@@ -1,0 +1,72 @@
+<!--
+  User: lzq11
+  Date: 2018/4/16
+  Time: 10:21
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="../../style/js/common/common-js-css.js"></script>
+    <script type="text/javascript" src="../../style/js/papers/paper-add-form.js"></script>
+    <script type="text/javascript" src="/style/iconfont/iconfont.js"></script>
+    <link rel="stylesheet" type="text/css" href="/style/css/htmlCss/paper.css"/>
+</head>
+<body>
+<div id="basicForm" class="layui-form basicForm">
+    <!--试卷名称显示div-->
+    <div>
+        <input type="text" name="paperName" required lay-verify="required" class="paperName" placeholder="请输入试卷名称"/>
+    </div>
+
+    <div style="margin-bottom: 20px">
+
+        <!--默认科目div-->
+        <div class="layui-inline">
+            <label class="layui-form-label">默认科目：</label>
+            <div class="layui-input-block">
+                <select id="defaultSubject" name="defaultSubject" lay-filter="defaultSubject" lay-search></select>
+            </div>
+        </div>
+
+        <!--考试时间显示div-->
+        <div class="layui-inline" style="margin-left: 180px">
+            <label>考试时间：</label>
+            <input type="text" class="examTimeNum" required lay-verify="required"  name="examTimeNum"/>
+            <label>分钟</label>
+        </div>
+    </div>
+
+    <!--试题编辑区-->
+    <div id="question_edit"></div>
+
+    <!--添加按钮-->
+    <div class="addDivButton">
+        <div class="layui-btn-group" id="addButtonGroup" style="display: none;">
+            <button class="layui-btn layui-btn-warm" onclick="addQuestionDiv('0')">选择题</button>
+            <button class="layui-btn layui-btn-normal" onclick="addQuestionDiv('1')">填空题</button>
+            <!--<button class="layui-btn" onclick="addQuestionFromBook()">载入</button>-->
+            <button class="layui-btn layui-bg-gray" style="width: 78px;" onclick="closeButtonGroup()">取消</button>
+        </div>
+        <div>
+            <a href="javascript:void(0);" onclick="showButtonGroup()">
+                <svg class="icon" aria-hidden="true" style="font-size: 20px;">
+                    <use xlink:href="#icon-tianjia"></use>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <hr>
+    <!--提交按钮-->
+    <div class="layui-btn-group" id="commitButtonGroup">
+        <button class="layui-btn" style="background-color: #49cc90" onclick="paperCommit('1')">仅保存</button>
+        <button class="layui-btn disable_false" onclick="paperCommit('2')">保存并发布</button>
+        <button class="layui-btn" style="background-color: #c5564a" onclick="returnWithOutSave()">不保存</button>
+    </div>
+    <br>
+    <br>
+</div>
+</body>
+</html>

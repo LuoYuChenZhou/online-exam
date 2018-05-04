@@ -7,7 +7,6 @@
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="er_id" jdbcType="VARCHAR" property="erId" />
-    <result column="question_score" jdbcType="INTEGER" property="questionScore" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
     <result column="status" jdbcType="VARCHAR" property="status" />

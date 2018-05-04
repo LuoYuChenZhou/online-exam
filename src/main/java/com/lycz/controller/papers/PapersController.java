@@ -4,6 +4,8 @@ import com.lycz.configAndDesign.CommonResult;
 import com.lycz.configAndDesign.FixPageInfo;
 import com.lycz.configAndDesign.ToolUtil;
 import com.lycz.configAndDesign.annotation.Privilege;
+import com.lycz.model.BatchListEntity;
+import com.lycz.model.PaperQuestion;
 import com.lycz.model.Papers;
 import com.lycz.service.base.TokenService;
 import com.lycz.service.paper.PapersService;
@@ -30,6 +32,22 @@ public class PapersController {
     private PapersService papersService;
     @Resource
     private TokenService tokenService;
+
+    @RequestMapping(value = "/savePaper", method = RequestMethod.POST)
+    @Privilege(methodName = "方法名称")
+    @ResponseBody
+    @ApiOperation(value = "方法名称", notes = "" +
+            "入参说明:<br/>" +
+            "出参说明:<br/>")
+    public JSONObject savePaper(Papers paperInfo, BatchListEntity baseQuestionList,
+                                @RequestParam("token") String token) {
+        CommonResult<JSONObject> result = new CommonResult<>();
+        result.setData(JSONObject.fromObject("{}"));
+        result.setStatus(400);
+
+
+        return JSONObject.fromObject(result);
+    }
 
     @Privilege(privilegeLevel = Privilege.ER_TYPE)
     @RequestMapping(value = "/selectPapersByName", method = RequestMethod.GET)

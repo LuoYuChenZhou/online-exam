@@ -17,12 +17,6 @@ public class ProgrammingQuestions {
     @Column(name = "er_id")
     private String erId;
 
-    /**
-     * 分数
-     */
-    @Column(name = "question_score")
-    private Integer questionScore;
-
     @Column(name = "create_time")
     private Date createTime;
 
@@ -80,24 +74,6 @@ public class ProgrammingQuestions {
      */
     public void setErId(String erId) {
         this.erId = erId;
-    }
-
-    /**
-     * 获取分数
-     *
-     * @return question_score - 分数
-     */
-    public Integer getQuestionScore() {
-        return questionScore;
-    }
-
-    /**
-     * 设置分数
-     *
-     * @param questionScore 分数
-     */
-    public void setQuestionScore(Integer questionScore) {
-        this.questionScore = questionScore;
     }
 
     /**

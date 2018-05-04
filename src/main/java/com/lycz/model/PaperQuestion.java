@@ -35,6 +35,12 @@ public class PaperQuestion {
     private String scoreType;
 
     /**
+     * 分数
+     */
+    @Column(name = "question_score")
+    private String questionScore;
+
+    /**
      * 指定分数，配合得分模式的递进和指定使用
      */
     @Column(name = "assign_score")
@@ -134,6 +140,14 @@ public class PaperQuestion {
      */
     public void setScoreType(String scoreType) {
         this.scoreType = scoreType;
+    }
+
+    public String getQuestionScore() {
+        return questionScore;
+    }
+
+    public void setQuestionScore(String questionScore) {
+        this.questionScore = questionScore;
     }
 
     /**
