@@ -8,13 +8,47 @@
         <id column="id" jdbcType="VARCHAR" property="id"/>
         <result column="er_id" jdbcType="VARCHAR" property="erId"/>
         <result column="question_type" jdbcType="VARCHAR" property="questionType"/>
+        <result column="question_desc" jdbcType="LONGVARCHAR" property="questionDesc"/>
         <result column="is_multi" jdbcType="VARCHAR" property="isMulti"/>
+        <result column="is_bank" jdbcType="VARCHAR" property="isBank"/>
+        <result column="options" jdbcType="LONGVARCHAR" property="options"/>
+        <result column="answer" jdbcType="LONGVARCHAR" property="answer"/>
         <result column="subject" jdbcType="VARCHAR" property="subject"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
         <result column="status" jdbcType="VARCHAR" property="status"/>
-        <result column="question_desc" jdbcType="LONGVARCHAR" property="questionDesc"/>
-        <result column="options" jdbcType="LONGVARCHAR" property="options"/>
-        <result column="answer" jdbcType="LONGVARCHAR" property="answer"/>
     </resultMap>
+
+    <insert id="batchInsertBQ">
+        INSERT INTO base_questions(
+        id,
+        er_id,
+        question_type,
+        question_desc,
+        is_multi,
+        is_bank,
+        options,
+        answer,
+        subject,
+        create_time,
+        modify_time,
+        status
+        ) VALUES
+        <foreach collection="bqList" item="item" separator=",">
+            (
+            #{item.id},
+            #{item.erId},
+            #{item.questionType},
+            #{item.questionDesc},
+            #{item.isMulti},
+            #{item.isBank},
+            #{item.options},
+            #{item.answer},
+            #{item.subject},
+            #{item.createTime},
+            #{item.modifyTime},
+            #{item.status}
+            )
+        </foreach>
+    </insert>
 </mapper>

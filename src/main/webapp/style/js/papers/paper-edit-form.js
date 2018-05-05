@@ -1,7 +1,3 @@
-// 本来设计是可以切换问题类型，由于填空题空数问题，取消了，但页面没有重写，有很大优化空间
-// bug:多选批改模式设置默认值有效，但不会显示
-// 暂时放弃编辑试卷时将试题放入题库，如果后面要加需要在问题div中加入复选框
-
 let nextDivIndex = 1;//下一个div的下标
 let correctMap = new Map();//所有批改类型的Map
 let questionTypeMap = new Map();//所有问题类型的Map
@@ -33,8 +29,289 @@ layui.use('form', function () {
 
 $(document).ready(function () {
     getSubjectList();
-    setDefaultSubjectList();// 默认科目下拉刷新
+    setDefaultSubjectList();// 默认科目下拉刷新,题目加载在此之后
 });
+
+// 初始化页面数据
+function initializeData() {
+    $.get("/Papers/getPaperQuestionInfoById.do"
+        , {
+            token: token
+            , paperId: $.cookie("curPaperEditId")
+        }
+        , function (data) {
+            if (data.status === 200) {
+                let infoObj = data.data;
+                $("input[name='paperName']").val(infoObj.paperName);
+                $("#defaultSubject").val(infoObj.defaultSubject);
+                if (!fieldIsWrong(infoObj.examTime)) {
+                    $("input[name='examTimeNum']").val(infoObj.examTime);
+                }
+                if (!fieldIsWrong(infoObj.questionList)) {
+                    for (let i = 1; i <= infoObj.questionList.length; i++) {
+                        let curQa = infoObj.questionList[i - 1];
+                        if (curQa.questionType === "0") {
+                            let appendStr = "" +
+                                "    <div>" +
+                                "       <div class='questionIndex' id='questionIndex" + nextDivIndex + "'>" + nextDivIndex + "</div>" +
+                                "       <div class='question_bg layui-form' id='qa" + nextDivIndex + "' lay-filter='qa" + nextDivIndex + "'>" +
+                                "            <div>" +
+                                "                <div class='layui-inline'>" +
+                                "                    <label class='layui-form-label question_text'>分数:</label>" +
+                                "                    <div class='layui-input-inline'>" +
+                                "                        <input type='text' name='qa" + nextDivIndex + "Score' autocomplete='off'" +
+                                "                               class='layui-input question_input' style='margin-left: 39px' value='" + curQa.fullScore + "'>" +
+                                "                    </div>" +
+                                "                </div>" +
+                                "                <div class='layui-inline flag'>" +
+                                "                    <label class='layui-form-label' style='margin-left: 198px;'>批改模式：</label>" +
+                                "                    <input type='radio' name='correct" + nextDivIndex + "' lay-filter='correct" + nextDivIndex + "' value='0' title='手动'>" +
+                                "                    <input type='radio' name='correct" + nextDivIndex + "' lay-filter='correct" + nextDivIndex + "' value='1' title='自动'>" +
+                                "                </div>" +
+                                "                <div class='layui-inline' style='margin-left: 62px;'>" +
+                                "                    <a href='javascript:void(0);' onclick='deleteQuestion(" + nextDivIndex + ")'>" +
+                                "                        <svg class='icon' aria-hidden='true'>" +
+                                "                            <use xlink:href='#icon-guanbi'></use>" +
+                                "                        </svg>" +
+                                "                    </a>" +
+                                "                </div>" +
+                                "            </div>" +
+                                "            <div class='separate'>" +
+                                "                <div class='layui-inline flag'>" +
+                                "                    <label class='layui-form-label'>题目类型：</label>" +
+                                "                    <input type='radio' name='qType" + nextDivIndex + "' lay-filter='qType" + nextDivIndex + "' value='0' title='选择' checked>" +
+                                "                    <input type='radio' name='qType" + nextDivIndex + "' lay-filter='qType" + nextDivIndex + "' value='1' title='填空'>" +
+                                "                </div>" +
+                                "                <div class='layui-inline' style='margin-left: 82px'>" +
+                                "                    <label class='layui-form-label'>科目：</label>" +
+                                "                    <div class='layui-input-block'>" +
+                                "                        <select lay-search id='subject" + nextDivIndex + "' name='subject" + nextDivIndex + "'>" +
+                                "                           <option selected value=''>暂不指定</option>" + subjectOptions +
+                                "                        </select>" +
+                                "                    </div>" +
+                                "                </div>" +
+                                "            </div>" +
+                                "            <div class='separate'>" +
+                                "                <div class='layui-form-item layui-form-text'>" +
+                                "                    <label class='layui-form-label question_text'>问题描述:</label>" +
+                                "                    <div class='layui-input-block'>" +
+                                "                        <textarea name='questionDesc" + nextDivIndex + "' placeholder='请输入内容'" +
+                                "                                  class='layui-textarea question_desc' id='questionDesc" + nextDivIndex + "'>" + curQa.questionDesc + "</textarea>" +
+                                "                    </div>" +
+                                "                </div>" +
+                                "            </div>" +
+                                "            <div class='chooseEdit" + nextDivIndex + "'>" +
+                                "                <div class='separate'>" +
+                                "                    <div class='chooseLeftText'>" +
+                                "                        <label class='layui-form-label question_text' style='padding-right: 0;'>选项：</label>" +
+                                "                    </div>" +
+                                "                    <div class='chooseCenterOptions'>" +
+                                "                        <div class='layui-form-item chooseOptions" + nextDivIndex + "' style='height: auto'>";
+
+                            let optionStrArray = curQa.options.substring(0, curQa.options.length - 2).split("$$");
+                            for (let j = 0; j < optionStrArray.length; j++) {
+                                let curLetter = String.fromCharCode(j + 65);
+                                appendStr = appendStr +
+                                    "                            <label class='layui-form-label qaChoose" + nextDivIndex + curLetter + "'" +
+                                    "                                   style='width: auto;padding-left: 0;padding-right: 0'>" + curLetter + "</label>" +
+                                    "                            <div class='layui-input-block smallML  qaChoose" + nextDivIndex + curLetter + "'>" +
+                                    "                                <input type='text' name='qaChoose" + nextDivIndex + curLetter + "' required lay-verify='required' placeholder='请输入内容'" +
+                                    "                                       autocomplete='off' class='layui-input' style='width: 556px;' value='" + optionStrArray[j] + "'>" +
+                                    "                            </div>";
+                            }
+                            curChooseIndexMap.set("qaChoose" + nextDivIndex, String.fromCharCode(optionStrArray.length + 64));
+
+                            appendStr = appendStr +
+                                "                        </div>" +
+                                "                    </div>" +
+                                "                    <div class='chooseRightButton'>" +
+                                "                        <a href='javascript:void(0);' style='margin-left:20px;' onclick='addNewChooseOption(" + nextDivIndex + ")'>" +
+                                "                            <svg class='icon' aria-hidden='true'>" +
+                                "                                <use xlink:href='#icon-tianjia'></use>" +
+                                "                            </svg>" +
+                                "                        </a>" +
+                                "                        <a href='javascript:void(0);' onclick='removeLatestChooseOption(" + nextDivIndex + ")'>" +
+                                "                            <svg class='icon' aria-hidden='true'>" +
+                                "                                <use xlink:href='#icon-jianshao'></use>" +
+                                "                            </svg>" +
+                                "                        </a>" +
+                                "                    </div>" +
+                                "                </div>" +
+                                "                <div class='layui-form-item separate'>" +
+                                "                    <label class='layui-form-label question_text'>答案：</label>" +
+                                "                    <div class='layui-input-block qaChooseAn" + nextDivIndex + "'>";
+
+                            for (let j = 0; j < optionStrArray.length; j++) {
+                                let curLetter = String.fromCharCode(j + 65);
+                                appendStr = appendStr +
+                                    "                        <input type='checkbox' class='qaChoose" + nextDivIndex + curLetter + "' name='qaChoose" + nextDivIndex + "An' title='" + curLetter + "' value=" + getLetterValue(curLetter) + ">";
+                            }
+
+                            appendStr = appendStr +
+                                "                    </div>" +
+                                "                </div>" +
+                                "                <div class='separate'>" +
+                                "                    <label class='layui-form-label question_text'>多选得分模式：</label>" +
+                                "                    <div>" +
+                                "                        <input type='radio' name='qa" + nextDivIndex + "Co' value='1' title='全部正确选项选中才得分'>" +
+                                "                    </div>" +
+                                "                    <div class='layui-inline'>" +
+                                "                        <div class='layui-input-inline'>" +
+                                "                            <input type='radio' name='qa" + nextDivIndex + "Co' value='2' title='选中部分正确选项且无错误选项得'>" +
+                                "                        </div>" +
+                                "                        <div class='layui-input-inline'>" +
+                                "                            <input type='text' name='qa" + nextDivIndex + "CoScore' autocomplete='off' class='layui-input'" +
+                                "                                   style='width: 70px;' value='" + reEmptyStrIfNull(curQa.assignScore) + "'>" +
+                                "                        </div>" +
+                                "                    </div>" +
+                                "                    <span class='question_text'>分</span>" +
+                                "                </div>" +
+                                "            </div>";
+                            $("#question_edit").append(appendStr);
+                            // 将题目类型等进行设置
+                            correctMap.set("correct" + nextDivIndex, curQa.correctType);
+                            questionTypeMap.set("qType" + nextDivIndex, curQa.questionType);
+                            typeRadioAddListen(nextDivIndex);// 添加单选监听
+                            $("input[name='qType" + nextDivIndex + "']").attr("disabled", true);
+                            $("input[name='correct" + nextDivIndex + "'][value=" + curQa.correctType + "]").prop("checked", true).siblings("input").prop("checked", false);
+                            $("input[name='correct" + nextDivIndex + "']").attr("disabled", false);
+                            $("input[name='qa" + nextDivIndex + "Co'][value=" + curQa.scoreType + "]").prop("checked", true);
+                            $("#subject" + nextDivIndex).val(curQa.subject);
+                            ResolveChooseAn(curQa.answer, nextDivIndex);
+                        } else if (curQa.questionType === "1") {
+                            let appendStr = "" +
+                                "    <div>" +
+                                "       <div class='questionIndex' id='questionIndex" + nextDivIndex + "'>" + nextDivIndex + "</div>" +
+                                "       <div class='question_bg layui-form' id='qa" + nextDivIndex + "' lay-filter='qa" + nextDivIndex + "'>" +
+                                "            <div>" +
+                                "                <div class='layui-inline'>" +
+                                "                    <label class='layui-form-label question_text'>分数:</label>" +
+                                "                    <div class='layui-input-inline'>" +
+                                "                        <input type='text' name='qa" + nextDivIndex + "Score' autocomplete='off'" +
+                                "                               class='layui-input question_input inputDisable' style='margin-left: 39px' disabled value='" + curQa.fullScore + "'>" +
+                                "                    </div>" +
+                                "                </div>" +
+                                "                <div class='layui-inline flag'>" +
+                                "                    <label class='layui-form-label' style='margin-left: 198px;'>批改模式：</label>" +
+                                "                    <input type='radio' name='correct" + nextDivIndex + "' lay-filter='correct" + nextDivIndex + "' value='0' title='手动'>" +
+                                "                    <input type='radio' name='correct" + nextDivIndex + "' lay-filter='correct" + nextDivIndex + "' value='1' title='自动'>" +
+                                "                </div>" +
+                                "                <div class='layui-inline' style='margin-left: 62px;'>" +
+                                "                    <a href='javascript:void(0);' onclick='deleteQuestion(" + nextDivIndex + ")'>" +
+                                "                        <svg class='icon' aria-hidden='true'>" +
+                                "                            <use xlink:href='#icon-guanbi'></use>" +
+                                "                        </svg>" +
+                                "                    </a>" +
+                                "                </div>" +
+                                "            </div>" +
+                                "            <div class='separate'>" +
+                                "                <div class='layui-inline flag'>" +
+                                "                    <label class='layui-form-label'>题目类型：</label>" +
+                                "                    <input type='radio' name='qType" + nextDivIndex + "' lay-filter='qType" + nextDivIndex + "' value='0' title='选择'>" +
+                                "                    <input type='radio' name='qType" + nextDivIndex + "' lay-filter='qType" + nextDivIndex + "' value='1' title='填空' checked>" +
+                                "                </div>" +
+                                "                <div class='layui-inline' style='margin-left: 82px'>" +
+                                "                    <label class='layui-form-label'>科目：</label>" +
+                                "                    <div class='layui-input-block'>" +
+                                "                        <select lay-search id='subject" + nextDivIndex + "' name='subject" + nextDivIndex + "'>" +
+                                "                           <option selected value=''>暂不指定</option>" + subjectOptions +
+                                "                        </select>" +
+                                "                    </div>" +
+                                "                </div>" +
+                                "            </div>" +
+                                "            <div class='separate'>" +
+                                "                <div class='layui-form-item layui-form-text'>" +
+                                "                    <label class='layui-form-label question_text'>问题描述:</label>" +
+                                "                    <div class='layui-input-block'>" +
+                                "                        <textarea name='questionDesc" + nextDivIndex + "' placeholder='请输入内容'" +
+                                "                                  class='layui-textarea question_desc' id='questionDesc" + nextDivIndex + "'>" + curQa.questionDesc + "</textarea>" +
+                                "                    </div>" +
+                                "                </div>" +
+                                "            </div>" +
+                                "            <div class='blankEdit" + nextDivIndex + "'>" +
+                                "                <div class='separate'>" +
+                                "                    <div class='chooseLeftText' style='width: 99px;'>" +
+                                "                        <label class='layui-form-label question_text' style='padding-right: 0;'>答案/要点：</label>" +
+                                "                    </div>" +
+                                "                    <div class='blankCenterOptions'>" +
+                                "                        <div class='qaBlankDiv" + nextDivIndex + "'>";
+
+                            let optionStrArray = curQa.answer.substring(0, curQa.answer.length - 2).split("$$");
+                            let optionScoreArray = curQa.questionScore.substring(0, curQa.questionScore.length - 1).split(",");
+                            for (let j = 1; j < optionStrArray.length + 1; j++) {
+                                let newBlankIndex = "" + j;
+                                appendStr = appendStr + "" +
+                                    "<div class='qaBlankOneBlank" + nextDivIndex + newBlankIndex + "'>" +
+                                    "<div class='layui-inline' style='margin-left: 7px;'>" +
+                                    "    <label class='layui-form-label smallText' style='font-size: 10px;'>[$" + newBlankIndex + "$]</label>" +
+                                    "</div>" +
+                                    "<div class='layui-inline' style='width: 410px;'>" +
+                                    "    <div class='layui-input-inline smallML' style='margin-left: 7px;'>" +
+                                    "        <input type='text' name='qaBlank" + nextDivIndex + newBlankIndex + "' autocomplete='off' class='layui-input' required" +
+                                    "               lay-verify='required' style='width: 385px;' placeholder='请输入内容' value='" + reEmptyStrIfNull(optionStrArray[j - 1]) + "'>" +
+                                    "    </div>" +
+                                    "</div>" +
+                                    "<div class='layui-inline' style='width: 150px;margin-right:0;'>" +
+                                    "    <label class='layui-form-label smallText'>分数</label>" +
+                                    "    <div class='layui-input-inline smallML'>" +
+                                    "        <input type='text' lay-verify='required' onchange='autoInputCountScore(" + nextDivIndex + ")' name='qaBlank" + nextDivIndex + newBlankIndex + "Score' autocomplete='off' class='layui-input'" +
+                                    "               style='width: 65px;' value='" + optionScoreArray[j - 1] + "'>" +
+                                    "    </div>" +
+                                    "</div>" +
+                                    "<div class='layui-inline'>" +
+                                    "    <a href='javascript:void(0);' onclick='deleteOption(" + nextDivIndex + "," + newBlankIndex + ")'>" +
+                                    "        <svg class='icon' aria-hidden='true'>" +
+                                    "            <use xlink:href='#icon-jianshao'></use>" +
+                                    "        </svg>" +
+                                    "    </a>" +
+                                    "</div>" +
+                                    "</div>";
+                            }
+                            latestBlankIndexMap.set("qaBlank" + nextDivIndex, optionStrArray.length + 1);
+
+                            appendStr = appendStr +
+                                "                        </div>" +
+                                "                    </div>" +
+                                "                    <div class='blankRightButton' style='margin-top: 8px;'>" +
+                                "                        <a href='javascript:void(0);' onclick='addNewOption(" + nextDivIndex + ")'>" +
+                                "                            <svg class='icon' aria-hidden='true'>" +
+                                "                                <use xlink:href='#icon-tianjia'></use>" +
+                                "                            </svg>" +
+                                "                        </a>" +
+                                "                    </div>" +
+                                "                </div>" +
+                                "                <div class='separate'>" +
+                                "                    <label class='layui-form-label question_text'>要点得分模式：</label>" +
+                                "                    <div>" +
+                                "                        <input type='radio' name='qa" + nextDivIndex + "Co' value='1' checked title='填入文字与预设答案完全相同才得分'>" +
+                                "                    </div>" +
+                                "                    <div>" +
+                                "                        <input type='radio' name='qa" + nextDivIndex + "Co' value='2' title='填入文字与预设答案近似就得分'>" +
+                                "                    </div>" +
+                                "                </div>" +
+                                "            </div>" +
+                                "        </div>" +
+                                "     </div>";
+                            $("#question_edit").append(appendStr);
+                            // 将题目类型等进行设置
+                            correctMap.set("correct" + nextDivIndex, curQa.correctType);
+                            questionTypeMap.set("qType" + nextDivIndex, curQa.questionType);
+                            typeRadioAddListen(nextDivIndex);// 添加单选监听
+                            $("input[name='qType" + nextDivIndex + "']").attr("disabled", true);
+                            $("input[name='correct" + nextDivIndex + "'][value=" + curQa.correctType + "]").prop("checked", true).siblings("input").prop("checked", false);
+                            $("input[name='correct" + nextDivIndex + "']").attr("disabled", false);
+                            $("input[name='qa" + nextDivIndex + "Co'][value=" + curQa.scoreType + "]").prop("checked", true);
+                            $("#subject" + nextDivIndex).val(curQa.subject);
+                        }
+                        form.render();
+                        nextDivIndex++;
+                    }
+                }
+            } else {
+                layer.msg(data.msg);
+            }
+        });
+}
 
 // 创建一个div并完善相关步骤
 function addQuestionDiv(type) {
@@ -619,6 +896,7 @@ function setDefaultSubjectList() {
     }
     $("#defaultSubject").append("<option value=''>暂不指定</option>" + subjectOptions);
     form.render();
+    initializeData();
 }
 
 // 不保存返回列表页
@@ -736,4 +1014,22 @@ function formItemValid(jsonFormObject) {
             }
         }
     }
+}
+
+// 解析选择题答案并给复选框复制
+// chooseAn-答案，index-当前第几个div
+function ResolveChooseAn(chooseAn, index) {
+    let anTenNum = parseInt(chooseAn, 10);
+    let anTwoNum = anTenNum.toString(2);
+    let endNum = anTwoNum.length;
+    for (let i = 0; i < endNum; i++) {
+        let compare = "1";
+        for (let j = 0; j < i; j++) {
+            compare += "0";
+        }
+        if ((anTenNum & parseInt(compare, 2)) > 0) {
+            $("input[name='qaChoose" + index + "An'][value='" + parseInt(compare, 2) + "']").prop("checked", true);
+        }
+    }
+    form.render();
 }

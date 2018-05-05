@@ -30,6 +30,12 @@ public class BaseQuestions {
     private String isMulti;
 
     /**
+     * 是否是题库问题（是则不能修改，0-否，1-是）
+     */
+    @Column(name = "is_bank")
+    private String isBank;
+
+    /**
      * 科目（存字典id）
      */
     private String subject;

@@ -11,7 +11,56 @@
         <result column="question_type" jdbcType="VARCHAR" property="questionType"/>
         <result column="score_type" jdbcType="VARCHAR" property="scoreType"/>
         <result column="question_score" jdbcType="VARCHAR" property="questionScore"/>
+        <result column="full_score" jdbcType="VARCHAR" property="fullScore"/>
         <result column="assign_score" jdbcType="INTEGER" property="assignScore"/>
         <result column="correct_type" jdbcType="VARCHAR" property="correctType"/>
     </resultMap>
+
+    <insert id="batchInsertPQ">
+        INSERT INTO paper_question(
+        id,
+        paper_id,
+        question_id,
+        question_type,
+        score_type,
+        question_score,
+        full_score,
+        assign_score,
+        correct_type
+        ) VALUES
+        <foreach collection="pqList" item="item" separator=",">
+            (
+            #{item.id},
+            #{item.paperId},
+            #{item.questionId},
+            #{item.questionType},
+            #{item.scoreType},
+            #{item.questionScore},
+            #{item.fullScore},
+            #{item.assignScore},
+            #{item.correctType}
+            )
+        </foreach>
+    </insert>
+
+    <select id="getPaperQuestionInfoById" resultType="hashMap">
+        SELECT
+            pq.question_type AS questionType,
+            pq.question_score AS questionScore,
+            pq.full_score as fullScore,
+            pq.score_type AS scoreType,
+            pq.assign_score AS assignScore,
+            pq.correct_type as correctType,
+            bq.question_desc as questionDesc,
+            bq.is_bank as isBank,
+            bq.`options`,
+            bq.answer,
+            bq.`subject`
+        FROM
+            paper_question pq
+            INNER JOIN base_questions bq ON pq.question_id = bq.id
+        WHERE
+            pq.paper_id = #{paperId}
+        ORDER BY pq.question_type ASC,pq.question_id ASC
+    </select>
 </mapper>

@@ -41,6 +41,12 @@ public class PaperQuestion {
     private String questionScore;
 
     /**
+     * 总数
+     */
+    @Column(name = "full_score")
+    private String fullScore;
+
+    /**
      * 指定分数，配合得分模式的递进和指定使用
      */
     @Column(name = "assign_score")
@@ -148,6 +154,14 @@ public class PaperQuestion {
 
     public void setQuestionScore(String questionScore) {
         this.questionScore = questionScore;
+    }
+
+    public String getFullScore() {
+        return fullScore;
+    }
+
+    public void setFullScore(String fullScore) {
+        this.fullScore = fullScore;
     }
 
     /**

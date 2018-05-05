@@ -43,7 +43,7 @@ layui.use('table', function () {
                 content: $('#changeNameForm')
             });
         } else if (layEvent === 'edit') { //进入编辑
-            toPaperAddForm("edit", data.id);
+            toPaperEditForm(data.id);
         } else if (layEvent === 'delete') { //删除
             FloorObject = layer.confirm('确定删除？', {
                 btn: ['确定', '取消'] //按钮
@@ -90,10 +90,14 @@ function searchBtnClick() {
 }
 
 //跳转到试卷新增页面
-function toPaperAddForm(type, id) {
-    $.cookie("paperFormType", type);
-    $.cookie("paperFormId", id);
+function toPaperAddForm() {
     window.parent.changeView("papers/paper-add-form.html");
+}
+
+//跳转到试卷编辑页面
+function toPaperEditForm(id) {
+    $.cookie("curPaperEditId", id);
+    window.parent.changeView("papers/paper-edit-form.html");
 }
 
 //修改试卷名称

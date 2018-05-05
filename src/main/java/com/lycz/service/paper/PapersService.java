@@ -1,6 +1,8 @@
 package com.lycz.service.paper;
 
 import com.lycz.configAndDesign.FixPageInfo;
+import com.lycz.model.BaseQuestions;
+import com.lycz.model.PaperQuestion;
 import com.lycz.model.Papers;
 import com.lycz.service.base.IBaseServiceTk;
 
@@ -13,5 +15,7 @@ public interface PapersService extends IBaseServiceTk<Papers> {
                                                         String teachersId,
                                                         Integer page,
                                                         Integer limit);
+
+    boolean addNewPaper(Papers paperInfo, List<BaseQuestions> baseQuestionsList, List<PaperQuestion> paperQuestionList);
 
 }

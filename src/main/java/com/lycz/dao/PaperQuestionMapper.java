@@ -1,7 +1,14 @@
 package com.lycz.dao;
 
 import com.lycz.model.PaperQuestion;
+import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
+import java.util.List;
+import java.util.Map;
+
 public interface PaperQuestionMapper extends Mapper<PaperQuestion> {
+    int batchInsertPQ(@Param("pqList") List<PaperQuestion> pqList);
+
+    List<Map<String, Object>> getPaperQuestionInfoById(@Param("paperId") String paperId);
 }

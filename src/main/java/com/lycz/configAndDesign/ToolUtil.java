@@ -267,4 +267,15 @@ public class ToolUtil extends StringUtils {
         }
         return listStr;
     }
+
+    /**
+     * 如果传入是空对象，则返回""
+     */
+    public static Object returnEmptyIfNull(Object source) {
+        if (isEmpty(source)) {
+            return "";
+        } else {
+            return source;
+        }
+    }
 }

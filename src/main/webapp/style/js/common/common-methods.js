@@ -252,3 +252,13 @@ function closeFloor(floorName) {
 function isNum(source) {
     return /^\d+$/.test(source);
 }
+
+// 字段是否为空
+function fieldIsWrong(field) {
+    return (typeof(field) === "undefined" || field === null || field === "");
+}
+
+// 如果为空返回空字符串
+function reEmptyStrIfNull(source) {
+    return fieldIsWrong(source) ? '' : source;
+}

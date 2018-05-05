@@ -32,6 +32,7 @@ label {
 }
 
 .question_bg {
+    display: inline-block;
     background-color: #fff9e7;
     border-radius: 3px 0 0 3px;
     width: 760px;
@@ -112,4 +113,19 @@ label {
     vertical-align: -0.15em;
     fill: currentColor;
     overflow: hidden;
+}
+
+.questionIndex {
+    width: 92px;
+    height: 180px;
+    display: inline-block;
+    vertical-align: top;
+    color: #d4d4d4;
+    font-size: 180px;
+}
+
+.bottomInstructions {
+    font-size: 10px;
+    position: absolute;
+    right: 3%;
 }
