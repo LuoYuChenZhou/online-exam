@@ -8,4 +8,6 @@ import java.util.List;
 public interface BaseQuestionsService extends IBaseServiceTk<BaseQuestions> {
 
     int batchInsertBQ(List<BaseQuestions> bqList);
+
+    int batchModifyBQ(List<BaseQuestions> bqList);
 }

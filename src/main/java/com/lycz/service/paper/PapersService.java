@@ -18,4 +18,9 @@ public interface PapersService extends IBaseServiceTk<Papers> {
 
     boolean addNewPaper(Papers paperInfo, List<BaseQuestions> baseQuestionsList, List<PaperQuestion> paperQuestionList);
 
+    boolean modifyPaper(Papers paperInfo,
+                        List<PaperQuestion> pqAddList,
+                        List<PaperQuestion> pqModifyList,
+                        List<BaseQuestions> bqAddList,
+                        List<BaseQuestions> bqModifyList);
 }

@@ -19,6 +19,39 @@
         <result column="status" jdbcType="VARCHAR" property="status"/>
     </resultMap>
 
+    <update id="batchModifyBQ">
+        INSERT INTO base_questions(
+        id,
+        question_desc,
+        is_multi,
+        options,
+        answer,
+        subject,
+        modify_time,
+        status
+        ) VALUES
+        <foreach collection="bqList" item="item" separator=",">
+            (
+            #{item.id},
+            #{item.questionDesc},
+            #{item.isMulti},
+            #{item.options},
+            #{item.answer},
+            #{item.subject},
+            #{item.modifyTime},
+            #{item.status}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        question_desc = VALUES(question_desc),
+        is_multi = VALUES(is_multi),
+        options = VALUES(options),
+        answer = VALUES(answer),
+        subject = VALUES(subject),
+        modify_time = VALUES(modify_time),
+        status = VALUES(status)
+    </update>
+
     <insert id="batchInsertBQ">
         INSERT INTO base_questions(
         id,

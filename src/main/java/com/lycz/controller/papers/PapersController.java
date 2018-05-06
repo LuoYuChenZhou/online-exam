@@ -88,6 +88,67 @@ public class PapersController {
         return JSONObject.fromObject(result);
     }
 
+    @RequestMapping(value = "/modifyPaper", method = RequestMethod.POST)
+    @Privilege(methodName = "修改试卷")
+    @ResponseBody
+    @ApiOperation(value = "修改试卷", notes = "" +
+            "入参说明:<br/>" +
+            "出参说明:<br/>" +
+            "201")
+    public JSONObject modifyPaper(Papers paperInfo, BatchListEntity questionInfoList,
+                                  @RequestParam("token") String token) {
+        CommonResult<JSONObject> result = new CommonResult<>();
+        result.setData(JSONObject.fromObject("{}"));
+        result.setMsg("新增失败");
+        result.setStatus(400);
+
+        String paperId = paperInfo.getId();
+        String createUserId = tokenService.getUserId(token);
+        Date date = new Date();
+
+        paperInfo.setModifyTime(date);
+
+        List<BaseQuestions> baseQuestionsList = questionInfoList.getBaseQuestionsList();
+        List<PaperQuestion> paperQuestionList = questionInfoList.getPaperQuestionList();
+        List<BaseQuestions> bqAddList = new ArrayList<>();
+        List<BaseQuestions> bqModifyList = new ArrayList<>();
+        List<PaperQuestion> pqAddList = new ArrayList<>();
+        List<PaperQuestion> pqModifyList = new ArrayList<>();
+        if (ToolUtil.isNotEmpty(baseQuestionsList)) {
+            for (int i = 0; i < baseQuestionsList.size(); i++) {
+                BaseQuestions bq = baseQuestionsList.get(i);
+                PaperQuestion pq = paperQuestionList.get(i);
+
+                if (ToolUtil.isNotEmpty(bq.getId())) {
+                    bq.setModifyTime(date);
+                    bqModifyList.add(bq);
+                    pqModifyList.add(pq);
+                } else {
+                    String newBqId = UUID.randomUUID().toString();
+
+                    bq.setId(newBqId);
+                    bq.setErId(createUserId);
+                    bq.setCreateTime(date);
+                    bq.setModifyTime(date);
+
+                    pq.setId(UUID.randomUUID().toString());
+                    pq.setPaperId(paperId);
+                    pq.setQuestionId(newBqId);
+
+                    bqAddList.add(bq);
+                    pqAddList.add(pq);
+                }
+            }
+        }
+
+        if (papersService.modifyPaper(paperInfo, pqAddList, pqModifyList, bqAddList, bqModifyList)) {
+            result.setStatus(201);
+            result.setMsg("保存成功");
+        }
+
+        return JSONObject.fromObject(result);
+    }
+
     @Privilege(privilegeLevel = Privilege.ER_TYPE)
     @RequestMapping(value = "/selectPapersByName", method = RequestMethod.GET)
     @ResponseBody
@@ -244,6 +305,7 @@ public class PapersController {
         finalMap.put("paperName", returnEmptyIfNull(paper.getPapersName()));
         finalMap.put("defaultSubject", returnEmptyIfNull(paper.getDefaultSubject()));
         finalMap.put("examTime", returnEmptyIfNull(paper.getExamTime()));
+        finalMap.put("fullScore", returnEmptyIfNull(paper.getFullScore()));
 
         List<Map<String, Object>> questionList = paperQuestionService.getPaperQuestionInfoById(paperId);
         if (ToolUtil.isNotEmpty(questionList)) {

@@ -25,6 +25,11 @@ public class PaperQuestionServiceImpl extends BaseServiceTk<PaperQuestion> imple
     }
 
     @Override
+    public int batchModifyPQ(List<PaperQuestion> pqList) {
+        return paperQuestionMapper.batchModifyPQ(pqList);
+    }
+
+    @Override
     public List<Map<String, Object>> getPaperQuestionInfoById(String paperId) {
         return paperQuestionMapper.getPaperQuestionInfoById(paperId);
     }

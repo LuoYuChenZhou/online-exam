@@ -6,7 +6,10 @@
     margin-top: 10px;
     text-align: center;
     height: 670px;
-    /*height: 400px;*/
+}
+
+#scrollBar {
+    height: 529px;
     overflow-y: scroll;
 }
 

@@ -161,7 +161,7 @@ function addNewOption(index) {
         "<div class='layui-inline' style='width: 150px;margin-right:0;'>" +
         "    <label class='layui-form-label smallText'>分数</label>" +
         "    <div class='layui-input-inline smallML'>" +
-        "        <input type='text' lay-verify='required' onchange='autoInputCountScore(" + index + ")' name='qaBlank" + index + newBlankIndex + "Score' autocomplete='off' class='layui-input'" +
+        "        <input type='text' lay-verify='required'  oninput='autoInputCountScore(" + index + ")' onporpertychange='autoInputCountScore(" + index + ")' name='qaBlank" + index + newBlankIndex + "Score' autocomplete='off' class='layui-input'" +
         "               style='width: 65px;'>" +
         "    </div>" +
         "</div>" +
@@ -282,12 +282,12 @@ function paperCommit(type) {
         papersName: jsonFormObject.paperName
         , defaultSubject: jsonFormObject.defaultSubject
         , examTime: jsonFormObject.examTimeNum
+        , fullScore: $("input[name='paperFullScore']").val()
         , status: type
         , token: token
     };
 
     // 循环处理问题
-    let allScore = 0;
     for (let i = 1; i < nextDivIndex; i++) {
         if (!fieldIsWrong(jsonFormObject["qa" + i + "CoScore"]) && !isNum(jsonFormObject["qa" + i + "CoScore"])) {
             layer.msg("第" + i + "题指定分数必须是数字");
@@ -315,8 +315,6 @@ function paperCommit(type) {
             if (!isNum(scoreObj)) {
                 layer.msg("第" + i + "题分数必须是数字");
                 return false;
-            } else {
-                allScore += parseInt(scoreObj, 10);
             }
         }
         if (jsonFormObject["qType" + i] === '0') {
@@ -351,9 +349,6 @@ function paperCommit(type) {
             allInfo["paperQuestionList[" + index + "].questionScore"] = getBlankOptionScoresStr(jsonFormObject, i);
         }
     }
-
-    //加入总分
-    allInfo["fullScore"] = allScore;
 
     $.post("/Papers/addPaper.do", allInfo,
         function (data) {
@@ -438,7 +433,8 @@ function autoInputCountScore(index) {
         }
         countScore += parseInt(obj, 10);
     }
-    return $("input[name='qa" + index + "Score']").val(countScore);
+    $("input[name='qa" + index + "Score']").val(countScore);
+    getPaperFullScore();
 }
 
 // 只是添加一个新的问题div的基础html
@@ -452,7 +448,7 @@ function onlyAddDiv() {
         "                    <label class='layui-form-label question_text'>分数:</label>" +
         "                    <div class='layui-input-inline'>" +
         "                        <input type='text' name='qa" + nextDivIndex + "Score' autocomplete='off'" +
-        "                               class='layui-input question_input' style='margin-left: 39px'>" +
+        "                               class='layui-input question_input' oninput='getPaperFullScore()' onporpertychange='getPaperFullScore()' style='margin-left: 39px'>" +
         "                    </div>" +
         "                </div>" +
         "                <div class='layui-inline flag'>" +
@@ -736,4 +732,16 @@ function formItemValid(jsonFormObject) {
             }
         }
     }
+}
+
+// 计算满分
+function getPaperFullScore() {
+    let countScore = 0;
+    for (let i = 1; i <= nextDivIndex; i++) {
+        let qaScore = $("input[name='qa" + i + "Score']").val();
+        if (!fieldIsWrong(qaScore)) {
+            countScore += parseInt(qaScore, 10);
+        }
+    }
+    $("input[name='paperFullScore']").val(countScore);
 }

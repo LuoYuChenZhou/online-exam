@@ -50,4 +50,21 @@ public class PapersServiceImpl extends BaseServiceTk<Papers> implements PapersSe
         return insertSelective(paperInfo) > 0;
     }
 
+    @Override
+    public boolean modifyPaper(Papers paperInfo, List<PaperQuestion> pqAddList, List<PaperQuestion> pqModifyList, List<BaseQuestions> bqAddList, List<BaseQuestions> bqModifyList) {
+        if (ToolUtil.isNotEmpty(bqAddList)) {
+            if (baseQuestionsService.batchInsertBQ(bqAddList) < 1
+                    || paperQuestionService.batchInsertPQ(pqAddList) < 1) {
+                return false;
+            }
+        }
+        if (ToolUtil.isNotEmpty(bqModifyList)) {
+            if (baseQuestionsService.batchModifyBQ(bqModifyList) < 1
+                    || paperQuestionService.batchModifyPQ(pqModifyList) < 1) {
+                return false;
+            }
+        }
+        return updateByPrimaryKeySelective(paperInfo) > 0;
+    }
+
 }

@@ -43,8 +43,37 @@
         </foreach>
     </insert>
 
+    <update id="batchModifyPQ">
+        INSERT INTO paper_question(
+        id,
+        score_type,
+        question_score,
+        full_score,
+        assign_score,
+        correct_type
+        ) VALUES
+        <foreach collection="pqList" item="item" separator=",">
+            (
+            #{item.id},
+            #{item.scoreType},
+            #{item.questionScore},
+            #{item.fullScore},
+            #{item.assignScore},
+            #{item.correctType}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        score_type = VALUES(score_type),
+        question_score = VALUES(question_score),
+        full_score = VALUES(full_score),
+        assign_score = VALUES(assign_score),
+        correct_type = VALUES(correct_type)
+    </update>
+
     <select id="getPaperQuestionInfoById" resultType="hashMap">
         SELECT
+            pq.id AS pqId,
+            pq.question_id AS questionId,
             pq.question_type AS questionType,
             pq.question_score AS questionScore,
             pq.full_score as fullScore,

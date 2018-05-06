@@ -22,4 +22,9 @@ public class BaseQuestionsServiceImpl extends BaseServiceTk<BaseQuestions> imple
     public int batchInsertBQ(List<BaseQuestions> bqList) {
         return baseQuestionsMapper.batchInsertBQ(bqList);
     }
+
+    @Override
+    public int batchModifyBQ(List<BaseQuestions> bqList) {
+        return baseQuestionsMapper.batchModifyBQ(bqList);
+    }
 }

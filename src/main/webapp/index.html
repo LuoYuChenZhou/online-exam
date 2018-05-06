@@ -172,14 +172,12 @@
 
             //监听
             form.on('checkbox(erLogin)', function (data) {
-                console.log(data.elem.checked);
 
-                if(data.elem.checked === true){
+                if (data.elem.checked === true) {
                     loginType = "1";
-                }else {
+                } else {
                     loginType = "2";
                 }
-                console.log(loginType);
             });
         });
 

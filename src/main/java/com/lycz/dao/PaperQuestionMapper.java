@@ -10,5 +10,7 @@ import java.util.Map;
 public interface PaperQuestionMapper extends Mapper<PaperQuestion> {
     int batchInsertPQ(@Param("pqList") List<PaperQuestion> pqList);
 
+    int batchModifyPQ(@Param("pqList") List<PaperQuestion> pqList);
+
     List<Map<String, Object>> getPaperQuestionInfoById(@Param("paperId") String paperId);
 }

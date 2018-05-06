@@ -10,5 +10,7 @@ public interface PaperQuestionService extends IBaseServiceTk<PaperQuestion> {
 
     int batchInsertPQ(List<PaperQuestion> pqList);
 
+    int batchModifyPQ(List<PaperQuestion> pqList);
+
     List<Map<String, Object>> getPaperQuestionInfoById(String paperId);
 }
