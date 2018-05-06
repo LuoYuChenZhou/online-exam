@@ -1,21 +1,19 @@
 package com.lycz.configAndDesign.aspect;
 
-import com.lycz.configAndDesign.ToolUtil;
 import com.lycz.configAndDesign.CommonResult;
 import com.lycz.configAndDesign.JedisUtil;
+import com.lycz.configAndDesign.ToolUtil;
 import com.lycz.configAndDesign.annotation.Privilege;
 import com.lycz.service.base.TokenService;
 import net.sf.json.JSONObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
