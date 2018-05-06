@@ -9,13 +9,19 @@ import net.sf.json.JSONObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
@@ -43,21 +49,25 @@ public class PrivilegeAspect {
      * 要求token放在最后
      * 虽然指定了argNames，但是无效，只要是String放在最后都会被token获取到
      */
-    @Pointcut(value = "@annotation(com.lycz.configAndDesign.annotation.Privilege) && args(..,token)", argNames = "token")
-    public void priAspect(String token) {
+    @Pointcut(value = "@annotation(com.lycz.configAndDesign.annotation.Privilege)")
+    public void priAspect() {
     }
 
-    @Around(value = "priAspect(token)", argNames = "joinPoint,token")
-    public Object doPriController(ProceedingJoinPoint joinPoint, String token) throws Throwable {
+    @Around(value = "priAspect()", argNames = "joinPoint")
+    public Object doPriController(ProceedingJoinPoint joinPoint) throws Throwable {
+        ServletRequestAttributes servletWebRequest = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = servletWebRequest.getRequest();
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setMsg("权限不足");
         result.setData(JSONObject.fromObject("{}"));
         result.setStatus(401);
 
+        String token = request.getParameter("token");
+
         Integer privilegeLevel = 0;//权限
         boolean canExe = false;//是否拥有权限执行
 
-        //获取注解信息
+        //获取类信息
         String currentClassName = joinPoint.getTarget().getClass().getName();
         Class<?> tempClass;
         try {
@@ -67,11 +77,17 @@ public class PrivilegeAspect {
             log.error("权限类获取类信息失败");
             return JSONObject.fromObject(result);
         }
-        Annotation[] annotations = tempClass.getAnnotations();
-        for (Annotation annotation : annotations) {
-            if (annotation.annotationType() == Privilege.class) {
-                Privilege privilege = (Privilege) annotation;
-                privilegeLevel = privilege.privilegeLevel();
+        //获取方法上的注解
+        String currentMethodName = joinPoint.getSignature().getName();
+        Method[] methods = tempClass.getMethods();
+        for (Method method : methods) {
+            if (method.getName().equals(currentMethodName)) {
+                Annotation[] annotations1 = method.getAnnotations();
+                for (Annotation annotation1 : annotations1) {
+                    if (annotation1.annotationType() == Privilege.class) {
+                        privilegeLevel = ((Privilege) annotation1).privilegeLevel();
+                    }
+                }
                 break;
             }
         }
