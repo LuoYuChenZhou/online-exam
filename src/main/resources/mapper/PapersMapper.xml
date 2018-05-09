@@ -28,8 +28,35 @@
         FROM
         papers p
         <where>
-            p.examiner_id = #{teachersId}
-            AND p.status != '4'
+            p.status != '4'
+            and p.examiner_id = #{teachersId}
+            <if test=' papersName != null and papersName !="" '>
+                and  p.papers_name LIKE CONCAT('%',#{papersName},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectPapersByErName" resultType="hashMap">
+        SELECT
+        p.id AS id,
+        p.papers_name AS papersName,
+        v.user_name AS erName,
+        p.exam_time AS examTime,
+        p.full_score AS fullScore,
+        IF(s.answer IS NOT NULL
+        OR TIMESTAMPDIFF(SECOND,s.blur_start_time,now()) > (p.exam_time * 60), '是','否') AS hadExam
+        FROM
+        papers p
+        LEFT JOIN score s ON p.id = s.paper_id AND s.ee_id = #{eeId}
+        LEFT JOIN v_user v ON p.examiner_id = v.user_id
+        <where>
+            p.status = '2'
+            AND p.examiner_id IN (
+            SELECT re.examiner_id FROM er_ee re WHERE re.examinee_id = #{eeId}
+            )
+            <if test=' teachersId != null and teachersId !="" '>
+                and p.examiner_id = #{teachersId}
+            </if>
             <if test=' papersName != null and papersName !="" '>
                 and  p.papers_name LIKE CONCAT('%',#{papersName},'%')
             </if>

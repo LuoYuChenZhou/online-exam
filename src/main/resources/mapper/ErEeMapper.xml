@@ -63,4 +63,16 @@
             cur_status = '2'
             AND re.examinee_id = #{userId}
     </select>
+
+    <select id="getErListByEe" resultType="hashMap">
+        SELECT
+            vu.user_id AS erId,
+            vu.user_name AS erName
+        FROM
+            er_ee re
+            INNER JOIN v_user vu ON re.examiner_id = vu.user_id
+        WHERE re.examinee_id = #{eeId}
+        AND re.cur_status = '3'
+        GROUP BY vu.user_id
+    </select>
 </mapper>

@@ -5,6 +5,7 @@ let curChooseIndexMap = new Map();// 选择题区域的最后一个字母，键�
 let latestBlankIndexMap = new Map();// 填空题区域的最大数字+1，只增不减
 let qaIndexIdMap = new Map();// 题号与问题id的Map
 let pqIndexIdMap = new Map();// 题号与问题试卷关系id的Map
+let delQaId = "";// 要删除的试题的id
 let subjectIsLoad = false;// 科目列表是否获取
 let subjectOptions = ""; // 科目列表选项
 let FloorObject;// 弹出层对象
@@ -251,8 +252,9 @@ function initializeData() {
 
                             let optionStrArray = curQa.answer.substring(0, curQa.answer.length - 2).split("$$");
                             let optionScoreArray = curQa.questionScore.substring(0, curQa.questionScore.length - 1).split(",");
-                            for (let j = 1; j < optionStrArray.length + 1; j++) {
-                                let newBlankIndex = "" + j;
+                            let optionIndexArray = curQa.blankIndex.substring(0, curQa.blankIndex.length - 1).split(",");
+                            for (let j = 0; j < optionStrArray.length; j++) {
+                                let newBlankIndex = optionIndexArray[j];
                                 appendStr = appendStr + "" +
                                     "<div class='qaBlankOneBlank" + nextDivIndex + newBlankIndex + "'>" +
                                     "<div class='layui-inline' style='margin-left: 7px;'>" +
@@ -261,14 +263,14 @@ function initializeData() {
                                     "<div class='layui-inline' style='width: 410px;'>" +
                                     "    <div class='layui-input-inline smallML' style='margin-left: 7px;'>" +
                                     "        <input type='text' name='qaBlank" + nextDivIndex + newBlankIndex + "' autocomplete='off' class='layui-input' required" +
-                                    "               lay-verify='required' style='width: 385px;' placeholder='请输入内容' value='" + reEmptyStrIfNull(optionStrArray[j - 1]) + "'>" +
+                                    "               lay-verify='required' style='width: 385px;' placeholder='请输入内容' value='" + reEmptyStrIfNull(optionStrArray[j]) + "'>" +
                                     "    </div>" +
                                     "</div>" +
                                     "<div class='layui-inline' style='width: 150px;margin-right:0;'>" +
                                     "    <label class='layui-form-label smallText'>分数</label>" +
                                     "    <div class='layui-input-inline smallML'>" +
                                     "        <input type='text' lay-verify='required' oninput='autoInputCountScore(" + nextDivIndex + ")' onporpertychange='autoInputCountScore(" + nextDivIndex + ")' name='qaBlank" + nextDivIndex + newBlankIndex + "Score' autocomplete='off' class='layui-input'" +
-                                    "               style='width: 65px;' value='" + reEmptyStrIfNull(optionScoreArray[j - 1]) + "'>" +
+                                    "               style='width: 65px;' value='" + reEmptyStrIfNull(optionScoreArray[j]) + "'>" +
                                     "    </div>" +
                                     "</div>" +
                                     "<div class='layui-inline'>" +
@@ -280,7 +282,7 @@ function initializeData() {
                                     "</div>" +
                                     "</div>";
                             }
-                            latestBlankIndexMap.set("qaBlank" + nextDivIndex, optionStrArray.length + 1);
+                            latestBlankIndexMap.set("qaBlank" + nextDivIndex, parseInt(optionIndexArray[optionIndexArray.length - 1], 10) + 1);
 
                             appendStr = appendStr +
                                 "                        </div>" +
@@ -291,15 +293,6 @@ function initializeData() {
                                 "                                <use xlink:href='#icon-tianjia'></use>" +
                                 "                            </svg>" +
                                 "                        </a>" +
-                                "                    </div>" +
-                                "                </div>" +
-                                "                <div class='separate'>" +
-                                "                    <label class='layui-form-label question_text'>要点得分模式：</label>" +
-                                "                    <div>" +
-                                "                        <input type='radio' name='qa" + nextDivIndex + "Co' value='1' checked title='填入文字与预设答案完全相同才得分'>" +
-                                "                    </div>" +
-                                "                    <div>" +
-                                "                        <input type='radio' name='qa" + nextDivIndex + "Co' value='2' title='填入文字与预设答案近似就得分'>" +
                                 "                    </div>" +
                                 "                </div>" +
                                 "            </div>" +
@@ -423,6 +416,10 @@ function typeRadioAddListen(index) {
 function deleteQuestion(index) {
     $("#qa" + index).remove();
     $("#questionIndex" + index).remove();
+    let qaId = qaIndexIdMap.get("qa" + index);
+    if (!fieldIsWrong(qaId)) {
+        delQaId = delQaId + qaId + ",";
+    }
 }
 
 // 删除指定的填空题的指定项
@@ -575,6 +572,7 @@ function paperCommit(type) {
         , examTime: jsonFormObject.examTimeNum
         , status: type
         , fullScore: $("input[name='paperFullScore']").val()
+        , delQaId: delQaId
         , token: token
     };
 
@@ -639,6 +637,7 @@ function paperCommit(type) {
             allInfo["baseQuestionsList[" + index + "].isMulti"] = trueAnswerNum > 1 ? "1" : "0";
         } else if (jsonFormObject["qType" + i] === '1') {
             allInfo["baseQuestionsList[" + index + "].answer"] = getBlankOptionsStr(jsonFormObject, i);
+            allInfo["baseQuestionsList[" + index + "].blankIndex"] = getBlankIndexStr(i);
             if (getBlankOptionsStr(jsonFormObject, i) === "[have$$error]") {
                 layer.msg("第" + i + "题答案/要点中不允许有$$");
                 return false;
@@ -703,11 +702,23 @@ function getBlankOptionsStr(jsonFormObject, index) {
     return optionsStr;
 }
 
+// 获取index对应的填空题的所有选项的index以,连接起来的字符串
+function getBlankIndexStr(index) {
+    let endNum = latestBlankIndexMap.get("qaBlank" + index);
+    let optionsStr = "";
+    for (let i = 1; i < endNum; i++) {
+        // 有输入框才操作
+        if ($("input[name='qaBlank" + index + i + "']").length > 0) {
+            optionsStr = optionsStr + i + ",";
+        }
+    }
+    return optionsStr;
+}
+
 // 获取index对应的填空题的所有分数以,连接起来的字符串
 function getBlankOptionScoresStr(jsonFormObject, index) {
     let endNum = latestBlankIndexMap.get("qaBlank" + index);
     let optionsStr = "";
-    console.log(1);
     for (let i = 1; i < endNum; i++) {
         // 有输入框才操作
         if ($("input[name='qaBlank" + index + i + "Score']").length > 0) {
@@ -1059,11 +1070,9 @@ function ResolveChooseAn(chooseAn, index) {
 
 // 计算满分
 function getPaperFullScore() {
-    console.log(11111111);
     let countScore = 0;
     for (let i = 1; i <= nextDivIndex; i++) {
         let qaScore = $("input[name='qa" + i + "Score']").val();
-        console.log("input[name='qa" + i + "Score']", qaScore);
         if (!fieldIsWrong(qaScore)) {
             countScore += parseInt(qaScore, 10);
         }

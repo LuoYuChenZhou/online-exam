@@ -10,6 +10,7 @@ import com.lycz.service.base.TokenService;
 import com.lycz.service.user.ErEeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -403,5 +404,32 @@ public class ErEeController {
         return JSONObject.fromObject(result);
     }
 
+    @RequestMapping(value = "/getErListByEe", method = RequestMethod.GET)
+    @Privilege(methodName = "获取自己的考官列表", privilegeLevel = Privilege.EE_TYPE)
+    @ResponseBody
+    @ApiOperation(value = "获取自己的考官列表", notes = "" +
+            "入参说明:<br/>" +
+            "出参说明:<br/>" +
+            "[" +
+            "   {" +
+            "       erId:考官id" +
+            "       erName:考官姓名" +
+            "   }" +
+            "]")
+    public JSONObject getErListByEe(@RequestParam("token") String token) {
+        CommonResult<JSONArray> result = new CommonResult<>();
+        result.setData(JSONArray.fromObject("[]"));
+        result.setStatus(400);
 
+        List<Map<String, Object>> erList = erEeService.getErListByEe(tokenService.getUserId(token));
+        if (ToolUtil.isEmpty(erList)) {
+            result.setMsg("查询成功，但没有数据");
+        } else {
+            result.setMsg("查询成功");
+            result.setData(JSONArray.fromObject(erList));
+            result.setStatus(200);
+        }
+
+        return JSONObject.fromObject(result);
+    }
 }

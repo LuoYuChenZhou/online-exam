@@ -25,15 +25,27 @@ public class Score {
     private Integer score;
 
     /**
-     * 答案，以json格式存入
+     * 大概开始时间
      */
-    private String answer;
+    @Column(name = "blur_start_time")
+    private Date blurStartTime;
 
     /**
      * 交卷时间
      */
     @Column(name = "commit_time")
     private Date commitTime;
+
+    /**
+     * 得分详情
+     */
+    @Column(name = "score_detail")
+    private String scoreDetail;
+
+    /**
+     * 答案，以json格式存入
+     */
+    private String answer;
 
     /**
      * @return id
@@ -104,21 +116,21 @@ public class Score {
     }
 
     /**
-     * 获取答案，以json格式存入
+     * 获取大概开始时间
      *
-     * @return answer - 答案，以json格式存入
+     * @return blur_start_time - 大概开始时间
      */
-    public String getAnswer() {
-        return answer;
+    public Date getBlurStartTime() {
+        return blurStartTime;
     }
 
     /**
-     * 设置答案，以json格式存入
+     * 设置大概开始时间
      *
-     * @param answer 答案，以json格式存入
+     * @param blurStartTime 大概开始时间
      */
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setBlurStartTime(Date blurStartTime) {
+        this.blurStartTime = blurStartTime;
     }
 
     /**
@@ -137,5 +149,41 @@ public class Score {
      */
     public void setCommitTime(Date commitTime) {
         this.commitTime = commitTime;
+    }
+
+    /**
+     * 获取得分详情
+     *
+     * @return score_detail - 得分详情
+     */
+    public String getScoreDetail() {
+        return scoreDetail;
+    }
+
+    /**
+     * 设置得分详情
+     *
+     * @param scoreDetail 得分详情
+     */
+    public void setScoreDetail(String scoreDetail) {
+        this.scoreDetail = scoreDetail;
+    }
+
+    /**
+     * 获取答案，以json格式存入
+     *
+     * @return answer - 答案，以json格式存入
+     */
+    public String getAnswer() {
+        return answer;
+    }
+
+    /**
+     * 设置答案，以json格式存入
+     *
+     * @param answer 答案，以json格式存入
+     */
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 }

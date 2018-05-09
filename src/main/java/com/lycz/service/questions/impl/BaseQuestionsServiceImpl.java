@@ -27,4 +27,9 @@ public class BaseQuestionsServiceImpl extends BaseServiceTk<BaseQuestions> imple
     public int batchModifyBQ(List<BaseQuestions> bqList) {
         return baseQuestionsMapper.batchModifyBQ(bqList);
     }
+
+    @Override
+    public int batchDelNotBankQuestion(List<String> qaIdList) {
+        return baseQuestionsMapper.batchDelNotBankQuestion(qaIdList);
+    }
 }

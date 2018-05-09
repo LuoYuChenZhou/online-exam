@@ -36,7 +36,7 @@ layui.use('table', function () {
 
     let log_tab = table.render({
         elem: '#log_table'
-        , height: 'full-80'//高度设置为距底部30
+        , height: 'full-80'//高度设置为距底部80
         , url: '../../SysLog/getSysLogList.do' //数据接口
         , page: true //开启分页
         , cols: [[ //表头

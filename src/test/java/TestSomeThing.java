@@ -1,8 +1,12 @@
 import com.lycz.configAndDesign.JedisUtil;
 import com.lycz.configAndDesign.ToolUtil;
+import net.sf.json.JSONObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author lizhenqing
@@ -17,8 +21,8 @@ public class TestSomeThing {
         int a = 1;
         int b = 5;
         String c = "1111";
-        log.warn(a&b);
-        log.warn(b & (b-1));
+        log.warn(a & b);
+        log.warn(b & (b - 1));
         log.warn(Integer.toBinaryString(b));
         log.warn(Integer.toBinaryString(ToolUtil.getWrongOptionsValue(b)));
     }
@@ -30,8 +34,8 @@ public class TestSomeThing {
 
     @Test
     public void testTimeOut() throws InterruptedException {
-        JedisUtil.setString("111","abc");
-        JedisUtil.setOutTime("111",5);
+        JedisUtil.setString("111", "abc");
+        JedisUtil.setOutTime("111", 5);
         log.info("_____________________");
         log.info(JedisUtil.getString("111"));
         log.info("_____________________");
@@ -61,11 +65,28 @@ public class TestSomeThing {
     }
 
     @Test
-    public  void testSame() {
+    public void testSame() {
         String str1 = "设x=5,x-y=1。求y。后面都是12222222222222222222222222222222222222222";
         String str2 = "设z=5,z-m=1.求m。后面都是12222222222222222222222222222222222222222";
         System.out.println("ld=" + ld(str1, str2));
         System.out.println("sim=" + sim(str1, str2));
+    }
+
+    @Test
+    public void testYuShu() {
+        long a = 4L;
+        long b = 7L;
+        System.out.println(b / a);
+    }
+
+    @Test
+    public void testMap2Str() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("a", "a");
+        map.put("c", "c");
+        map.put("b", "b");
+        System.out.println(map.toString());
+        System.out.println(JSONObject.fromObject(map).toString());
     }
 
     private static int min(int one, int two, int three) {
@@ -112,15 +133,16 @@ public class TestSomeThing {
                     temp = 1;
                 }
                 // 左边+1,上边+1, 左上角+temp取最小
-                d[i][j] = min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1]+ temp);
+                d[i][j] = min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + temp);
             }
         }
         return d[n][m];
     }
+
     private static double sim(String str1, String str2) {
         try {
-            double ld = (double)ld(str1, str2);
-            return (1-ld/(double)Math.max(str1.length(), str2.length()));
+            double ld = (double) ld(str1, str2);
+            return (1 - ld / (double) Math.max(str1.length(), str2.length()));
         } catch (Exception e) {
             return 0.1;
         }

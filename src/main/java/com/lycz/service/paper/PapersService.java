@@ -16,11 +16,19 @@ public interface PapersService extends IBaseServiceTk<Papers> {
                                                         Integer page,
                                                         Integer limit);
 
+    FixPageInfo<Map<String, Object>> selectPapersByErName(String eeId,
+                                                          String papersName,
+                                                          String teachersId,
+                                                          Integer page,
+                                                          Integer limit);
+
     boolean addNewPaper(Papers paperInfo, List<BaseQuestions> baseQuestionsList, List<PaperQuestion> paperQuestionList);
 
     boolean modifyPaper(Papers paperInfo,
                         List<PaperQuestion> pqAddList,
                         List<PaperQuestion> pqModifyList,
                         List<BaseQuestions> bqAddList,
-                        List<BaseQuestions> bqModifyList);
+                        List<BaseQuestions> bqModifyList,
+                        String delQaId);
+
 }

@@ -11,4 +11,8 @@ public interface PapersMapper extends Mapper<Papers> {
     List<Map<String, Object>> selectPapersByName(@Param("papersName") String papersName,
                                                  @Param("teachersId") String teachersId);
 
+    List<Map<String, Object>> selectPapersByErName(@Param("eeId") String eeId,
+                                                   @Param("papersName") String papersName,
+                                                   @Param("teachersId") String teachersId);
+
 }

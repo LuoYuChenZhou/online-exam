@@ -4,6 +4,11 @@ let rightCanPress = true;//向右按钮是否可以点击
 let page = 1;
 let limit = 9;
 
+let layer;
+layui.use('layer', function () {
+    layer = layui.layer;
+});
+
 getInvitedList();
 
 //左边按钮点击

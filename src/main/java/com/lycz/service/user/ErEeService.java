@@ -5,6 +5,8 @@ import com.lycz.configAndDesign.FixPageInfo;
 import com.lycz.model.ErEe;
 import com.lycz.service.base.IBaseServiceTk;
 
+import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 public interface ErEeService extends IBaseServiceTk<ErEe> {
@@ -35,4 +37,6 @@ public interface ErEeService extends IBaseServiceTk<ErEe> {
     String eeErRemove(String rmType, String sendName, ErEe erEe) throws Exception;
 
     String acceptEeEr(String sendName, ErEe erEe) throws Exception;
+
+    List<Map<String, Object>> getErListByEe(String eeId);
 }

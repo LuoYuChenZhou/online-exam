@@ -273,7 +273,7 @@ public class ErEeServiceImpl extends BaseServiceTk<ErEe> implements ErEeService 
 
         long curTime = System.currentTimeMillis();
         erEe.setCurStatus("3");
-        erEe.setHisStatus(erEe.getHisStatus() + "3");
+        erEe.setHisStatus(erEe.getHisStatus() + "_" + "3");
         erEe.setHisTime(erEe.getHisTime() + "_" + curTime);
 
         String dictId = sysDictService.selectIdByCodeValue(msgCode, msgValue);
@@ -287,5 +287,10 @@ public class ErEeServiceImpl extends BaseServiceTk<ErEe> implements ErEeService 
         } else {
             return "0";
         }
+    }
+
+    @Override
+    public List<Map<String, Object>> getErListByEe(String eeId) {
+        return erEeMapper.getErListByEe(eeId);
     }
 }

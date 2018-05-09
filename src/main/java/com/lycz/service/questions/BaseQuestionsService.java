@@ -10,4 +10,6 @@ public interface BaseQuestionsService extends IBaseServiceTk<BaseQuestions> {
     int batchInsertBQ(List<BaseQuestions> bqList);
 
     int batchModifyBQ(List<BaseQuestions> bqList);
+
+    int batchDelNotBankQuestion(List<String> qaIdList);
 }

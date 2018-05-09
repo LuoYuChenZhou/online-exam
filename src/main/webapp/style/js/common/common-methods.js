@@ -60,12 +60,13 @@ $.ajaxSetup({
         function (data, status) {
             if (status === 1000) {
                 layer.msg('系统繁忙。。', {icon: 5});
+                return;
             }
             let obj = eval('(' + data.responseText + ')');
             if (obj.status === 1000) {
                 layer.msg('系统繁忙。。', {icon: 5});
             } else if (obj.status === 401) {
-                location.href = localhostPath;
+                top.location.href = localhostPath;
             }
         }
 });
@@ -261,4 +262,18 @@ function fieldIsWrong(field) {
 // 如果为空返回空字符串
 function reEmptyStrIfNull(source) {
     return fieldIsWrong(source) ? '' : source;
+}
+
+// ES6的Map对象转Obj
+function strMapToObj(strMap) {
+    let obj = Object.create(null);
+    for (let [k, v] of strMap) {
+        obj[k] = v;
+    }
+    return obj;
+}
+
+// ES6的Map对象转Json
+function strMapToJson(strMap) {
+    return JSON.stringify(strMapToObj(strMap));
 }

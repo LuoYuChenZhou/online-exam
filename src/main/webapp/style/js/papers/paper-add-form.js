@@ -1,6 +1,7 @@
 // 本来设计是可以切换问题类型，由于填空题空数问题，取消了，但页面没有重写，有很大优化空间
 // bug:多选批改模式设置默认值有效，但不会显示
 // 暂时放弃编辑试卷时将试题放入题库，如果后面要加需要在问题div中加入复选框
+// 放弃填空题模糊批改功能
 
 let nextDivIndex = 1;//下一个div的下标
 let correctMap = new Map();//所有批改类型的Map
@@ -342,6 +343,7 @@ function paperCommit(type) {
             allInfo["baseQuestionsList[" + index + "].isMulti"] = trueAnswerNum > 1 ? "1" : "0";
         } else if (jsonFormObject["qType" + i] === '1') {
             allInfo["baseQuestionsList[" + index + "].answer"] = getBlankOptionsStr(jsonFormObject, i);
+            allInfo["baseQuestionsList[" + index + "].blankIndex"] = getBlankIndexStr(i);
             if (getBlankOptionsStr(jsonFormObject, i) === "[have$$error]") {
                 layer.msg("第" + i + "题答案/要点中不允许有$$");
                 return false;
@@ -576,15 +578,6 @@ function onlyAddDiv() {
         "                        </a>" +
         "                    </div>" +
         "                </div>" +
-        "                <div class='separate'>" +
-        "                    <label class='layui-form-label question_text'>要点得分模式：</label>" +
-        "                    <div>" +
-        "                        <input type='radio' name='qa" + nextDivIndex + "Co' value='1' checked title='填入文字与预设答案完全相同才得分'>" +
-        "                    </div>" +
-        "                    <div>" +
-        "                        <input type='radio' name='qa" + nextDivIndex + "Co' value='2' title='填入文字与预设答案近似就得分'>" +
-        "                    </div>" +
-        "                </div>" +
         "            </div>" +
         "        </div>" +
         "     </div>");
@@ -744,4 +737,17 @@ function getPaperFullScore() {
         }
     }
     $("input[name='paperFullScore']").val(countScore);
+}
+
+// 获取index对应的填空题的所有选项的index以,连接起来的字符串
+function getBlankIndexStr(index) {
+    let endNum = latestBlankIndexMap.get("qaBlank" + index);
+    let optionsStr = "";
+    for (let i = 1; i < endNum; i++) {
+        // 有输入框才操作
+        if ($("input[name='qaBlank" + index + i + "']").length > 0) {
+            optionsStr = optionsStr + i + ",";
+        }
+    }
+    return optionsStr;
 }

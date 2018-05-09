@@ -1,0 +1,40 @@
+<!--
+  User: lzq11
+  Date: 2018/5/7
+  Time: 9:57
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>开始考试</title>
+    <script type="text/javascript" src="../../style/js/common/common-js-css.js"></script>
+    <script type="text/javascript" src="../../style/js/examPaper/doExam.js"></script>
+    <link rel="stylesheet" type="text/css" href="/style/css/htmlCss/doExam.css"/>
+</head>
+<body>
+
+<div id="paperDiv" class="layui-form">
+    <!--标题和倒计时显示区域-->
+    <div id="nameAndCountdown" style="height: 30px;">
+        <div class="paperNameDiv">
+            <span>考试试卷：</span>
+            <span id="paperName"></span>
+        </div>
+        <div class="timeLeftDiv">
+            <span>剩余时间：</span>
+            <span id="timeLeft"></span>
+            <span>分钟</span>
+        </div>
+        <div class="commitButton">
+            <button class="layui-btn disable_false" onclick="promptCommit()">交卷</button>
+        </div>
+    </div>
+    <hr>
+    <!--试题展示部分-->
+    <div id="qaShow"></div>
+</div>
+
+
+</body>
+</html>

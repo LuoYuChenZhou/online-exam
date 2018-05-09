@@ -12,5 +12,7 @@ public interface PaperQuestionMapper extends Mapper<PaperQuestion> {
 
     int batchModifyPQ(@Param("pqList") List<PaperQuestion> pqList);
 
-    List<Map<String, Object>> getPaperQuestionInfoById(@Param("paperId") String paperId);
+    int batchDelPQ(@Param("paperId") String paperId, @Param("qaIdList") List<String> qaIdList);
+
+    List<Map<String, Object>> getPaperQuestionInfoById(@Param("notShowAnswer") String notShowAnswer, @Param("paperId") String paperId);
 }

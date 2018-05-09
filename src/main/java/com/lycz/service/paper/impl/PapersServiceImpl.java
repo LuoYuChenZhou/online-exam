@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +41,16 @@ public class PapersServiceImpl extends BaseServiceTk<Papers> implements PapersSe
     }
 
     @Override
+    public FixPageInfo<Map<String, Object>> selectPapersByErName(String eeId, String papersName, String teachersId, Integer page, Integer limit) {
+        PageHelper.startPage(page, limit);
+        List<Map<String, Object>> tempList = papersMapper.selectPapersByErName(eeId, papersName, teachersId);
+        if (ToolUtil.isEmpty(tempList)) {
+            return null;
+        }
+        return new FixPageInfo<>(tempList);
+    }
+
+    @Override
     public boolean addNewPaper(Papers paperInfo, List<BaseQuestions> baseQuestionsList, List<PaperQuestion> paperQuestionList) {
         if (ToolUtil.isNotEmpty(baseQuestionsList)) {
             if (baseQuestionsService.batchInsertBQ(baseQuestionsList) < 1
@@ -51,7 +62,7 @@ public class PapersServiceImpl extends BaseServiceTk<Papers> implements PapersSe
     }
 
     @Override
-    public boolean modifyPaper(Papers paperInfo, List<PaperQuestion> pqAddList, List<PaperQuestion> pqModifyList, List<BaseQuestions> bqAddList, List<BaseQuestions> bqModifyList) {
+    public boolean modifyPaper(Papers paperInfo, List<PaperQuestion> pqAddList, List<PaperQuestion> pqModifyList, List<BaseQuestions> bqAddList, List<BaseQuestions> bqModifyList, String delQaId) {
         if (ToolUtil.isNotEmpty(bqAddList)) {
             if (baseQuestionsService.batchInsertBQ(bqAddList) < 1
                     || paperQuestionService.batchInsertPQ(pqAddList) < 1) {
@@ -64,7 +75,22 @@ public class PapersServiceImpl extends BaseServiceTk<Papers> implements PapersSe
                 return false;
             }
         }
+        if (ToolUtil.isNotEmpty(delQaId)) {
+            List<String> qaIdList = new ArrayList<>();
+            for (String s : delQaId.split(",")) {
+                if (ToolUtil.isNotEmpty(s)) {
+                    qaIdList.add(s);
+                }
+            }
+            if (ToolUtil.isNotEmpty(qaIdList)) {
+                if (baseQuestionsService.batchDelNotBankQuestion(qaIdList) < 1
+                        || paperQuestionService.batchDelPQ(paperInfo.getId(), qaIdList) < 1) {
+                    return false;
+                }
+            }
+        }
         return updateByPrimaryKeySelective(paperInfo) > 0;
     }
+
 
 }

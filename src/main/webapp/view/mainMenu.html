@@ -2,9 +2,9 @@
 <html>
 <head>
     <title></title>
-    <link rel="icon" href="/style/image/favicon.ico" type="image/x-icon" />
-    <link rel="shortcut icon" href="/style/image/favicon.ico" type="image/x-icon" />
-    <link rel="bookmark" href="/style/image/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/style/image/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="/style/image/favicon.ico" type="image/x-icon"/>
+    <link rel="bookmark" href="/style/image/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="../style/css/common/nav.css"/>
     <link rel="stylesheet" type="text/css" href="../style/css/common/loadStyle.css"/>
     <link rel="stylesheet" type="text/css" href="../style/css/index/mainMenu.css"/>
@@ -41,7 +41,7 @@
     </div>
 </div>
 <!--菜单-->
-<div class="nav">
+<div id="nav" class="nav">
     <div class="nav-top">
         <div id="mini" style="border-bottom:1px solid rgba(255,255,255,.1)">
             <svg class="icon" aria-hidden="true" style="margin: 10px 0 10px 10px ;width: 2em;height: 2em;">
@@ -58,8 +58,10 @@
                 <span>系统管理</span><i class="nav-more"></i>
                 <ul>
                     <li><a href="javascript:void(0);"><span>用户管理</span></a></li>
-                    <li><a href="javascript:void(0);" onclick="changeView('system/log-list.html')"><span>日志管理</span></a></li>
-                    <li><a href="javascript:void(0);" onclick="changeView('system/dict-list.html')"><span>字典管理</span></a></li>
+                    <li><a href="javascript:void(0);" onclick="changeView('system/log-list.html')"><span>日志管理</span></a>
+                    </li>
+                    <li><a href="javascript:void(0);"
+                           onclick="changeView('system/dict-list.html')"><span>字典管理</span></a></li>
                 </ul>
             </a>
         </li>
@@ -71,9 +73,12 @@
                 <span>考生管理</span><i class="nav-more"></i>
             </a>
             <ul>
-                <li><a href="javascript:void(0);" onclick="changeView('grade/grade-list.html')"><span>我的班级</span></a></li>
-                <li><a href="javascript:void(0);" onclick="changeView('examinee/my-examinee-list.html')"><span>我的考生</span></a></li>
-                <li><a href="javascript:void(0);" onclick="changeView('examinee/add-examinee-list.html')"><span>添加考生</span></a></li>
+                <li><a href="javascript:void(0);" onclick="changeView('grade/grade-list.html')"><span>我的班级</span></a>
+                </li>
+                <li><a href="javascript:void(0);"
+                       onclick="changeView('examinee/my-examinee-list.html')"><span>我的考生</span></a></li>
+                <li><a href="javascript:void(0);"
+                       onclick="changeView('examinee/add-examinee-list.html')"><span>添加考生</span></a></li>
                 <li><a href="javascript:void(0);"><span>申请列表</span></a></li>
                 <li><a href="javascript:void(0);"><span>时光轴</span></a></li>
             </ul>
@@ -107,16 +112,17 @@
             </a>
             <ul>
                 <li><a href="javascript:void(0);"><span>考官列表</span></a></li>
-                <li><a href="javascript:void(0);" onclick="changeView('examiner/er-invited-list.html')"><span>邀请列表</span></a></li>
+                <li><a href="javascript:void(0);"
+                       onclick="changeView('examiner/er-invited-list.html')"><span>邀请列表</span></a></li>
                 <li><a href="javascript:void(0);"><span>时光轴</span></a></li>
             </ul>
         </li>
         <li class="nav-item ee_have">
-            <a href="javascript:void(0);">
+            <a href="javascript:void(0);" onclick="changeView('examPaper/exam-paper-list.html')">
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-chengji"></use>
                 </svg>
-                <span>成绩信息</span><i class="nav-more"></i>
+                <span>试卷列表</span><i class="nav-more"></i>
             </a>
         </li>
         <li class="nav-item er_have">

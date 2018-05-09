@@ -1,0 +1,54 @@
+<!--
+  User: lzq11
+  Date: 2018/5/6
+  Time: 17:04
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>试卷列表</title>
+    <script type="text/javascript" src="../../style/js/common/common-js-css.js"></script>
+    <script type="text/javascript" src="../../style/js/examPaper/exam-paper-list.js"></script>
+</head>
+<body>
+<!--主搜索框-->
+<div class="layui-form" id="mainSearchForm">
+    <div class="layui-form-item" style="margin:15px 0;">
+
+        <div class="layui-inline">
+            <label class="layui-form-label">出题考官：</label>
+            <div class="layui-input-inline" style="width: 180px;">
+                <select name="paperErId" id="paperErId" lay-filter="paperErId" lay-search></select>
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">试卷名称：</label>
+            <div class="layui-input-inline" style="width: 180px;">
+                <input type="text" name="searchPaperName" autocomplete="off" class="layui-input" id="searchPaperName">
+            </div>
+        </div>
+
+        <div class="layui-inline" style="margin-left: -60px;">
+            <div class="layui-input-block">
+                <button class="layui-btn" style="background: #1E9FFF;" onclick="searchBtnClick()">搜索</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--主显示区-->
+<table id="mainTable" class="layui-table" lay-filter="mainTableFilter"></table>
+
+</body>
+</html>
+
+<script type="text/html" id="mainTableBar">
+    {{# if (d.hadExam === '否'){ }}
+    <a class="layui-btn layui-btn-xs" lay-event="do" title="做题"><i class="iconfont icon-xiugai2"></i></a>
+    {{# } else { }}
+    <a class="layui-btn layui-btn-xs" lay-event="watch" title="查看"><i class="iconfont icon-sousuo"></i></a>
+    {{# }  }}
+</script>

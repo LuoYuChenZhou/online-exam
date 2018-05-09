@@ -12,5 +12,15 @@ public interface PaperQuestionService extends IBaseServiceTk<PaperQuestion> {
 
     int batchModifyPQ(List<PaperQuestion> pqList);
 
-    List<Map<String, Object>> getPaperQuestionInfoById(String paperId);
+    int batchDelPQ(String paperId, List<String> qaIdList);
+
+    /**
+     * 只要传入了notShowAnswer，就不查询答案字段
+     */
+    List<Map<String, Object>> getPaperQuestionInfoById(String notShowAnswer, String paperId);
+
+    /**
+     * 只要传入了notShowAnswer，就不查询答案字段,相比于上面那个，这个加入了“保存Score对象”的操作
+     */
+    List<Map<String, Object>> getPaperQuestionInfoById(String notShowAnswer, String paperId, String eeId);
 }

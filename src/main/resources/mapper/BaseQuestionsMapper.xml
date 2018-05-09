@@ -12,6 +12,7 @@
         <result column="is_multi" jdbcType="VARCHAR" property="isMulti"/>
         <result column="is_bank" jdbcType="VARCHAR" property="isBank"/>
         <result column="options" jdbcType="LONGVARCHAR" property="options"/>
+        <result column="blank_index" jdbcType="VARCHAR" property="blankIndex"/>
         <result column="answer" jdbcType="LONGVARCHAR" property="answer"/>
         <result column="subject" jdbcType="VARCHAR" property="subject"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -25,6 +26,7 @@
         question_desc,
         is_multi,
         options,
+        blank_index,
         answer,
         subject,
         modify_time,
@@ -36,6 +38,7 @@
             #{item.questionDesc},
             #{item.isMulti},
             #{item.options},
+            #{item.blankIndex},
             #{item.answer},
             #{item.subject},
             #{item.modifyTime},
@@ -46,6 +49,7 @@
         question_desc = VALUES(question_desc),
         is_multi = VALUES(is_multi),
         options = VALUES(options),
+        blank_index = VALUES(blank_index),
         answer = VALUES(answer),
         subject = VALUES(subject),
         modify_time = VALUES(modify_time),
@@ -61,6 +65,7 @@
         is_multi,
         is_bank,
         options,
+        blank_index,
         answer,
         subject,
         create_time,
@@ -76,6 +81,7 @@
             #{item.isMulti},
             #{item.isBank},
             #{item.options},
+            #{item.blankIndex},
             #{item.answer},
             #{item.subject},
             #{item.createTime},
@@ -84,4 +90,13 @@
             )
         </foreach>
     </insert>
+
+    <delete id="batchDelNotBankQuestion">
+        DELETE bq FROM base_questions bq
+        WHERE bq.id IN
+        <foreach collection="qaIdList" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        AND (bq.is_bank IS NULL OR bq.is_bank != '1')
+    </delete>
 </mapper>

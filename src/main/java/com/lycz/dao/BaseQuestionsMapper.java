@@ -10,4 +10,6 @@ public interface BaseQuestionsMapper extends Mapper<BaseQuestions> {
     int batchInsertBQ(@Param("bqList") List<BaseQuestions> bqList);
 
     int batchModifyBQ(@Param("bqList") List<BaseQuestions> bqList);
+
+    int batchDelNotBankQuestion(@Param("qaIdList") List<String> qaIdList);
 }

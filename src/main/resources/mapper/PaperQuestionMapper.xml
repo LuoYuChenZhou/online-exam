@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lycz.dao.PaperQuestionMapper">
+    <select id="getPaperQuestionInfoById" resultType="hashMap">
+        SELECT
+        pq.id AS pqId,
+        pq.question_id AS questionId,
+        pq.question_type AS questionType,
+        pq.question_score AS questionScore,
+        pq.full_score as fullScore,
+        pq.score_type AS scoreType,
+        pq.assign_score AS assignScore,
+        pq.correct_type as correctType,
+        bq.question_desc as questionDesc,
+        bq.is_multi as isMulti,
+        bq.is_bank as isBank,
+        bq.`options`,
+        bq.blank_index as blankIndex,
+        <if test='notShowAnswer == "" or notShowAnswer == null'>
+        bq.answer,
+        </if>
+        bq.`subject`
+        FROM
+        paper_question pq
+        INNER JOIN base_questions bq ON pq.question_id = bq.id
+        WHERE
+        pq.paper_id = #{paperId}
+        ORDER BY pq.question_type ASC,pq.question_id ASC
+    </select>
+
     <resultMap id="BaseResultMap" type="com.lycz.model.PaperQuestion">
         <!--
           WARNING - @mbg.generated
@@ -70,26 +97,12 @@
         correct_type = VALUES(correct_type)
     </update>
 
-    <select id="getPaperQuestionInfoById" resultType="hashMap">
-        SELECT
-            pq.id AS pqId,
-            pq.question_id AS questionId,
-            pq.question_type AS questionType,
-            pq.question_score AS questionScore,
-            pq.full_score as fullScore,
-            pq.score_type AS scoreType,
-            pq.assign_score AS assignScore,
-            pq.correct_type as correctType,
-            bq.question_desc as questionDesc,
-            bq.is_bank as isBank,
-            bq.`options`,
-            bq.answer,
-            bq.`subject`
-        FROM
-            paper_question pq
-            INNER JOIN base_questions bq ON pq.question_id = bq.id
-        WHERE
-            pq.paper_id = #{paperId}
-        ORDER BY pq.question_type ASC,pq.question_id ASC
-    </select>
+    <delete id="batchDelPQ">
+        DELETE pq FROM paper_question pq
+        WHERE pq.paper_id = #{}
+        AND pq.question_id IN
+        <foreach collection="qaIdList" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
 </mapper>

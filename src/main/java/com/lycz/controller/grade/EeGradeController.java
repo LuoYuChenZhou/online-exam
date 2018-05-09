@@ -70,10 +70,10 @@ public class EeGradeController {
         result.setStatus(400);
 
         List<Map<String, Object>> gradeList = eeGradeService.getNoEeGradeList(tokenService.getUserId(token), eeId);
-        if(ToolUtil.isEmpty(gradeList)){
+        if (ToolUtil.isEmpty(gradeList)) {
             result.setMsg("查询结束，但没有结果");
             result.setStatus(204);
-        }else {
+        } else {
             result.setStatus(200);
             result.setMsg("查询成功");
             result.setData(JSONArray.fromObject(gradeList));
@@ -113,6 +113,7 @@ public class EeGradeController {
         eeGrade.setEeId(eeId);
         eeGrade.setGradeId(gradeId);
         eeGrade.setSortNo(sortNo);
+        eeGrade.setStatus("1");
 
         if (eeGradeService.insertSelective(eeGrade) > 0) {
             result.setStatus(201);

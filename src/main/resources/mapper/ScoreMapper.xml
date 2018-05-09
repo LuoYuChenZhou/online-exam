@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lycz.dao.ScoreMapper">
-  <resultMap id="BaseResultMap" type="com.lycz.model.Score">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="paper_id" jdbcType="VARCHAR" property="paperId" />
-    <result column="ee_id" jdbcType="VARCHAR" property="eeId" />
-    <result column="score" jdbcType="INTEGER" property="score" />
-    <result column="answer" jdbcType="VARCHAR" property="answer" />
-    <result column="commit_time" jdbcType="TIMESTAMP" property="commitTime" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.lycz.model.Score">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="paper_id" jdbcType="VARCHAR" property="paperId"/>
+        <result column="ee_id" jdbcType="VARCHAR" property="eeId"/>
+        <result column="score" jdbcType="INTEGER" property="score"/>
+        <result column="score_detail" jdbcType="LONGVARCHAR" property="scoreDetail"/>
+        <result column="answer" jdbcType="LONGVARCHAR" property="answer"/>
+        <result column="blur_start_time" jdbcType="TIMESTAMP" property="blurStartTime"/>
+        <result column="commit_time" jdbcType="TIMESTAMP" property="commitTime"/>
+    </resultMap>
+
+    <select id="getStartAndAllTime" resultType="hashMap">
+        SELECT
+            s.blur_start_time AS blurStartTime,
+            s.answer,
+            p.exam_time AS examTime
+        FROM
+            score s
+            INNER JOIN papers p ON s.paper_id = p.id
+        WHERE
+            s.paper_id = #{paperId}
+            AND s.ee_id = #{eeId}
+        LIMIT 1
+    </select>
 </mapper>

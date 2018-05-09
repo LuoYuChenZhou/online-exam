@@ -36,6 +36,12 @@ public class BaseQuestions {
     private String isBank;
 
     /**
+     * 填空题[$$]中间的数字用逗号隔开组成的
+     */
+    @Column(name = "blank_index")
+    private String blankIndex;
+
+    /**
      * 科目（存字典id）
      */
     private String subject;
@@ -137,6 +143,22 @@ public class BaseQuestions {
      */
     public void setIsMulti(String isMulti) {
         this.isMulti = isMulti;
+    }
+
+    public String getIsBank() {
+        return isBank;
+    }
+
+    public void setIsBank(String isBank) {
+        this.isBank = isBank;
+    }
+
+    public String getBlankIndex() {
+        return blankIndex;
+    }
+
+    public void setBlankIndex(String blankIndex) {
+        this.blankIndex = blankIndex;
     }
 
     /**
