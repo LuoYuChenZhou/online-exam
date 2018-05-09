@@ -64,6 +64,12 @@ public class BaseQuestions {
     private String questionDesc;
 
     /**
+     * 问题解析
+     */
+    @Column(name = "question_analyze")
+    private String questionAnalyze;
+
+    /**
      * 选项，以$$隔开，选择题专属
      */
     private String options;
@@ -241,6 +247,14 @@ public class BaseQuestions {
      */
     public void setQuestionDesc(String questionDesc) {
         this.questionDesc = questionDesc;
+    }
+
+    public String getQuestionAnalyze() {
+        return questionAnalyze;
+    }
+
+    public void setQuestionAnalyze(String questionAnalyze) {
+        this.questionAnalyze = questionAnalyze;
     }
 
     /**

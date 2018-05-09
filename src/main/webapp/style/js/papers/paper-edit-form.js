@@ -180,6 +180,15 @@ function initializeData() {
                                 "                    </div>" +
                                 "                    <span class='question_text'>分</span>" +
                                 "                </div>" +
+                                "            </div>" +
+                                "            <div class='separate'>" +
+                                "                <div class='layui-form-item layui-form-text'>" +
+                                "                    <label class='layui-form-label question_text'>问题解析:</label>" +
+                                "                    <div class='layui-input-block'>" +
+                                "                        <textarea name='questionAnalyze" + nextDivIndex + "' placeholder='请输入内容'" +
+                                "                                  class='layui-textarea question_desc' id='questionAnalyze" + nextDivIndex + "'>" + curQa.questionAnanlyze + "</textarea>" +
+                                "                    </div>" +
+                                "                </div>" +
                                 "            </div>";
                             $("#question_edit").append(appendStr);
                             // 将题目类型等进行设置
@@ -253,36 +262,40 @@ function initializeData() {
                             let optionStrArray = curQa.answer.substring(0, curQa.answer.length - 2).split("$$");
                             let optionScoreArray = curQa.questionScore.substring(0, curQa.questionScore.length - 1).split(",");
                             let optionIndexArray = curQa.blankIndex.substring(0, curQa.blankIndex.length - 1).split(",");
-                            for (let j = 0; j < optionStrArray.length; j++) {
-                                let newBlankIndex = optionIndexArray[j];
-                                appendStr = appendStr + "" +
-                                    "<div class='qaBlankOneBlank" + nextDivIndex + newBlankIndex + "'>" +
-                                    "<div class='layui-inline' style='margin-left: 7px;'>" +
-                                    "    <label class='layui-form-label smallText' style='font-size: 10px;'>[$" + newBlankIndex + "$]</label>" +
-                                    "</div>" +
-                                    "<div class='layui-inline' style='width: 410px;'>" +
-                                    "    <div class='layui-input-inline smallML' style='margin-left: 7px;'>" +
-                                    "        <input type='text' name='qaBlank" + nextDivIndex + newBlankIndex + "' autocomplete='off' class='layui-input' required" +
-                                    "               lay-verify='required' style='width: 385px;' placeholder='请输入内容' value='" + reEmptyStrIfNull(optionStrArray[j]) + "'>" +
-                                    "    </div>" +
-                                    "</div>" +
-                                    "<div class='layui-inline' style='width: 150px;margin-right:0;'>" +
-                                    "    <label class='layui-form-label smallText'>分数</label>" +
-                                    "    <div class='layui-input-inline smallML'>" +
-                                    "        <input type='text' lay-verify='required' oninput='autoInputCountScore(" + nextDivIndex + ")' onporpertychange='autoInputCountScore(" + nextDivIndex + ")' name='qaBlank" + nextDivIndex + newBlankIndex + "Score' autocomplete='off' class='layui-input'" +
-                                    "               style='width: 65px;' value='" + reEmptyStrIfNull(optionScoreArray[j]) + "'>" +
-                                    "    </div>" +
-                                    "</div>" +
-                                    "<div class='layui-inline'>" +
-                                    "    <a href='javascript:void(0);' onclick='deleteOption(" + nextDivIndex + "," + newBlankIndex + ")'>" +
-                                    "        <svg class='icon' aria-hidden='true'>" +
-                                    "            <use xlink:href='#icon-jianshao'></use>" +
-                                    "        </svg>" +
-                                    "    </a>" +
-                                    "</div>" +
-                                    "</div>";
+                            if (!fieldIsWrong(curQa.answer.substring(0, curQa.answer.length - 2))) {
+                                for (let j = 0; j < optionStrArray.length - 1; j++) {
+                                    let newBlankIndex = optionIndexArray[j];
+                                    appendStr = appendStr + "" +
+                                        "<div class='qaBlankOneBlank" + nextDivIndex + newBlankIndex + "'>" +
+                                        "<div class='layui-inline' style='margin-left: 7px;width: 28px;'>" +
+                                        "    <label class='layui-form-label smallText' style='font-size: 10px;'>[$" + newBlankIndex + "$]</label>" +
+                                        "</div>" +
+                                        "<div class='layui-inline' style='width: 410px;'>" +
+                                        "    <div class='layui-input-inline smallML' style='margin-left: 7px;'>" +
+                                        "        <input type='text' name='qaBlank" + nextDivIndex + newBlankIndex + "' autocomplete='off' class='layui-input' required" +
+                                        "               lay-verify='required' style='width: 385px;' placeholder='请输入内容' value='" + reEmptyStrIfNull(optionStrArray[j]) + "'>" +
+                                        "    </div>" +
+                                        "</div>" +
+                                        "<div class='layui-inline' style='width: 144px;margin-right:0;'>" +
+                                        "    <label class='layui-form-label smallText'>分数</label>" +
+                                        "    <div class='layui-input-inline smallML'>" +
+                                        "        <input type='text' lay-verify='required' oninput='autoInputCountScore(" + nextDivIndex + ")' onporpertychange='autoInputCountScore(" + nextDivIndex + ")' name='qaBlank" + nextDivIndex + newBlankIndex + "Score' autocomplete='off' class='layui-input'" +
+                                        "               style='width: 65px;' value='" + reEmptyStrIfNull(optionScoreArray[j]) + "'>" +
+                                        "    </div>" +
+                                        "</div>" +
+                                        "<div class='layui-inline'>" +
+                                        "    <a href='javascript:void(0);' onclick='deleteOption(" + nextDivIndex + "," + newBlankIndex + ")'>" +
+                                        "        <svg class='icon' aria-hidden='true'>" +
+                                        "            <use xlink:href='#icon-jianshao'></use>" +
+                                        "        </svg>" +
+                                        "    </a>" +
+                                        "</div>" +
+                                        "</div>";
+                                }
+                                latestBlankIndexMap.set("qaBlank" + nextDivIndex, parseInt(optionIndexArray[optionIndexArray.length - 1], 10) + 1);
+                            } else {
+                                latestBlankIndexMap.set("qaBlank" + nextDivIndex, 1);
                             }
-                            latestBlankIndexMap.set("qaBlank" + nextDivIndex, parseInt(optionIndexArray[optionIndexArray.length - 1], 10) + 1);
 
                             appendStr = appendStr +
                                 "                        </div>" +
@@ -293,6 +306,15 @@ function initializeData() {
                                 "                                <use xlink:href='#icon-tianjia'></use>" +
                                 "                            </svg>" +
                                 "                        </a>" +
+                                "                    </div>" +
+                                "                </div>" +
+                                "            </div>" +
+                                "            <div class='separate'>" +
+                                "                <div class='layui-form-item layui-form-text'>" +
+                                "                    <label class='layui-form-label question_text'>问题解析:</label>" +
+                                "                    <div class='layui-input-block'>" +
+                                "                        <textarea name='questionAnalyze" + nextDivIndex + "' placeholder='请输入内容'" +
+                                "                                  class='layui-textarea question_desc' id='questionAnalyze" + nextDivIndex + "'>" + curQa.questionAnanlyze + "</textarea>" +
                                 "                    </div>" +
                                 "                </div>" +
                                 "            </div>" +
@@ -436,7 +458,7 @@ function addNewOption(index) {
     let newBlankIndex = latestBlankIndexMap.get("qaBlank" + index);
     $(".qaBlankDiv" + index).append("" +
         "<div class='qaBlankOneBlank" + index + newBlankIndex + "'>" +
-        "<div class='layui-inline' style='margin-left: 7px;'>" +
+        "<div class='layui-inline' style='margin-left: 7px;width: 28px;'>" +
         "    <label class='layui-form-label smallText' style='font-size: 10px;'>[$" + newBlankIndex + "$]</label>" +
         "</div>" +
         "<div class='layui-inline' style='width: 410px;'>" +
@@ -445,7 +467,7 @@ function addNewOption(index) {
         "               lay-verify='required' style='width: 385px;' placeholder='请输入内容'>" +
         "    </div>" +
         "</div>" +
-        "<div class='layui-inline' style='width: 150px;margin-right:0;'>" +
+        "<div class='layui-inline' style='width: 144px;margin-right:0;'>" +
         "    <label class='layui-form-label smallText'>分数</label>" +
         "    <div class='layui-input-inline smallML'>" +
         "        <input type='text' lay-verify='required'  oninput='autoInputCountScore(" + index + ")' onporpertychange='autoInputCountScore(" + index + ")' name='qaBlank" + index + newBlankIndex + "Score' autocomplete='off' class='layui-input'" +
@@ -596,6 +618,7 @@ function paperCommit(type) {
         allInfo["baseQuestionsList[" + index + "].questionDesc"] = jsonFormObject["questionDesc" + i];
         allInfo["baseQuestionsList[" + index + "].subject"] = jsonFormObject["subject" + i];
         allInfo["baseQuestionsList[" + index + "].questionType"] = jsonFormObject["qType" + i];
+        allInfo["baseQuestionsList[" + index + "].questionAnalyze"] = jsonFormObject["questionAnalyze" + i];
         allInfo["baseQuestionsList[" + index + "].status"] = "1";
 
         let qaId = qaIndexIdMap.get("qa" + i);
@@ -891,13 +914,13 @@ function onlyAddDiv() {
         "                        </a>" +
         "                    </div>" +
         "                </div>" +
-        "                <div class='separate'>" +
-        "                    <label class='layui-form-label question_text'>要点得分模式：</label>" +
-        "                    <div>" +
-        "                        <input type='radio' name='qa" + nextDivIndex + "Co' value='1' checked title='填入文字与预设答案完全相同才得分'>" +
-        "                    </div>" +
-        "                    <div>" +
-        "                        <input type='radio' name='qa" + nextDivIndex + "Co' value='2' title='填入文字与预设答案近似就得分'>" +
+        "            </div>" +
+        "            <div class='separate'>" +
+        "                <div class='layui-form-item layui-form-text'>" +
+        "                    <label class='layui-form-label question_text'>问题解析:</label>" +
+        "                    <div class='layui-input-block'>" +
+        "                        <textarea name='questionAnalyze" + nextDivIndex + "' placeholder='请输入内容'" +
+        "                                  class='layui-textarea question_desc' id='questionAnalyze" + nextDivIndex + "'></textarea>" +
         "                    </div>" +
         "                </div>" +
         "            </div>" +

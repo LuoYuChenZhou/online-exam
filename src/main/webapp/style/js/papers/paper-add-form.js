@@ -150,7 +150,7 @@ function addNewOption(index) {
     let newBlankIndex = latestBlankIndexMap.get("qaBlank" + index);
     $(".qaBlankDiv" + index).append("" +
         "<div class='qaBlankOneBlank" + index + newBlankIndex + "'>" +
-        "<div class='layui-inline' style='margin-left: 7px;'>" +
+        "<div class='layui-inline' style='margin-left: 7px;width: 28px;'>" +
         "    <label class='layui-form-label smallText' style='font-size: 10px;'>[$" + newBlankIndex + "$]</label>" +
         "</div>" +
         "<div class='layui-inline' style='width: 410px;'>" +
@@ -159,7 +159,7 @@ function addNewOption(index) {
         "               lay-verify='required' style='width: 385px;' placeholder='请输入内容'>" +
         "    </div>" +
         "</div>" +
-        "<div class='layui-inline' style='width: 150px;margin-right:0;'>" +
+        "<div class='layui-inline' style='width: 144px;margin-right:0;'>" +
         "    <label class='layui-form-label smallText'>分数</label>" +
         "    <div class='layui-input-inline smallML'>" +
         "        <input type='text' lay-verify='required'  oninput='autoInputCountScore(" + index + ")' onporpertychange='autoInputCountScore(" + index + ")' name='qaBlank" + index + newBlankIndex + "Score' autocomplete='off' class='layui-input'" +
@@ -309,6 +309,7 @@ function paperCommit(type) {
         allInfo["baseQuestionsList[" + index + "].subject"] = jsonFormObject["subject" + i];
         allInfo["baseQuestionsList[" + index + "].questionType"] = jsonFormObject["qType" + i];
         allInfo["baseQuestionsList[" + index + "].status"] = "1";
+        allInfo["baseQuestionsList[" + index + "].questionAnalyze"] = jsonFormObject["questionAnalyze" + i];
 
         // 根据题目类型不同，加入独有的字段
         let scoreObj = jsonFormObject["qa" + i + "Score"];
@@ -576,6 +577,15 @@ function onlyAddDiv() {
         "                                <use xlink:href='#icon-tianjia'></use>" +
         "                            </svg>" +
         "                        </a>" +
+        "                    </div>" +
+        "                </div>" +
+        "            </div>" +
+        "            <div class='separate'>" +
+        "                <div class='layui-form-item layui-form-text'>" +
+        "                    <label class='layui-form-label question_text'>问题解析:</label>" +
+        "                    <div class='layui-input-block'>" +
+        "                        <textarea name='questionAnalyze" + nextDivIndex + "' placeholder='请输入内容'" +
+        "                                  class='layui-textarea question_desc' id='questionAnalyze" + nextDivIndex + "'></textarea>" +
         "                    </div>" +
         "                </div>" +
         "            </div>" +

@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lycz.dao.PaperQuestionMapper">
+    <resultMap id="BaseResultMap" type="com.lycz.model.PaperQuestion">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="paper_id" jdbcType="VARCHAR" property="paperId"/>
+        <result column="question_id" jdbcType="VARCHAR" property="questionId"/>
+        <result column="question_type" jdbcType="VARCHAR" property="questionType"/>
+        <result column="score_type" jdbcType="VARCHAR" property="scoreType"/>
+        <result column="question_score" jdbcType="VARCHAR" property="questionScore"/>
+        <result column="full_score" jdbcType="VARCHAR" property="fullScore"/>
+        <result column="assign_score" jdbcType="INTEGER" property="assignScore"/>
+        <result column="correct_type" jdbcType="VARCHAR" property="correctType"/>
+    </resultMap>
+
     <select id="getPaperQuestionInfoById" resultType="hashMap">
         SELECT
         pq.id AS pqId,
@@ -19,6 +34,9 @@
         <if test='notShowAnswer == "" or notShowAnswer == null'>
         bq.answer,
         </if>
+        <if test='notShowAnswer == "" or notShowAnswer == null'>
+        bq.question_analyze AS questionAnanlyze ,
+        </if>
         bq.`subject`
         FROM
         paper_question pq
@@ -28,20 +46,6 @@
         ORDER BY pq.question_type ASC,pq.question_id ASC
     </select>
 
-    <resultMap id="BaseResultMap" type="com.lycz.model.PaperQuestion">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        <id column="id" jdbcType="VARCHAR" property="id"/>
-        <result column="paper_id" jdbcType="VARCHAR" property="paperId"/>
-        <result column="question_id" jdbcType="VARCHAR" property="questionId"/>
-        <result column="question_type" jdbcType="VARCHAR" property="questionType"/>
-        <result column="score_type" jdbcType="VARCHAR" property="scoreType"/>
-        <result column="question_score" jdbcType="VARCHAR" property="questionScore"/>
-        <result column="full_score" jdbcType="VARCHAR" property="fullScore"/>
-        <result column="assign_score" jdbcType="INTEGER" property="assignScore"/>
-        <result column="correct_type" jdbcType="VARCHAR" property="correctType"/>
-    </resultMap>
 
     <insert id="batchInsertPQ">
         INSERT INTO paper_question(

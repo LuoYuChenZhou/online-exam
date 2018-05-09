@@ -9,6 +9,7 @@
         <result column="er_id" jdbcType="VARCHAR" property="erId"/>
         <result column="question_type" jdbcType="VARCHAR" property="questionType"/>
         <result column="question_desc" jdbcType="LONGVARCHAR" property="questionDesc"/>
+        <result column="question_analyze" jdbcType="LONGVARCHAR" property="questionAnalyze"/>
         <result column="is_multi" jdbcType="VARCHAR" property="isMulti"/>
         <result column="is_bank" jdbcType="VARCHAR" property="isBank"/>
         <result column="options" jdbcType="LONGVARCHAR" property="options"/>
@@ -24,6 +25,7 @@
         INSERT INTO base_questions(
         id,
         question_desc,
+        question_analyze,
         is_multi,
         options,
         blank_index,
@@ -36,6 +38,7 @@
             (
             #{item.id},
             #{item.questionDesc},
+            #{item.questionAnalyze},
             #{item.isMulti},
             #{item.options},
             #{item.blankIndex},
@@ -47,6 +50,7 @@
         </foreach>
         ON DUPLICATE KEY UPDATE
         question_desc = VALUES(question_desc),
+        question_analyze = VALUES(question_analyze),
         is_multi = VALUES(is_multi),
         options = VALUES(options),
         blank_index = VALUES(blank_index),
@@ -62,6 +66,7 @@
         er_id,
         question_type,
         question_desc,
+        question_analyze,
         is_multi,
         is_bank,
         options,
@@ -78,6 +83,7 @@
             #{item.erId},
             #{item.questionType},
             #{item.questionDesc},
+            #{item.questionAnalyze},
             #{item.isMulti},
             #{item.isBank},
             #{item.options},
