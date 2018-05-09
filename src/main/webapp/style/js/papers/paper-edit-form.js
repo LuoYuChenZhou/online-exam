@@ -1065,10 +1065,6 @@ function formItemValid(jsonFormObject) {
                 layer.msg("第" + i + "题至少需要一个空位");
                 return false;
             }
-            if (fieldIsWrong(jsonFormObject["qa" + i + "Co"])) {
-                layer.msg("第" + i + "题请指定要点得分模式");
-                return false;
-            }
         }
     }
 }
