@@ -32,6 +32,16 @@ layui.use('form', function () {
     });
 });
 
+//日期选择器
+layui.use('laydate', function () {
+    let laydate = layui.laydate;
+
+    laydate.render({
+        elem: '#endTime' //指定元素
+        , type: 'datetime'
+    });
+});
+
 $(document).ready(function () {
     getSubjectList();
     setDefaultSubjectList();// 默认科目下拉刷新
@@ -281,6 +291,7 @@ function paperCommit(type) {
 
     let allInfo = {
         papersName: jsonFormObject.paperName
+        , endTimeS: jsonFormObject.endTime
         , defaultSubject: jsonFormObject.defaultSubject
         , examTime: jsonFormObject.examTimeNum
         , fullScore: $("input[name='paperFullScore']").val()
@@ -635,6 +646,10 @@ function returnWithOutSave() {
 function formItemValid(jsonFormObject) {
     if (fieldIsWrong(jsonFormObject.paperName)) {
         layer.msg("试卷名称必填");
+        return false;
+    }
+    if (fieldIsWrong(jsonFormObject.endTime)) {
+        layer.msg("考试截止时间必填");
         return false;
     }
     if (fieldIsWrong(jsonFormObject.examTimeNum)) {

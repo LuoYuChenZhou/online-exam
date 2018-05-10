@@ -30,6 +30,12 @@ layui.use('form', function () {
     });
 });
 
+//日期选择器
+let laydate;
+layui.use('laydate', function () {
+    laydate = layui.laydate;
+});
+
 $(document).ready(function () {
     getSubjectList();
     setDefaultSubjectList();// 默认科目下拉刷新,题目加载在此之后
@@ -45,6 +51,20 @@ function initializeData() {
         , function (data) {
             if (data.status === 200) {
                 let infoObj = data.data;
+                // 时间设定
+                if (fieldIsWrong(infoObj.endTime.time)) {
+                    laydate.render({
+                        elem: '#endTime' //指定元素
+                        , type: 'datetime'
+                    });
+                } else {
+                    laydate.render({
+                        elem: '#endTime' //指定元素
+                        , type: 'datetime'
+                        , value: new Date(infoObj.endTime.time)
+                        , isInitValue: true
+                    });
+                }
                 // 默认科目设置
                 subjectOptions = subjectOptions.replace(/selected /g, '');
                 if (subjectOptions.indexOf(infoObj.defaultSubject) > 0) {
@@ -589,6 +609,7 @@ function paperCommit(type) {
 
     let allInfo = {
         id: $.cookie("curPaperEditId")
+        , endTimeS: jsonFormObject.endTime
         , papersName: jsonFormObject.paperName
         , defaultSubject: jsonFormObject.defaultSubject
         , examTime: jsonFormObject.examTimeNum
@@ -971,6 +992,10 @@ function returnWithOutSave() {
 function formItemValid(jsonFormObject) {
     if (fieldIsWrong(jsonFormObject.paperName)) {
         layer.msg("试卷名称必填");
+        return false;
+    }
+    if (fieldIsWrong(jsonFormObject.endTime)) {
+        layer.msg("考试截止时间必填");
         return false;
     }
     if (fieldIsWrong(jsonFormObject.examTimeNum)) {

@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.lycz.configAndDesign.ToolUtil.returnEmptyIfNull;
@@ -45,7 +48,8 @@ public class PapersController {
             "出参说明:<br/>" +
             "201")
     public JSONObject addPaper(Papers paperInfo, BatchListEntity questionInfoList,
-                               @RequestParam("token") String token) {
+                               @RequestParam(value = "endTimeS", required = false) String endTimeS,
+                               @RequestParam("token") String token) throws ParseException {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
         result.setMsg("新增失败");
@@ -54,6 +58,14 @@ public class PapersController {
         String newPaperId = UUID.randomUUID().toString();
         String createUserId = tokenService.getUserId(token);
         Date date = new Date();
+
+        if (ToolUtil.isNotEmpty(endTimeS)) {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            paperInfo.setEndTime(df.parse(endTimeS));
+        } else if (Objects.equals(paperInfo.getStatus(), "2")) {
+            result.setMsg("考试截止时间必填");
+            result.setStatus(400);
+        }
 
         paperInfo.setId(newPaperId);
         paperInfo.setExaminerId(createUserId);
@@ -352,6 +364,7 @@ public class PapersController {
         finalMap.put("defaultSubject", returnEmptyIfNull(paper.getDefaultSubject()));
         finalMap.put("examTime", returnEmptyIfNull(paper.getExamTime()));
         finalMap.put("fullScore", returnEmptyIfNull(paper.getFullScore()));
+        finalMap.put("endTime", returnEmptyIfNull(paper.getEndTime()));
 
         List<Map<String, Object>> questionList = paperQuestionService.getPaperQuestionInfoById(null, paperId);
         if (ToolUtil.isNotEmpty(questionList)) {
@@ -444,6 +457,97 @@ public class PapersController {
             }
         } else {
             questionList = paperQuestionService.getPaperQuestionInfoById("1", paperId, tokenService.getUserId(token));
+        }
+        if (ToolUtil.isNotEmpty(questionList)) {
+            finalMap.put("questionList", questionList);
+        }
+
+        result.setMsg("获取成功");
+        result.setStatus(200);
+        result.setData(JSONObject.fromObject(finalMap));
+        return JSONObject.fromObject(result);
+    }
+
+    @RequestMapping(value = "/getPaperQuestionInfoByIdAfterExam", method = RequestMethod.GET)
+    @Privilege(methodName = "根据试卷id获取详细信息(考试后查看用)")
+    @ResponseBody
+    @ApiOperation(value = "根据试卷id获取详细信息(考试后查看用)", notes = "" +
+            "入参说明:<br/>" +
+            "paperId:试卷id" +
+            "出参说明:<br/>" +
+            "\n" +
+            "{\n" +
+            "\n" +
+            "    \"data\":{\n" +
+            "        \"paperId\":\"试卷id\"\n" +
+            "        \"paperName\":\"试卷名称\",\n" +
+            "        \"examTime\":考试时间,\n" +
+            "        \"questionList\":[\n" +
+            "            {\n" +
+            "                \"questionId\":\"问题id\",\n" +
+            "                \"questionDesc\":\"问题描述\",\n" +
+            "                \"subject\":\"科目\",\n" +
+            "                \"options\":\"选项\",\n" +
+            "                \"questionScore\":\"总分\",\n" +
+            "                \"isMulti\":\"是否多选\",\n" +
+            "                \"fullScore\":\"真总分\",\n" +
+            "                \"blankIndex\":\"填空题专属\",\n" +
+            "                \"scoreType\":\"得分模式\",\n" +
+            "                \"assignScore\":\"指定分\",\n" +
+            "                \"correctType\":\"批改模式\",\n" +
+            "                \"questionType\":\"问题类型\"\n" +
+            "            }\n" +
+            "        ],\n" +
+            "    },\n" +
+            "    \"logMsg\":\"\",\n" +
+            "    \"msg\":\"获取成功\",\n" +
+            "    \"status\":200\n" +
+            "\n" +
+            "}\n")
+    public JSONObject getPaperQuestionInfoByIdAfterExam(@RequestParam("paperId") String paperId,
+                                                        @RequestParam("token") String token) {
+        CommonResult<JSONObject> result = new CommonResult<>();
+        result.setData(JSONObject.fromObject("{}"));
+        result.setStatus(400);
+
+        Example example = new Example(Papers.class);
+        example.or().andEqualTo("status", "2").andEqualTo("id", paperId);
+        List<Papers> paperInfo = papersService.selectByExample(example);
+        if (ToolUtil.isEmpty(paperInfo)) {
+            result.setMsg("试卷读取错误");
+            result.setLogMsg("读取试卷时发现不存在试卷，试卷id：" + paperId);
+            return JSONObject.fromObject(result);
+        }
+
+        Map<String, Object> finalMap = new HashMap<>();
+        Papers paper = paperInfo.get(0);
+        finalMap.put("paperId", returnEmptyIfNull(paper.getId()));
+        finalMap.put("paperName", returnEmptyIfNull(paper.getPapersName()));
+        finalMap.put("examTime", returnEmptyIfNull(paper.getExamTime()));
+
+        List<Map<String, Object>> questionList;
+
+        // 根据剩余时间判断是否参加过考试并且时间已用完
+        Example example1 = new Example(Score.class);
+        example1.or().andEqualTo("eeId", tokenService.getUserId(token)).andEqualTo("paperId", paperId);
+        List<Score> scoreList = scoreService.selectByExample(example1);
+        if (ToolUtil.isNotEmpty(scoreList)) {
+            Score score = scoreList.get(0);
+            if (ToolUtil.isNotEmpty(score.getAnswer())) {
+                result.setMsg("您已参加过此考试");
+                result.setLogMsg("id为" + tokenService.getUserId(token) + "的考生重复参加试卷id为" + paperId + "的考试");
+                return JSONObject.fromObject(result);
+            }
+            long timeLeft = paper.getExamTime() * 60000 - (System.currentTimeMillis() - score.getBlurStartTime().getTime());
+            if (timeLeft > 0) {
+                questionList = paperQuestionService.getPaperQuestionInfoById("1", paperId);
+            } else {
+                result.setMsg("您已参加过此考试");
+                result.setLogMsg("id为" + tokenService.getUserId(token) + "的考生重复参加试卷id为" + paperId + "的考试");
+                return JSONObject.fromObject(result);
+            }
+        } else {
+            questionList = paperQuestionService.getPaperQuestionInfoById(null, paperId, tokenService.getUserId(token));
         }
         if (ToolUtil.isNotEmpty(questionList)) {
             finalMap.put("questionList", questionList);

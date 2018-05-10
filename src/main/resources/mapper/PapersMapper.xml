@@ -12,6 +12,7 @@
         <result column="full_score" jdbcType="INTEGER" property="fullScore"/>
         <result column="default_correct_type" jdbcType="VARCHAR" property="defaultCorrectType"/>
         <result column="default_subject" jdbcType="VARCHAR" property="defaultSubject"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
         <result column="status" jdbcType="VARCHAR" property="status"/>
@@ -23,6 +24,7 @@
         p.papers_name AS papersName,
         p.exam_time AS examTime,
         p.full_score AS fullScore,
+        p.end_time AS endTime,
         p.status AS status,
         (SELECT count(*) FROM score s WHERE p.id = s.paper_id) AS examNum
         FROM
@@ -40,11 +42,16 @@
         SELECT
         p.id AS id,
         p.papers_name AS papersName,
+        p.end_time AS endTime,
         v.user_name AS erName,
         p.exam_time AS examTime,
         p.full_score AS fullScore,
+        s.answer,
+        s.score,
+        s.score_detail AS scoreDeatil,
         IF(s.answer IS NOT NULL
-        OR TIMESTAMPDIFF(SECOND,s.blur_start_time,now()) > (p.exam_time * 60), '是','否') AS hadExam
+        OR TIMESTAMPDIFF(SECOND,s.blur_start_time,now()) > (p.exam_time * 60)
+        OR TIMESTAMPDIFF(SECOND,p.end_time,now()) > 0, '是','否') AS hadExam
         FROM
         papers p
         LEFT JOIN score s ON p.id = s.paper_id AND s.ee_id = #{eeId}

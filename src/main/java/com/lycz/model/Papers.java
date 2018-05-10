@@ -49,6 +49,12 @@ public class Papers {
     /**
      * 创建时间
      */
+    @Column(name = "end_time")
+    private Date endTime;
+
+    /**
+     * 创建时间
+     */
     @Column(name = "create_time")
     private Date createTime;
 
@@ -184,6 +190,14 @@ public class Papers {
      */
     public void setDefaultSubject(String defaultSubject) {
         this.defaultSubject = defaultSubject;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     /**

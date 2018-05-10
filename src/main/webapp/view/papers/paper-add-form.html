@@ -38,10 +38,18 @@
         </div>
 
         <!--考试时间显示div-->
-        <div class="layui-inline" style="margin-left: 100px">
+        <div class="layui-inline" style="margin-left: 50px">
             <label>考试时间：</label>
             <input type="text" class="examTimeNum" required lay-verify="required" name="examTimeNum"/>
             <label>分钟</label>
+        </div>
+
+        <!--截止时间div-->
+        <div class="layui-inline">
+            <label class="layui-form-label" style="width: 100px;">考试截止时间：</label>
+            <div class="layui-input-inline" style="width: 150px;">
+                <input type="text" class="layui-input" id="endTime" name="endTime" style="width: 150px;">
+            </div>
         </div>
     </div>
     <hr>
@@ -76,7 +84,8 @@
         <br>
         <br>
         <label class="bottomInstructions">*试题最终展示形式为：先选择后填空，与编辑试题时的题号无关</label>
-        <label class="bottomInstructions">*考试时间20秒检测一次，所以实际考试时间可能会多20秒</label>
+        <label class="bottomInstructions separate">*考试时间20秒检测一次，所以实际考试时间可能会多20秒</label>
+        <label class="bottomInstructions" style="margin-top: 28px">*考生只有在截止时间之后才能查看答案</label>
         <br>
         <br>
     </div>
