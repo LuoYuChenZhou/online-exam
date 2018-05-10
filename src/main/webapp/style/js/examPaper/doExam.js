@@ -238,8 +238,10 @@ function answerCommit(answerInfo) {
         function (data) {
             if (data.status === 201) {
                 layer.msg(data.msg);
-                $.post("/Score/autoCorrect.do", {scoreId: data.data.scoreId, token: token});
-                window.parent.changeView("examPaper/exam-paper-list.html");
+                $.post("/Score/autoCorrect.do", {scoreId: data.data.scoreId, token: token},
+                    function (data) {
+                        window.parent.changeView("examPaper/exam-paper-list.html");
+                    });
             } else {
                 layer.msg(data.msg);
             }

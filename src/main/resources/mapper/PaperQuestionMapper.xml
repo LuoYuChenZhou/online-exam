@@ -33,8 +33,6 @@
         bq.blank_index as blankIndex,
         <if test='notShowAnswer == "" or notShowAnswer == null'>
         bq.answer,
-        </if>
-        <if test='notShowAnswer == "" or notShowAnswer == null'>
         bq.question_analyze AS questionAnanlyze ,
         </if>
         bq.`subject`

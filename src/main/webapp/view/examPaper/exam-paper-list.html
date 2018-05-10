@@ -48,7 +48,9 @@
 <script type="text/html" id="mainTableBar">
     {{# if (d.hadExam === '否'){ }}
     <a class="layui-btn layui-btn-xs" lay-event="do" title="做题"><i class="iconfont icon-xiugai2"></i></a>
-    {{# } else { }}
+    {{# } else if(new Date().getTime() > d.endTime.time) { }}
     <a class="layui-btn layui-btn-xs" lay-event="watch" title="查看"><i class="iconfont icon-sousuo"></i></a>
+    {{# } else{  }}
+    <a class="layui-btn layui-btn-xs disable_true" lay-event="noAction" title="未到截止时间"><i class="iconfont icon-sousuo"></i></a>
     {{# }  }}
 </script>

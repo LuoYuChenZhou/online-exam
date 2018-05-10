@@ -282,8 +282,8 @@ function initializeData() {
                             let optionStrArray = curQa.answer.substring(0, curQa.answer.length - 2).split("$$");
                             let optionScoreArray = curQa.questionScore.substring(0, curQa.questionScore.length - 1).split(",");
                             let optionIndexArray = curQa.blankIndex.substring(0, curQa.blankIndex.length - 1).split(",");
-                            if (!fieldIsWrong(curQa.answer.substring(0, curQa.answer.length - 2))) {
-                                for (let j = 0; j < optionStrArray.length - 1; j++) {
+                            if (!fieldIsWrong(curQa.blankIndex.substring(0, curQa.blankIndex.length - 1)) && optionIndexArray.length > 0) {
+                                for (let j = 0; j < optionIndexArray.length; j++) {
                                     let newBlankIndex = optionIndexArray[j];
                                     appendStr = appendStr + "" +
                                         "<div class='qaBlankOneBlank" + nextDivIndex + newBlankIndex + "'>" +

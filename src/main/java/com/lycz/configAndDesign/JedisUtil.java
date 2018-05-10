@@ -15,6 +15,7 @@ import java.util.*;
 public class JedisUtil {
     private static Integer MAX_TOTAL = null;
     private static Integer MAX_IDLE = null;
+    private static Integer MIN_IDLE = null;
     private static Long MAX_WAIT_MILLIS = null;
     private static Integer TIMEOUT = null;
     private static String REDIS_IP = null;
@@ -33,6 +34,7 @@ public class JedisUtil {
             prop.load(inStream);
             MAX_TOTAL = Integer.valueOf(prop.getProperty("MAX_TOTAL"));
             MAX_IDLE = Integer.valueOf(prop.getProperty("MAX_IDLE"));
+            MIN_IDLE = Integer.valueOf(prop.getProperty("MIN_IDLE"));
             MAX_WAIT_MILLIS = Long.valueOf(prop.getProperty("MAX_WAIT_MILLIS"));
             TIMEOUT = Integer.valueOf(prop.getProperty("TIMEOUT"));
             REDIS_IP = prop.getProperty("REDIS_IP");
@@ -56,6 +58,7 @@ public class JedisUtil {
             JedisPoolConfig config = new JedisPoolConfig();
             config.setMaxTotal(MAX_TOTAL);
             config.setMaxIdle(MAX_IDLE);
+            config.setMinIdle(MIN_IDLE);
             config.setMaxWaitMillis(MAX_WAIT_MILLIS);
             config.setTestOnBorrow(true);
             config.setTestOnReturn(true);

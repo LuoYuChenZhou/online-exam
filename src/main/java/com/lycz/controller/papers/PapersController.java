@@ -109,7 +109,8 @@ public class PapersController {
             "201")
     public JSONObject modifyPaper(Papers paperInfo, BatchListEntity questionInfoList,
                                   @RequestParam("delQaId") String delQaId,
-                                  @RequestParam("token") String token) {
+                                  @RequestParam(value = "endTimeS", required = false) String endTimeS,
+                                  @RequestParam("token") String token) throws ParseException {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
         result.setMsg("保存失败");
@@ -118,6 +119,14 @@ public class PapersController {
         String paperId = paperInfo.getId();
         String createUserId = tokenService.getUserId(token);
         Date date = new Date();
+
+        if (ToolUtil.isNotEmpty(endTimeS)) {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            paperInfo.setEndTime(df.parse(endTimeS));
+        } else if (Objects.equals(paperInfo.getStatus(), "2")) {
+            result.setMsg("考试截止时间必填");
+            result.setStatus(400);
+        }
 
         paperInfo.setModifyTime(date);
 
@@ -434,6 +443,12 @@ public class PapersController {
         finalMap.put("paperName", returnEmptyIfNull(paper.getPapersName()));
         finalMap.put("examTime", returnEmptyIfNull(paper.getExamTime()));
 
+        if (System.currentTimeMillis() > paper.getEndTime().getTime()) {
+            result.setMsg("考试截止时间已过");
+            result.setLogMsg("考试截止时间已过，试卷id：" + paperId + "考生id：" + tokenService.getUserId(token));
+            return JSONObject.fromObject(result);
+        }
+
         List<Map<String, Object>> questionList;
 
         // 根据剩余时间判断是否参加过考试并且时间已用完
@@ -481,7 +496,10 @@ public class PapersController {
             "    \"data\":{\n" +
             "        \"paperId\":\"试卷id\"\n" +
             "        \"paperName\":\"试卷名称\",\n" +
+            "        \"EeAnswer\":\"考生答案json\",\n" +
             "        \"examTime\":考试时间,\n" +
+            "        \"score\":得分,\n" +
+            "        \"scoreDetail\":得分详情json,\n" +
             "        \"questionList\":[\n" +
             "            {\n" +
             "                \"questionId\":\"问题id\",\n" +
@@ -490,6 +508,7 @@ public class PapersController {
             "                \"options\":\"选项\",\n" +
             "                \"questionScore\":\"总分\",\n" +
             "                \"isMulti\":\"是否多选\",\n" +
+            "                \"answer\":\"答案\",\n" +
             "                \"fullScore\":\"真总分\",\n" +
             "                \"blankIndex\":\"填空题专属\",\n" +
             "                \"scoreType\":\"得分模式\",\n" +
@@ -521,36 +540,31 @@ public class PapersController {
 
         Map<String, Object> finalMap = new HashMap<>();
         Papers paper = paperInfo.get(0);
+
+        // 未到截止时间，不能查看
+        if (System.currentTimeMillis() < paper.getEndTime().getTime()) {
+            result.setMsg("未到截止时间不能查看");
+            result.setLogMsg("未到截止时间不能查看，试卷id：" + paperId + "考生id：" + tokenService.getUserId(token));
+            return JSONObject.fromObject(result);
+        }
+
         finalMap.put("paperId", returnEmptyIfNull(paper.getId()));
         finalMap.put("paperName", returnEmptyIfNull(paper.getPapersName()));
         finalMap.put("examTime", returnEmptyIfNull(paper.getExamTime()));
+        finalMap.put("fullScore", returnEmptyIfNull(paper.getFullScore()));
+        finalMap.put("endTime", returnEmptyIfNull(paper.getEndTime()));
 
-        List<Map<String, Object>> questionList;
+        List<Map<String, Object>> questionList = paperQuestionService.getPaperQuestionInfoById(null, paperId);
+        finalMap.put("questionList", questionList);
 
-        // 根据剩余时间判断是否参加过考试并且时间已用完
         Example example1 = new Example(Score.class);
         example1.or().andEqualTo("eeId", tokenService.getUserId(token)).andEqualTo("paperId", paperId);
         List<Score> scoreList = scoreService.selectByExample(example1);
         if (ToolUtil.isNotEmpty(scoreList)) {
             Score score = scoreList.get(0);
-            if (ToolUtil.isNotEmpty(score.getAnswer())) {
-                result.setMsg("您已参加过此考试");
-                result.setLogMsg("id为" + tokenService.getUserId(token) + "的考生重复参加试卷id为" + paperId + "的考试");
-                return JSONObject.fromObject(result);
-            }
-            long timeLeft = paper.getExamTime() * 60000 - (System.currentTimeMillis() - score.getBlurStartTime().getTime());
-            if (timeLeft > 0) {
-                questionList = paperQuestionService.getPaperQuestionInfoById("1", paperId);
-            } else {
-                result.setMsg("您已参加过此考试");
-                result.setLogMsg("id为" + tokenService.getUserId(token) + "的考生重复参加试卷id为" + paperId + "的考试");
-                return JSONObject.fromObject(result);
-            }
-        } else {
-            questionList = paperQuestionService.getPaperQuestionInfoById(null, paperId, tokenService.getUserId(token));
-        }
-        if (ToolUtil.isNotEmpty(questionList)) {
-            finalMap.put("questionList", questionList);
+            finalMap.put("score", returnEmptyIfNull(score.getScore()));
+            finalMap.put("scoreDetail", returnEmptyIfNull(score.getScoreDetail()));
+            finalMap.put("EeAnswer", returnEmptyIfNull(score.getAnswer()));
         }
 
         result.setMsg("获取成功");
