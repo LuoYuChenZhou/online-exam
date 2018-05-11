@@ -12,4 +12,6 @@ public interface ScoreMapper extends Mapper<Score> {
     Map<String, Object> getStartAndAllTime(@Param("paperId") String paperId, @Param("eeId") String eeId);
 
     List<Map<String, Object>> getScoreListByPaperId(@Param("paperId") String paperId, @Param("searchEeInfo") String searchEeInfo);
+
+    int deleteByPaperId(@Param("paperId") String paperId);
 }

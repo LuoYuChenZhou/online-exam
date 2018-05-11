@@ -305,6 +305,13 @@ public class PapersController {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
         result.setStatus(400);
+        if (targetStatus.equals("1")) {
+            Papers paper1 = papersService.selectByKey(paperId);
+            if (paper1.getStatus().equals("2")) {
+                // 如果是由发布变为编辑状态，将之前的成绩清空
+                scoreService.deleteByPaperId(paperId);
+            }
+        }
 
         Papers paper = new Papers();
         paper.setId(paperId);

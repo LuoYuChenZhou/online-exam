@@ -51,4 +51,8 @@
         </if>
         ORDER BY s.score DESC
     </select>
+
+    <delete id="deleteByPaperId">
+        DELETE FROM score WHERE paper_id = #{paperId}
+    </delete>
 </mapper>

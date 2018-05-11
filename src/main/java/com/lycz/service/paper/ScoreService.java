@@ -15,4 +15,6 @@ public interface ScoreService extends IBaseServiceTk<Score> {
     Map<String, Object> getStartAndAllTime(String paperId, String eeId);
 
     FixPageInfo<Map<String, Object>> getScoreListByPaperId(String paperId, String searchEeInfo, Integer page, Integer limit);
+
+    int deleteByPaperId(String paperId);
 }

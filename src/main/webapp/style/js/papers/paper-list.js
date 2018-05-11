@@ -69,9 +69,6 @@ layui.use('table', function () {
             }, function () {
                 closeFloor(FloorObject);
             });
-        } else if (layEvent === 'lookDo') {
-            $.cookie("paperIdForScoreList", curOperatePaperId);
-            window.parent.changeView("papers/score-list.html");
         }
     });
 });

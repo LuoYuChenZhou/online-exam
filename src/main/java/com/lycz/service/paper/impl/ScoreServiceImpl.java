@@ -41,4 +41,9 @@ public class ScoreServiceImpl extends BaseServiceTk<Score> implements ScoreServi
         }
         return new FixPageInfo<>(tempList);
     }
+
+    @Override
+    public int deleteByPaperId(String paperId) {
+        return scoreMapper.deleteByPaperId(paperId);
+    }
 }
