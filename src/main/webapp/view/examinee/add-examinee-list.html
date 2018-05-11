@@ -67,5 +67,10 @@
 </script>
 <!--工具条的id放到js渲染table最后一行-->
 <script type="text/html" id="main_table_bar">
+    {{#  if(d.isInvited == '1'){ }}
+    <a class="layui-btn layui-btn-xs disable_true" lay-event="noAction" title="已邀请"><i class="iconfont icon-tianjia"></i></a>
+    {{#  } else { }}
     <a class="layui-btn layui-btn-xs" lay-event="add"><i class="iconfont icon-tianjia"></i></a>
+    {{#  }   }}
+
 </script>

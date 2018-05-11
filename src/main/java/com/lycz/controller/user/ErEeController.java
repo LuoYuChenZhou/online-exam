@@ -432,4 +432,29 @@ public class ErEeController {
 
         return JSONObject.fromObject(result);
     }
+
+    @RequestMapping(value = "/getOtherErListByEe", method = RequestMethod.GET)
+    @Privilege(methodName = "获取自己考官外的其它考官")
+    @ResponseBody
+    @ApiOperation(value = "获取自己考官外的其它考官", notes = "" +
+            "入参说明:<br/>" +
+            "出参说明:<br/>")
+    public JSONObject getOtherErListByEe(@RequestParam("page") Integer page,
+                                         @RequestParam("limit") Integer limit,
+                                         @RequestParam(value = "searchErName", required = false) String searchErName,
+                                         @RequestParam("token") String token) {
+
+        FixPageInfo<Map<String, Object>> pageInfo = erEeService.getOtherErListByEe(page, limit, tokenService.getUserId(token), searchErName);
+        if (pageInfo == null) {
+            pageInfo = new FixPageInfo<>();
+            pageInfo.setMsg("查询结束，但没有数据");
+            pageInfo.setCode(204);
+        } else {
+            pageInfo.setMsg("查询成功");
+            pageInfo.setCode(0);
+        }
+
+        return JSONObject.fromObject(pageInfo);
+    }
+
 }

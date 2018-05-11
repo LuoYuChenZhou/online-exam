@@ -718,7 +718,7 @@ function paperCommit(type) {
     $.post("/Papers/modifyPaper.do", allInfo,
         function (data) {
             if (data.status === 201) {
-                layer.msg("保存成功", {icon: 6, offset: ['100px']});
+                layer.msg('保存成功', {icon: 6, offset: ['100px']});
                 closeFloor(FloorObject);
                 window.parent.changeView("papers/paper-list.html");
             } else {

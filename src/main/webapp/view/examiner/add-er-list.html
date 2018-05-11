@@ -1,0 +1,48 @@
+<!--
+  User: lzq11
+  Date: 2018/4/15
+  Time: 17:08
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加考官</title>
+    <script type="text/javascript" src="../../style/js/common/common-js-css.js"></script>
+    <script type="text/javascript" src="../../style/js/examiner/add-er-list.js"></script>
+</head>
+<body>
+<!--主搜索框-->
+<div class="layui-form" id="mainSearchForm">
+    <div class="layui-form-item" style="margin:15px 0;">
+
+        <div class="layui-inline">
+            <label class="layui-form-label">搜索条件：</label>
+            <div class="layui-input-inline" style="width: 180px;">
+                <input type="text" autocomplete="off" class="layui-input" id="searchErName" placeholder="输入考官姓名查询">
+            </div>
+        </div>
+
+        <div class="layui-inline" style="margin-left: -60px;">
+            <div class="layui-input-block">
+                <button class="layui-btn" style="background: #1E9FFF;" onclick="searchBtnClick()">搜索</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--主显示区-->
+<table id="mainTable" class="layui-table" lay-filter="mainTableFilter"></table>
+
+</body>
+</html>
+
+<script type="text/html" id="mainTableBar">
+    {{#  if(d.isInvited == '1'){ }}
+    <a class="layui-btn layui-btn-xs disable_true" lay-event="noAction" title="已申请"><i
+            class="iconfont icon-tianjia"></i></a>
+    {{#  } else { }}
+    <a class="layui-btn layui-btn-xs" lay-event="add" title="添加"><i class="iconfont icon-tianjia"></i></a>
+    {{#  }   }}
+</script>

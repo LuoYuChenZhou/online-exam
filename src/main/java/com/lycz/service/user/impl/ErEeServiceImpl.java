@@ -63,6 +63,17 @@ public class ErEeServiceImpl extends BaseServiceTk<ErEe> implements ErEeService 
     }
 
     @Override
+    public FixPageInfo<Map<String, Object>> getOtherErListByEe(Integer page, Integer limit, String eeId, String searchErName) {
+        PageHelper.startPage(page, limit);
+        List<Map<String, Object>> erList = erEeMapper.getOtherErListByEe(eeId, searchErName);
+        if (ToolUtil.isEmpty(erList)) {
+            return null;
+        } else {
+            return new FixPageInfo<>(erList);
+        }
+    }
+
+    @Override
     public String eeErRq(String reType, String sendName, String erSex, String ExtraMsg, ErEe erEe, String gradeId, Integer sortNo) throws Exception {
 
         ExtraMsg = null == ExtraMsg ? "" : "<br/>附加说明：" + ExtraMsg;
@@ -90,7 +101,7 @@ public class ErEeServiceImpl extends BaseServiceTk<ErEe> implements ErEeService 
                 if (ToolUtil.isEmpty(dictId)) {
                     return "code为msgType，value为MT_EE_RQ的字典未找到";
                 }
-                VUser examiner = vUserService.selectByKey(erEe.getExaminerId());
+                VUser examiner = vUserService.selectByUserId(erEe.getExaminerId());
                 if (ToolUtil.isEmpty(examiner)) {
                     return "3";
                 }
@@ -139,7 +150,7 @@ public class ErEeServiceImpl extends BaseServiceTk<ErEe> implements ErEeService 
                 if (ToolUtil.isEmpty(dictId)) {
                     return "code为msgType，value为MT_ER_RQ的字典未找到";
                 }
-                VUser examinee = vUserService.selectByKey(erEe.getExaminerId());
+                VUser examinee = vUserService.selectByUserId(erEe.getExaminerId());
                 if (ToolUtil.isEmpty(examinee)) {
                     return "3";
                 }

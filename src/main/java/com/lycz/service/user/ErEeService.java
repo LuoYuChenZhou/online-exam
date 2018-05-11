@@ -15,6 +15,8 @@ public interface ErEeService extends IBaseServiceTk<ErEe> {
 
     FixPageInfo<Map<String, Object>> getExamineeNoRelation(String searchString, Integer page, Integer limit, String userId);
 
+    FixPageInfo<Map<String, Object>> getOtherErListByEe(Integer page, Integer limit, String eeId, String searchErName);
+
     /**
      * 申请考生考官关系
      *

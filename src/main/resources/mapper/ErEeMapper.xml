@@ -21,9 +21,11 @@
         ee.ee_no AS eeNo,
         ee.sex AS sex,
         ee.phone AS phone,
-        ee.email AS email
+        ee.email AS email,
+        IF(re1.id IS NULL,'0','1') AS isInvited
         FROM
         examinee ee
+        LEFT JOIN er_ee re1 ON re1.examiner_id = #{userId} AND re1.examinee_id = ee.id AND re1.cur_status = '2'
         WHERE
         ee.id NOT IN (
         SELECT re.examinee_id FROM er_ee re WHERE re.examiner_id = #{userId} AND re.cur_status = '3'
@@ -35,6 +37,7 @@
                 OR ee.phone LIKE CONCAT('%',#{searchString},'%')
                 )
         </if>
+        ORDER BY ee.real_name
     </select>
 
     <select id="getInvitedList" resultType="hashMap">
@@ -74,5 +77,22 @@
         WHERE re.examinee_id = #{eeId}
         AND re.cur_status = '3'
         GROUP BY vu.user_id
+    </select>
+
+    <select id="getOtherErListByEe" resultType="hashMap">
+        SELECT
+        er.id AS erId,
+        er.real_name AS realName,
+        IF(er.sex = '0','男','女') AS sex,
+        IF(re1.id IS NULL,'0','1') AS isInvited
+        FROM examiner er
+        LEFT JOIN er_ee re1 ON er.id = re1.examiner_id AND re1.examinee_id = #{eeId} AND re1.cur_status = '1'
+        WHERE er.id NOT IN (
+        SELECT re.examiner_id FROM er_ee re WHERE re.examinee_id = #{eeId} AND re.cur_status = '3'
+        )
+        <if test=' searchErName != "" and searchErName != null '>
+            AND er.real_name LIKE CONCAT('%',#{searchErName},'%')
+        </if>
+        ORDER BY er.real_name
     </select>
 </mapper>

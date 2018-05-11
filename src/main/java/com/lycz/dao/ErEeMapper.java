@@ -11,6 +11,8 @@ public interface ErEeMapper extends Mapper<ErEe> {
 
     List<Map<String, Object>> getInvitedList(@Param("userId") String userId);
 
+    List<Map<String, Object>> getOtherErListByEe(@Param("eeId") String eeId, @Param("searchErName") String searchErName);
+
     List<Map<String, Object>> getErListByEe(@Param("eeId") String eeId);
 
     List<Map<String, Object>> getExamineeNoRelation(@Param("searchString") String searchString,
