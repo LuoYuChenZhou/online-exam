@@ -8,17 +8,20 @@ import com.lycz.model.BaseQuestions;
 import com.lycz.model.PaperQuestion;
 import com.lycz.model.Papers;
 import com.lycz.service.base.impl.BaseServiceTk;
+import com.lycz.service.grade.EeGradeService;
 import com.lycz.service.paper.PaperQuestionService;
 import com.lycz.service.paper.PapersService;
 import com.lycz.service.questions.BaseQuestionsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -29,6 +32,8 @@ public class PapersServiceImpl extends BaseServiceTk<Papers> implements PapersSe
     private BaseQuestionsService baseQuestionsService;
     @Resource
     private PaperQuestionService paperQuestionService;
+    @Resource
+    private EeGradeService eeGradeService;
 
     @Override
     public FixPageInfo<Map<String, Object>> selectPapersByName(String papersName, String teachersId, Integer page, Integer limit) {
@@ -44,10 +49,35 @@ public class PapersServiceImpl extends BaseServiceTk<Papers> implements PapersSe
     public FixPageInfo<Map<String, Object>> selectPapersByErName(String eeId, String papersName, String teachersId, Integer page, Integer limit) {
         PageHelper.startPage(page, limit);
         List<Map<String, Object>> tempList = papersMapper.selectPapersByErName(eeId, papersName, teachersId);
+
         if (ToolUtil.isEmpty(tempList)) {
             return null;
         }
-        return new FixPageInfo<>(tempList);
+
+        // 查询考生所在班级
+        List<String> eeGradeList = eeGradeService.getGradeListByErEe(teachersId, eeId);
+
+        // 限定班级条件
+        List<Map<String, Object>> fixPaperList = new ArrayList<>();
+        for (Map<String, Object> paperInfo : tempList) {
+            if (ToolUtil.isNotEmpty(paperInfo.get("allowGrade")) && !Objects.equals(paperInfo.get("allowGrade"), "allGrade")) {
+                String allGradeStr = (String) paperInfo.get("allowGrade");
+                String[] allowGradeArray = allGradeStr.substring(0, allGradeStr.length() - 1).split(",");
+                for (String s : allowGradeArray) {
+                    if (eeGradeList.indexOf(s) >= 0) {
+                        fixPaperList.add(paperInfo);
+                        break;
+                    }
+                }
+            } else {
+                fixPaperList.add(paperInfo);
+            }
+        }
+
+        if (ToolUtil.isEmpty(fixPaperList)) {
+            return null;
+        }
+        return new FixPageInfo<>(fixPaperList);
     }
 
     @Override

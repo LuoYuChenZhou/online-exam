@@ -66,4 +66,24 @@
             SELECT id FROM grade where er_id = #{erId}
         )
     </delete>
+
+    <update id="buildEeGradeByStatus">
+        UPDATE ee_grade
+        SET status = '1'
+        WHERE ee_id = #{eeId}
+            AND grade_id IN (SELECT id FROM grade WHERE er_id = #{erId})
+        AND status = '0'
+    </update>
+
+    <select id="getGradeListByErEe" resultType="String">
+        SELECT
+        g.id AS gradeId
+        FROM ee_grade eg
+        INNER JOIN grade g ON eg.grade_id = g.id
+        <if test=' erId != "" and erId != null '>
+        WHERE g.er_id = #{erId}
+        </if>
+        AND eg.ee_id = #{eeId}
+        AND eg.status = '1' AND eg.status != '4'
+    </select>
 </mapper>

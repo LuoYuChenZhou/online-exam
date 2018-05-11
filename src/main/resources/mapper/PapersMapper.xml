@@ -10,6 +10,7 @@
         <result column="papers_name" jdbcType="VARCHAR" property="papersName"/>
         <result column="exam_time" jdbcType="INTEGER" property="examTime"/>
         <result column="full_score" jdbcType="INTEGER" property="fullScore"/>
+        <result column="allow_grade" jdbcType="VARCHAR" property="allowGrade"/>
         <result column="default_correct_type" jdbcType="VARCHAR" property="defaultCorrectType"/>
         <result column="default_subject" jdbcType="VARCHAR" property="defaultSubject"/>
         <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
@@ -46,6 +47,7 @@
         v.user_name AS erName,
         p.exam_time AS examTime,
         p.full_score AS fullScore,
+        p.allow_grade AS allowGrade,
         s.answer,
         s.score,
         s.score_detail AS scoreDeatil,

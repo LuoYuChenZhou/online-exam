@@ -89,5 +89,12 @@
     <button class="layui-btn disable_false" onclick="paperCommit('2')">保存并发布</button>
     <button class="layui-btn" style="background-color: #c5564a" onclick="returnWithOutSave()">不保存</button>
 </div>
+<!--班级选择按钮-->
+<span class="showGradeChoose" onclick="showGradeChoose()">Class</span>
+<div id="gradeChooseDiv" class="layui-form">
+    <label>选中的班级下的考生可以使用本试卷，都不选表示所有班级都可以使用</label>
+    <br><br>
+    <div id="gradeListDiv"></div>
+</div>
 </body>
 </html>

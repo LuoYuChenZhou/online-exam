@@ -37,6 +37,12 @@ public class Papers {
     /**
      * 默认批改模式（0-手动批改，1-自动批改）
      */
+    @Column(name = "allow_grade")
+    private String allowGrade;
+
+    /**
+     * 默认批改模式（0-手动批改，1-自动批改）
+     */
     @Column(name = "default_correct_type")
     private String defaultCorrectType;
 
@@ -154,6 +160,14 @@ public class Papers {
      */
     public void setFullScore(Integer fullScore) {
         this.fullScore = fullScore;
+    }
+
+    public String getAllowGrade() {
+        return allowGrade;
+    }
+
+    public void setAllowGrade(String allowGrade) {
+        this.allowGrade = allowGrade;
     }
 
     /**

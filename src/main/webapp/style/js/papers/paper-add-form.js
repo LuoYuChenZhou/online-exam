@@ -45,6 +45,7 @@ layui.use('laydate', function () {
 $(document).ready(function () {
     getSubjectList();
     setDefaultSubjectList();// 默认科目下拉刷新
+    getGradeList();// 获取班级选择列表
 });
 
 // 创建一个div并完善相关步骤
@@ -298,6 +299,18 @@ function paperCommit(type) {
         , status: type
         , token: token
     };
+
+    // 获取选择的班级列表
+    let gradeObj = $("input[name='gradeChoose']:checked");
+    if (gradeObj.length > 0) {
+        let gradeList = "";
+        gradeObj.each(function () {
+            gradeList += $(this).val() + ",";
+        });
+        allInfo["allowGrade"] = gradeList;
+    } else {
+        allInfo["allowGrade"] = "allGrade";
+    }
 
     // 循环处理问题
     for (let i = 1; i < nextDivIndex; i++) {
@@ -784,4 +797,36 @@ function showCommitBtn() {
         nowIsShow = true;
         $("#commitButtonGroup").show();
     }
+}
+
+// 显示或隐藏班级选择div
+let gradeIdShow = false;
+
+function showGradeChoose() {
+    if (gradeIdShow) {
+        gradeIdShow = false;
+        $("#gradeChooseDiv").hide();
+    } else {
+        gradeIdShow = true;
+        $("#gradeChooseDiv").show();
+    }
+}
+
+function getGradeList() {
+    $.get("/Grade/getGradeListByNameUser.do",
+        {
+            page: 1
+            , limit: 10000
+            , token: token
+        },
+        function (data) {
+            let gradeListSelect = $("#gradeListDiv");
+            gradeListSelect.empty();
+            if (data.code === 0) {
+                for (let i = 0; i < data.data.length; i++) {
+                    gradeListSelect.append("<input type='checkbox' name='gradeChoose' value='" + data.data[i].id + "' title='" + data.data[i].gradeName + "'>");
+                }
+            }
+            form.render();
+        });
 }

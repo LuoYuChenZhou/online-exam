@@ -19,4 +19,8 @@ public interface EeGradeMapper extends Mapper<EeGrade> {
 
     Integer deleteByEeEr(@Param("erId") String erId, @Param("eeId") String eeId);
 
+    int buildEeGradeByStatus(@Param("erId") String erId, @Param("eeId") String eeId);
+
+    List<String> getGradeListByErEe(@Param("erId") String erId, @Param("eeId") String eeId);
+
 }

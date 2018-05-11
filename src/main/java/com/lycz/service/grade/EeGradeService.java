@@ -14,4 +14,8 @@ public interface EeGradeService extends IBaseServiceTk<EeGrade> {
     List<Map<String, Object>> getNoEeGradeList(String erId, String eeId);
 
     Integer deleteByEeEr(String erId, String eeId);
+
+    int buildEeGradeByStatus(String erId, String eeId);
+
+    List<String> getGradeListByErEe(String erId, String eeId);
 }

@@ -216,10 +216,10 @@ public class PapersController {
         return JSONObject.fromObject(pageInfo);
     }
 
-    @Privilege(methodName = "根据试卷名和出题考官搜索已发布的试卷（考生端）", privilegeLevel = Privilege.EE_TYPE)
+    @Privilege(methodName = "根据试卷名和出题考官搜索已发布的试卷（考生端,仅查询符合班级的）", privilegeLevel = Privilege.EE_TYPE)
     @RequestMapping(value = "/selectPapersByErName", method = RequestMethod.GET)
     @ResponseBody
-    @ApiOperation(value = "根据试卷名和出题考官搜索已发布的试卷（考生端）", notes = "" +
+    @ApiOperation(value = "根据试卷名和出题考官搜索已发布的试卷（考生端,仅查询符合班级的）", notes = "" +
             "入参说明：<br/>" +
             "paperErId：出题考官id<br/>" +
             "searchPaperName：搜索的试卷名称<br/>" +
@@ -372,6 +372,7 @@ public class PapersController {
         Map<String, Object> finalMap = new HashMap<>();
         Papers paper = paperInfo.get(0);
         finalMap.put("paperId", returnEmptyIfNull(paper.getId()));
+        finalMap.put("allowGrade", returnEmptyIfNull(paper.getAllowGrade()));
         finalMap.put("paperName", returnEmptyIfNull(paper.getPapersName()));
         finalMap.put("defaultSubject", returnEmptyIfNull(paper.getDefaultSubject()));
         finalMap.put("examTime", returnEmptyIfNull(paper.getExamTime()));

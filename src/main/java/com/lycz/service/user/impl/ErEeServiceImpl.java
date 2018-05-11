@@ -282,6 +282,9 @@ public class ErEeServiceImpl extends BaseServiceTk<ErEe> implements ErEeService 
         }
         sysMsg.setMsgType(dictId);
 
+        // 将状态为0的班级考生关系设置为1,发生错误影响不大
+        eeGradeService.buildEeGradeByStatus(erEe.getExaminerId(), erEe.getExamineeId());
+
         if (sysMsgService.insertSelective(sysMsg) > 0 && updateByPrimaryKeySelective(erEe) > 0) {
             return "1";
         } else {

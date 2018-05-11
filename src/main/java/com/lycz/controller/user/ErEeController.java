@@ -381,7 +381,7 @@ public class ErEeController {
             return JSONObject.fromObject(result);
         }
         if (Integer.parseInt(erEe.getCurStatus()) > 3) {
-            result.setMsg("不存在改关系");
+            result.setMsg("不存在该关系");
             return JSONObject.fromObject(result);
         }
 

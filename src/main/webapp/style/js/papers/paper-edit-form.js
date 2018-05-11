@@ -72,6 +72,14 @@ function initializeData() {
                     let sufS = "selected " + subjectOptions.substring(subjectOptions.indexOf(infoObj.defaultSubject) - 7);
                     subjectOptions = preS + sufS;
                 }
+                // 选中班级设置
+                if (!fieldIsWrong(infoObj.allowGrade) && infoObj.allowGrade !== "allGrade") {
+                    let oldGradeList = infoObj.allowGrade.substring(0, infoObj.allowGrade.length - 1).split(",");
+                    for (let q = 0; q < oldGradeList.length; q++) {
+                        $("input[name='gradeChoose'][value='" + oldGradeList[q] + "']").prop("checked", true);
+                    }
+                    form.render();
+                }
 
                 $("input[name='paperName']").val(infoObj.paperName);
                 $("input[name='paperFullScore']").val(infoObj.fullScore);
@@ -619,6 +627,18 @@ function paperCommit(type) {
         , token: token
     };
 
+    // 获取选择的班级列表
+    let gradeObj = $("input[name='gradeChoose']:checked");
+    if (gradeObj.length > 0) {
+        let gradeList = "";
+        gradeObj.each(function () {
+            gradeList += $(this).val() + ",";
+        });
+        allInfo["allowGrade"] = gradeList;
+    } else {
+        allInfo["allowGrade"] = "allGrade";
+    }
+
     // 循环处理问题
     for (let i = 1; i < nextDivIndex; i++) {
         if (!fieldIsWrong(jsonFormObject["qa" + i + "CoScore"]) && !isNum(jsonFormObject["qa" + i + "CoScore"])) {
@@ -974,7 +994,7 @@ function setDefaultSubjectList() {
     }
     $("#defaultSubject").append("<option value=''>暂不指定</option>" + subjectOptions);
     form.render();
-    initializeData();
+    getGradeList();// 获取班级选择列表,题目初始化在此之后
 }
 
 // 不保存返回列表页
@@ -1135,4 +1155,37 @@ function showCommitBtn() {
         nowIsShow = true;
         $("#commitButtonGroup").show();
     }
+}
+
+// 显示或隐藏班级选择div
+let gradeIdShow = false;
+
+function showGradeChoose() {
+    if (gradeIdShow) {
+        gradeIdShow = false;
+        $("#gradeChooseDiv").hide();
+    } else {
+        gradeIdShow = true;
+        $("#gradeChooseDiv").show();
+    }
+}
+
+function getGradeList() {
+    $.get("/Grade/getGradeListByNameUser.do",
+        {
+            page: 1
+            , limit: 10000
+            , token: token
+        },
+        function (data) {
+            let gradeListSelect = $("#gradeListDiv");
+            gradeListSelect.empty();
+            if (data.code === 0) {
+                for (let i = 0; i < data.data.length; i++) {
+                    gradeListSelect.append("<input type='checkbox' name='gradeChoose' value='" + data.data[i].id + "' title='" + data.data[i].gradeName + "'>");
+                }
+            }
+            form.render();
+            initializeData();
+        });
 }

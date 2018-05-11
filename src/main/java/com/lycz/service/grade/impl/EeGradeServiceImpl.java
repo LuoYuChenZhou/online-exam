@@ -41,4 +41,14 @@ public class EeGradeServiceImpl extends BaseServiceTk<EeGrade> implements EeGrad
     public Integer deleteByEeEr(String erId, String eeId) {
         return eeGradeMapper.deleteByEeEr(erId, eeId);
     }
+
+    @Override
+    public int buildEeGradeByStatus(String erId, String eeId) {
+        return eeGradeMapper.buildEeGradeByStatus(erId, eeId);
+    }
+
+    @Override
+    public List<String> getGradeListByErEe(String erId, String eeId) {
+        return eeGradeMapper.getGradeListByErEe(erId, eeId);
+    }
 }
