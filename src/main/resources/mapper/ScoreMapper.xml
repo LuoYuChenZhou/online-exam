@@ -28,4 +28,27 @@
             AND s.ee_id = #{eeId}
         LIMIT 1
     </select>
+
+    <select id="getScoreListByPaperId" resultType="hashMap">
+        SELECT
+        s.id AS scoreId,
+        s.score AS score,
+        s.blur_start_time AS blurStartTime,
+        s.commit_time AS commitTime,
+        ee.real_name AS realName,
+        ee.ee_no AS eeNo,
+        p.full_score AS fullScore
+        FROM
+        score s
+        LEFT JOIN examinee ee ON s.ee_id = ee.id
+        LEFT JOIN papers p ON s.paper_id = p.id
+        WHERE s.paper_id = #{paperId}
+        <if test=' searchEeInfo != "" and searchEeInfo != null '>
+            AND (
+            ee.real_name LIKE CONCAT('%',#{searchEeInfo},'%')
+            OR ee.ee_no LIKE CONCAT('%',#{searchEeInfo},'%')
+            )
+        </if>
+        ORDER BY s.score DESC
+    </select>
 </mapper>

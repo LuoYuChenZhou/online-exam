@@ -9,6 +9,8 @@
     <link rel="stylesheet" type="text/css" href="../style/css/common/loadStyle.css"/>
     <link rel="stylesheet" type="text/css" href="../style/css/index/mainMenu.css"/>
     <link rel="stylesheet" type="text/css" href="../style/css/common/sweetalert2.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/style/layui/css/layui.css" media="all"/>
+    <script type="text/javascript" src="/style/layui/layui.js"></script>
     <script type="text/javascript" src="../style/js/common/sweetalert2.min.js"></script>
     <script type="text/javascript" src="../style/js/common/jquery-3.2.1.js"></script>
     <script type="text/javascript" src="../style/js/common/jquery.cookie.js"></script>
@@ -163,6 +165,11 @@
 </body>
 
 <script type="text/javascript">
+    let layer;
+    layui.use('layer', function () {
+        layer = layui.layer;
+    });
+
     $(function () {
         controlMask();
 
@@ -242,6 +249,27 @@
 
     // 切换页面
     function changeView(path) {
+        // 存在鼠标右键搞得页面前进后退，放弃提示
+        // let oldPath = $.cookie("curOperateIndexPath");
+        // if (
+        //     oldPath === "paper-add-form"
+        //     || oldPath === "paper-edit-form"
+        //     || oldPath === "doExam"
+        // ) {
+        //     let FloorObject = layer.confirm("离开此页面将丢失填入数据，是否离开？", {
+        //         btn: ['确定', '取消'] //按钮
+        //     }, function () {
+        //         closeFloor(FloorObject);
+        //         $.cookie("curOperateIndexPath", path.substring(path.indexOf("/") + 1, path.indexOf(".html")), {path: "/"});
+        //         $("#main_show_iframe").attr("src", "../view/" + path);
+        //     }, function () {
+        //         closeFloor(FloorObject);
+        //         return false;
+        //     });
+        // } else {
+        //     $.cookie("curOperateIndexPath", path.substring(path.indexOf("/") + 1, path.indexOf(".html")), {path: "/"});
+        //     $("#main_show_iframe").attr("src", "../view/" + path);
+        // }
         $("#main_show_iframe").attr("src", "../view/" + path);
     }
 </script>

@@ -75,20 +75,18 @@
         </div>
 
         <hr>
-        <!--提交按钮-->
-        <div class="layui-btn-group" id="commitButtonGroup">
-            <button class="layui-btn" style="background-color: #49cc90" onclick="paperCommit('1')">仅保存</button>
-            <button class="layui-btn disable_false" onclick="paperCommit('2')">保存并发布</button>
-            <button class="layui-btn" style="background-color: #c5564a" onclick="returnWithOutSave()">不保存</button>
-        </div>
-        <br>
-        <br>
         <label class="bottomInstructions">*试题最终展示形式为：先选择后填空，与编辑试题时的题号无关</label>
-        <label class="bottomInstructions separate">*考试时间20秒检测一次，所以实际考试时间可能会多20秒</label>
-        <label class="bottomInstructions" style="margin-top: 28px">*考生只有在截止时间之后才能查看答案</label>
+        <label class="bottomInstructions" style="margin-top: 14px">*考生只有在截止时间之后才能查看答案</label>
         <br>
         <br>
     </div>
+</div>
+<!--提交按钮-->
+<span class="showCommitButton">Save</span>
+<div class="layui-btn-group" id="commitButtonGroup">
+    <button class="layui-btn" style="background-color: #49cc90" onclick="paperCommit('1')">仅保存</button>
+    <button class="layui-btn disable_false" onclick="paperCommit('2')">保存并发布</button>
+    <button class="layui-btn" style="background-color: #c5564a" onclick="returnWithOutSave()">不保存</button>
 </div>
 </body>
 </html>

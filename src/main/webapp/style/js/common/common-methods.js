@@ -63,7 +63,7 @@ $.ajaxSetup({
                 return;
             }
             let obj = eval('(' + data.responseText + ')');
-            if (obj.status > 400) {
+            if (obj.status > 401) {
                 layer.msg('系统繁忙。。', {icon: 5});
             } else if (obj.status === 401) {
                 top.location.href = localhostPath;

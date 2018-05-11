@@ -20,21 +20,29 @@ $(document).ready(function () {
 
 // 初始化页面数据
 function loadPaperInfo() {
-    if (fieldIsWrong(form)) {
+    if (fieldIsWrong(form) || fieldIsWrong($.cookie("ErDoWatchScoreId"))) {
         setTimeout("loadPaperInfo()", 100);
         return;
     }
-    $.get("/Papers/getPaperQuestionSimpleInfoById.do"
+    $.get("/Papers/getQaScoreInfoByScoreId.do"
         , {
             token: token
-            , paperId: $.cookie("curDoExamPaperId")
+            , scoreId: $.cookie("ErDoWatchScoreId")
         }
         , function (data) {
             if (data.status === 200) {
                 let infoObj = data.data;
 
                 $("#paperName").text(infoObj.paperName);
+                $("#fullScore").text(infoObj.fullScore);
+                $("#eeName").text(infoObj.eeName);
+                if (!fieldIsWrong(infoObj.score)) {
+                    $("#getScore").text(infoObj.score);
+                } else {
+                    $("#getScore").text("待批改");
+                }
 
+                $("#qaShow").empty();
                 if (!fieldIsWrong(infoObj.questionList)) {
                     countOfQuestion = infoObj.questionList.length;
                     for (let i = 1; i <= countOfQuestion; i++) {
@@ -49,6 +57,8 @@ function loadPaperInfo() {
                                 "                    <div class='layui-form-item layui-form-text'>" +
                                 "                        <label class='layui-form-label question_text'>分数:</label>" +
                                 "                        <label class='layui-form-label scoreAndLegend'>" + getChooseScoreExplain(curQa.fullScore, curQa.scoreType, curQa.assignScore, curQa.isMulti) + "</label>" +
+                                "                        <label class='layui-form-label question_text'>得分:</label>" +
+                                "                        <input class='layui-form-label scoreAndLegend layui-input' value='" + getQaScore(infoObj, curQa.questionId) + "' name='qa" + i + "' style='width: 100px;'>" +
                                 "                    </div>" +
                                 "                </div>" +
                                 "                <div class='separate'>" +
@@ -82,16 +92,13 @@ function loadPaperInfo() {
                                 "                        </div>" +
                                 "                    </div>" +
                                 "                    <div class='layui-form-item separate'>" +
-                                "                        <label class='layui-form-label question_text'>答案：</label>" +
-                                "                        <div class='layui-input-block'>";
-
-                            for (let j = 0; j < optionStrArray.length; j++) {
-                                let curLetter = String.fromCharCode(j + 65);
-                                appendStr = appendStr +
-                                    "<input type='checkbox' name='qaChoose" + i + "An' title='" + curLetter + "' value=" + getLetterValue(curLetter) + ">";
-                            }
-
-                            appendStr = appendStr + "</div></div></div></div></div>";
+                                "                        <div class='question_text divLabel'>正确答案：" + tranAnswer1ToLetter(curQa.answer) + "</div>" +
+                                "                        <div class='question_text divLabel'>考生答案：" + tranAnswer2ToLetter(infoObj, curQa.questionId) + "</div>" +
+                                "                        <div class='question_text divLabel'>问题解析：" + reEmptyStrIfNull(curQa.questionAnanlyze) + "</div>" +
+                                "                    </div>" +
+                                "                </div>" +
+                                "            </div>" +
+                                "        </div>";
                             $("#qaShow").append(appendStr);
                         } else if (curQa.questionType === "1") {
                             let appendStr = "<div class='qaBg'>" +
@@ -101,6 +108,8 @@ function loadPaperInfo() {
                                 "                    <div class='layui-form-item layui-form-text'>" +
                                 "                        <label class='layui-form-label question_text'>分数:</label>" +
                                 "                        <label class='layui-form-label scoreAndLegend'>" + getBlankScoreExplain(curQa.questionScore, curQa.fullScore) + "</label>" +
+                                "                        <label class='layui-form-label question_text'>得分:</label>" +
+                                "                        <input class='layui-form-label scoreAndLegend layui-input' value='" + getQaScore(infoObj, curQa.questionId) + "' name='qa" + i + "' style='width: 100px;'>" +
                                 "                    </div>" +
                                 "                </div>" +
                                 "                <div class='separate'>" +
@@ -111,19 +120,23 @@ function loadPaperInfo() {
                                 "                       </div>" +
                                 "                    </div>" +
                                 "                </div>" +
+                                "                    <div class='layui-form-item separate'>" +
+                                "                        <div class='question_text divLabel'>正确答案：" + tran1NormalAnswer(curQa.answer) + "</div>" +
+                                "                        <div class='question_text divLabel'>考生答案：" + tran2NormalAnswer(infoObj, curQa.questionId) + "</div>" +
+                                "                        <div class='question_text divLabel'>问题解析：" + reEmptyStrIfNull(curQa.questionAnanlyze) + "</div>" +
+                                "                    </div>" +
                                 "            </div>" +
                                 "        </div>";
 
                             $("#qaShow").append(appendStr);
                         }
+                        $("#qaShow").append("<br/><br/><br/>");
                         form.render();
                     }
                 }
-
-                refreshTimeLeft();
-                setInterval("refreshTimeLeft()", 20000);
             } else {
                 layer.msg(data.msg);
+                setTimeout("backToList()", 1500);
             }
         });
 }
@@ -167,7 +180,7 @@ function getInputBlankDesc(questionDesc, qaIndex, blankIndex) {
         let endNum = questionDesc.indexOf(blankStr);
         if (endNum >= 0) {
             optionStr += questionDesc.substring(preNum, endNum);
-            optionStr += "<input type='text' name='qaBlank" + qaIndex + j + "' class='layui-input' lay-verify='required'>";
+            optionStr += "<input type='text' name='qaBlank" + qaIndex + j + "' style='width:40px;' disabled class='layui-input' lay-verify='required'>";
             preNum = endNum + blankStr.length;
             j++;
         }
@@ -176,121 +189,112 @@ function getInputBlankDesc(questionDesc, qaIndex, blankIndex) {
     return optionStr;
 }
 
-// 根据字母，获取十进制值
-function getLetterValue(sourceLetter) {
-    let sourceValue = sourceLetter.charCodeAt();
-    let tempStr = "1";
-    for (let i = 0; i < sourceValue - 65; i++) {
-        tempStr = tempStr + "0";
+// 根据选择题答案，转义成字母
+function tranAnswer1ToLetter(answer) {
+    if (fieldIsWrong(answer)) {
+        return "";
     }
-    return parseInt(tempStr, 2);
-}
-
-// 剩余时间刷新
-function refreshTimeLeft() {
-    $.get("/Score/getTimeLeft.do",
-        {
-            paperId: $.cookie("curDoExamPaperId")
-            , token: token
-        },
-        function (data) {
-            if (data.status === 200) {
-                $("#timeLeft").text(data.data.timeLeft);
-            } else if (data.status === 103) {
-                $("#timeLeft").text("<1");
-                let timeLeft = parseInt(data.data.timeLeft, 10);
-                if (timeLeft > 0) {
-                    setTimeout("answerCommit(null)", timeLeft * 1000);
-                } else {
-                    answerCommit(null);
-                }
-            }
+    let numAnswer = parseInt(answer, 10);
+    let twoAnswer = numAnswer.toString(2);
+    let letterArray = "";
+    for (let i = 0; i < twoAnswer.length; i++) {
+        let compareNum = "1";
+        for (let j = 0; j < i; j++) {
+            compareNum += "0";
         }
-    );
+        if ((numAnswer & parseInt(compareNum, 2)) > 0) {
+            letterArray += String.fromCharCode(65 + i) + "、";
+        }
+    }
+    if (!fieldIsWrong(letterArray)) {
+        letterArray = letterArray.substring(0, letterArray.length - 1);
+    }
+    return letterArray;
 }
 
-// 提示是否提交
-function promptCommit() {
-    let answerInfo = getAnswer();
-    let promptStr = "";
-    if (fieldIsWrong(answerInfo[0])) {
-        promptStr = "确认提交？";
-    } else {
-        promptStr = "第" + answerInfo[0] + "未填写，确认提交？";
+// 根据选择题答案，转义成字母
+function tranAnswer2ToLetter(obj, qaId) {
+    if (fieldIsWrong(obj.EeAnswer)) {
+        return "";
     }
-
-    let FloorObject = layer.confirm(promptStr, {
-        btn: ['确定', '取消'] //按钮
-    }, function () {
-        answerCommit(answerInfo[1]);
-    }, function () {
-        closeFloor(FloorObject);
-    });
+    let numAnswer = parseInt(obj.EeAnswer[qaId], 10);
+    let twoAnswer = numAnswer.toString(2);
+    let letterArray = "";
+    for (let i = 0; i < twoAnswer.length; i++) {
+        let compareNum = "1";
+        for (let j = 0; j < i; j++) {
+            compareNum += "0";
+        }
+        if ((numAnswer & parseInt(compareNum, 2)) > 0) {
+            letterArray += String.fromCharCode(65 + i) + "、";
+        }
+    }
+    if (!fieldIsWrong(letterArray)) {
+        letterArray = letterArray.substring(0, letterArray.length - 1);
+    }
+    return letterArray;
 }
 
-//试卷提交
-function answerCommit(answerInfo) {
-    if (fieldIsWrong(answerInfo)) {
-        answerInfo = getAnswer()[1];
+// 获取题目分数
+function getQaScore(obj, qaId) {
+    if (fieldIsWrong(obj.scoreDetail) || fieldIsWrong(obj.scoreDetail[qaId])) {
+        return "待批改";
     }
-    $.post("/Score/saveAnswer.do",
-        {
-            paperId: $.cookie("curDoExamPaperId")
-            , answerInfo: strMapToJson(answerInfo)
-            , token: token
-        },
-        function (data) {
+    return obj.scoreDetail[qaId];
+}
+
+// 将$$转化为、
+function tran1NormalAnswer(answer) {
+    if (fieldIsWrong(answer)) {
+        return "";
+    }
+    return answer.substring(0, answer.length - 2).replace(/\$\$/g, "、");
+}
+
+// 将$$转化为、
+function tran2NormalAnswer(obj, qaId) {
+    if (fieldIsWrong(obj.EeAnswer) || fieldIsWrong(obj.EeAnswer[qaId])) {
+        return "";
+    }
+    return obj.EeAnswer[qaId].substring(0, obj.EeAnswer[qaId].length - 2).replace(/\$\$/g, "、");
+}
+
+// 返回列表页
+function backToList() {
+    window.parent.changeView('papers/score-list.html');
+}
+
+// 修改分数
+function scoreChange() {
+    let formJsonObject = getEntity("#qaShow");
+    let scoreDetailMap = new Map();
+    let countScore = 0;
+    let saveCountScore = "1";// 是否保存总分，0-否，1-是
+    let allInfo = {
+        id: $.cookie("ErDoWatchScoreId")
+        , token: token
+    };
+    for (let i = 1; i <= countOfQuestion; i++) {
+        if (!fieldIsWrong(formJsonObject["qa" + i]) && isNum(formJsonObject["qa" + i])) {
+            scoreDetailMap.set(qaIndexIdMap.get("qa" + i), formJsonObject["qa" + i]);
+            countScore += parseInt(formJsonObject["qa" + i], 10);
+        } else {
+            saveCountScore = "0";
+        }
+    }
+    allInfo["scoreDetail"] = strMapToJson(scoreDetailMap);
+    allInfo["saveCountScore"] = saveCountScore;
+    if (!fieldIsWrong(countScore)) {
+        allInfo["score"] = countScore;
+    }
+    $.post("/Score/changeScore.do"
+        , allInfo
+        , function (data) {
             if (data.status === 201) {
-                layer.msg(data.msg);
-                $.post("/Score/autoCorrect.do", {scoreId: data.data.scoreId, token: token},
-                    function (data) {
-                        window.parent.changeView("examPaper/exam-paper-list.html");
-                    });
+                layer.msg(data.msg, {icon: 6, offset: ['100px']});
+                loadPaperInfo();
             } else {
                 layer.msg(data.msg);
             }
-        }
-    );
-}
-
-// 获取答案
-function getAnswer() {
-    let noInputQaIndex = "";//未填写的题目的题号以顿号隔开的字符串
-    let answerMap = new Map();
-    for (let i = 1; i <= countOfQuestion; i++) {
-        let qaType = qaIndexType.get("qa" + i);
-        if (!fieldIsWrong(qaType)) {
-            if (qaType === "0") {
-                let curAnswerCount = 0;// 选择题答案的和
-                $("input[name='qaChoose" + i + "An']:checked").each(function () {
-                    //由于复选框一般选中的是多个,所以可以循环输出
-                    curAnswerCount += parseInt($(this).val(), 10);
-                });
-                if (curAnswerCount === 0) {
-                    noInputQaIndex += i + "、";
-                }
-                answerMap.set(qaIndexIdMap.get("qa" + i), curAnswerCount);
-            } else if (qaType === "1") {
-                let answerStr = "";
-                let allInput = true;// 本题是否填完
-                for (let j = 0; j < blankNumIndexMap.get("qa" + i); j++) {
-                    let curAn = $("input[name='qaBlank" + i + j + "']").val();
-                    if (fieldIsWrong(curAn)) {
-                        answerStr += "$$";
-                        allInput = false;
-                    } else {
-                        answerStr += curAn + "$$";
-                    }
-                }
-                if (allInput === false) {
-                    noInputQaIndex += i + "、";
-                }
-                answerMap.set(qaIndexIdMap.get("qa" + i), answerStr);
-            }
-        }
-    }
-    if (!fieldIsWrong(noInputQaIndex)) {
-        noInputQaIndex = noInputQaIndex.substring(0, noInputQaIndex.length - 1);
-    }
-    return [noInputQaIndex, answerMap];
+        });
 }

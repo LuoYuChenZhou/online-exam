@@ -62,19 +62,18 @@
 </body>
 </html>
 
-<script type="text/html" id="getPaperStatus">
-    {{ getPaperStatus(d.status) }}
+<script type="text/html" id="time2string">
+    {{ dtf("yMdHms",d.createTime.time) }}
 </script>
 
 <script type="text/html" id="mainTableBar">
+    <!--状态为1的可以进行编辑操作，状态为2的可以进行取消发布和查看考试信息操作-->
+    {{#  if(d.status == 1){ }}
     <a class="layui-btn layui-btn-xs" lay-event="changeName" title="修改名称"><i class="iconfont icon-xiugai1"></i></a>
     <a class="layui-btn layui-btn-xs" lay-event="edit" title="编辑"><i class="iconfont icon-xiugai2"></i></a>
     <a class="layui-btn layui-btn-xs delete_bg" lay-event="delete" title="删除"><i class="iconfont icon-delete"></i></a>
-    {{#  if(d.status == 1){ }}
-    <a class="layui-btn layui-btn-xs disable_false" lay-event="enOrDis" title="发布"><i
-            class="iconfont icon-fabu"></i></a>
     {{#  } else { }}
-    <a class="layui-btn layui-btn-xs reduction_bg" lay-event="enOrDis" title="取消发布"><i
-            class="iconfont icon-fabu"></i></a>
+    <a class="layui-btn layui-btn-xs reduction_bg" lay-event="enOrDis" title="取消发布"><i class="iconfont icon-fabu"></i></a>
+    <a class="layui-btn layui-btn-xs layui-bg-orange" lay-event="lookDo" title="查看考试信息"><i class="iconfont icon-sousuo"></i></a>
     {{#  }   }}
 </script>

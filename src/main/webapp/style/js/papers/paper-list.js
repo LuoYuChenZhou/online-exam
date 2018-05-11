@@ -17,7 +17,7 @@ layui.use('table', function () {
             , {field: 'fullScore', title: '总分', width: 80}
             , {field: 'studentNum', title: '当前状态', width: 200, templet: '#getPaperStatus'}
             , {field: 'examNum', title: '当前考试人数', width: 200}
-            , {title: '操作', width: 200, align: 'center', toolbar: '#mainTableBar'}
+            , {title: '操作', width: 150, align: 'center', toolbar: '#mainTableBar'}
         ]]
         , where: {
             token: token
@@ -59,7 +59,7 @@ layui.use('table', function () {
                 PromptMsg = "确认发布？";
                 GoalStatus = "2";
             } else {
-                PromptMsg = "确认取消发布？";
+                PromptMsg = "取消发布将清空当前考生的成绩，确认取消？";
                 GoalStatus = "1";
             }
             FloorObject = layer.confirm(PromptMsg, {
@@ -69,6 +69,9 @@ layui.use('table', function () {
             }, function () {
                 closeFloor(FloorObject);
             });
+        } else if (layEvent === 'lookDo') {
+            $.cookie("paperIdForScoreList", curOperatePaperId);
+            window.parent.changeView("papers/score-list.html");
         }
     });
 });

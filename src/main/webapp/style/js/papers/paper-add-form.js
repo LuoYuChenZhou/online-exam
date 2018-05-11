@@ -772,3 +772,16 @@ function getBlankIndexStr(index) {
     }
     return optionsStr;
 }
+
+// 显示或隐藏提交按钮
+let nowIsShow = false;
+
+function showCommitBtn() {
+    if (nowIsShow) {
+        nowIsShow = false;
+        $("#commitButtonGroup").hide();
+    } else {
+        nowIsShow = true;
+        $("#commitButtonGroup").show();
+    }
+}

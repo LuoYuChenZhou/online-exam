@@ -60,10 +60,12 @@ public class ScoreController {
             }
             long startTime = ((Date) timeMap.get("blurStartTime")).getTime();
             long timeLeft = (int) timeMap.get("examTime") * 60 - (System.currentTimeMillis() - startTime) / 1000;
-            if (timeLeft < 1) {
-                result.setStatus(104);
-            } else if (timeLeft <= 60) {
+            if (timeLeft <= 20) {
                 result.setStatus(103);
+                result.setData(JSONObject.fromObject("{\"timeLeft\":\"" + timeLeft + "\"}"));
+            } else if (timeLeft <= 60) {
+                result.setStatus(200);
+                result.setData(JSONObject.fromObject("{\"timeLeft\":\"<1\"}"));
             } else {
                 result.setStatus(200);
                 result.setData(JSONObject.fromObject("{\"timeLeft\":" + timeLeft / 60 + "}"));
@@ -227,6 +229,72 @@ public class ScoreController {
         } else {
             result.setStatus(400);
             result.setLogMsg("保存批改信息发生错误");
+        }
+
+        return JSONObject.fromObject(result);
+    }
+
+    @RequestMapping(value = "/getScoreListByPaperId", method = RequestMethod.GET)
+    @Privilege(methodName = "根据试卷id获取考试信息", privilegeLevel = Privilege.ER_TYPE)
+    @ResponseBody
+    @ApiOperation(value = "根据试卷id获取考试信息", notes = "" +
+            "入参说明:<br/>" +
+            "出参说明:<br/>")
+    public JSONObject getScoreListByPaperId(@RequestParam("paperId") String paperId,
+                                            @RequestParam(value = "searchEeInfo", required = false) String searchEeInfo,
+                                            @RequestParam("page") Integer page,
+                                            @RequestParam("limit") Integer limit,
+                                            @RequestParam("token") String token) {
+
+        FixPageInfo<Map<String, Object>> pageInfo = scoreService.getScoreListByPaperId(paperId, searchEeInfo, page, limit);
+        if (pageInfo == null) {
+            pageInfo = new FixPageInfo<>();
+            pageInfo.setMsg("查询结束，但没有数据");
+            pageInfo.setCode(204);
+        } else {
+            pageInfo.setMsg("查询成功");
+            pageInfo.setCode(0);
+        }
+
+        return JSONObject.fromObject(pageInfo);
+    }
+
+    @RequestMapping(value = "/changeScore", method = RequestMethod.POST)
+    @Privilege(methodName = "修改考试成绩", privilegeLevel = Privilege.ER_TYPE)
+    @ResponseBody
+    @ApiOperation(value = "修改考试成绩", notes = "" +
+            "入参说明:<br/>" +
+            "出参说明:<br/>")
+    public JSONObject changeScore(Score score,
+                                  @RequestParam("saveCountScore") String saveCountScore,
+                                  @RequestParam("token") String token) {
+        CommonResult<JSONObject> result = new CommonResult<>();
+        result.setData(JSONObject.fromObject("{}"));
+        result.setStatus(400);
+
+        boolean flag;
+
+        Score score1;
+        // 如果saveCountScore为1表示保存总分，用updateByPrimaryKeySelective保存
+        if ("1".equals(saveCountScore)) {
+            score1 = new Score();
+            score1.setId(score.getId());
+            score1.setScore(score.getScore());
+            score1.setScoreDetail(score.getScoreDetail());
+            flag = scoreService.updateByPrimaryKeySelective(score1) > 0;
+        } else {
+            // 不保存总分的情况需要把得分设为null，用updateAll保存
+            score1 = scoreService.selectByKey(score.getId());
+            score1.setScore(null);
+            score1.setScoreDetail(score.getScoreDetail());
+            flag = scoreService.updateAll(score1) > 0;
+        }
+
+        if (flag) {
+            result.setMsg("修改成功");
+            result.setStatus(201);
+        } else {
+            result.setMsg("修改失败");
         }
 
         return JSONObject.fromObject(result);

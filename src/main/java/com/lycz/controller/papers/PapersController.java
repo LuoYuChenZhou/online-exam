@@ -9,6 +9,7 @@ import com.lycz.service.base.TokenService;
 import com.lycz.service.paper.PaperQuestionService;
 import com.lycz.service.paper.PapersService;
 import com.lycz.service.paper.ScoreService;
+import com.lycz.service.user.ExamineeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import net.sf.json.JSONObject;
@@ -39,6 +40,8 @@ public class PapersController {
     private PaperQuestionService paperQuestionService;
     @Resource
     private ScoreService scoreService;
+    @Resource
+    private ExamineeService examineeService;
 
     @RequestMapping(value = "/addPaper", method = RequestMethod.POST)
     @Privilege(methodName = "添加新试卷", privilegeLevel = Privilege.ER_TYPE)
@@ -484,9 +487,9 @@ public class PapersController {
     }
 
     @RequestMapping(value = "/getPaperQuestionInfoByIdAfterExam", method = RequestMethod.GET)
-    @Privilege(methodName = "根据试卷id获取详细信息(考试后查看用)")
+    @Privilege(methodName = "根据试卷id获取详细信息(考试后查看用,考生端)", privilegeLevel = Privilege.EE_TYPE)
     @ResponseBody
-    @ApiOperation(value = "根据试卷id获取详细信息(考试后查看用)", notes = "" +
+    @ApiOperation(value = "根据试卷id获取详细信息(考试后查看用,考生端)", notes = "" +
             "入参说明:<br/>" +
             "paperId:试卷id" +
             "出参说明:<br/>" +
@@ -555,7 +558,9 @@ public class PapersController {
         finalMap.put("endTime", returnEmptyIfNull(paper.getEndTime()));
 
         List<Map<String, Object>> questionList = paperQuestionService.getPaperQuestionInfoById(null, paperId);
-        finalMap.put("questionList", questionList);
+        if (ToolUtil.isNotEmpty(questionList)) {
+            finalMap.put("questionList", questionList);
+        }
 
         Example example1 = new Example(Score.class);
         example1.or().andEqualTo("eeId", tokenService.getUserId(token)).andEqualTo("paperId", paperId);
@@ -565,6 +570,99 @@ public class PapersController {
             finalMap.put("score", returnEmptyIfNull(score.getScore()));
             finalMap.put("scoreDetail", returnEmptyIfNull(score.getScoreDetail()));
             finalMap.put("EeAnswer", returnEmptyIfNull(score.getAnswer()));
+        }
+
+        result.setMsg("获取成功");
+        result.setStatus(200);
+        result.setData(JSONObject.fromObject(finalMap));
+        return JSONObject.fromObject(result);
+    }
+
+    @RequestMapping(value = "/getQaScoreInfoByScoreId", method = RequestMethod.GET)
+    @Privilege(methodName = "根据试卷id获取详细信息(考试后查看用,考官端)", privilegeLevel = Privilege.ER_TYPE)
+    @ResponseBody
+    @ApiOperation(value = "根据试卷id获取详细信息(考试后查看用，考官端)", notes = "" +
+            "入参说明:<br/>" +
+            "paperId:试卷id" +
+            "出参说明:<br/>" +
+            "\n" +
+            "{\n" +
+            "\n" +
+            "    \"data\":{\n" +
+            "        \"paperId\":\"试卷id\"\n" +
+            "        \"eeName\":\"考生姓名\"\n" +
+            "        \"paperName\":\"试卷名称\",\n" +
+            "        \"EeAnswer\":\"考生答案json\",\n" +
+            "        \"examTime\":考试时间,\n" +
+            "        \"score\":得分,\n" +
+            "        \"scoreDetail\":得分详情json,\n" +
+            "        \"questionList\":[\n" +
+            "            {\n" +
+            "                \"questionId\":\"问题id\",\n" +
+            "                \"questionDesc\":\"问题描述\",\n" +
+            "                \"subject\":\"科目\",\n" +
+            "                \"options\":\"选项\",\n" +
+            "                \"questionScore\":\"总分\",\n" +
+            "                \"isMulti\":\"是否多选\",\n" +
+            "                \"answer\":\"答案\",\n" +
+            "                \"fullScore\":\"真总分\",\n" +
+            "                \"blankIndex\":\"填空题专属\",\n" +
+            "                \"scoreType\":\"得分模式\",\n" +
+            "                \"assignScore\":\"指定分\",\n" +
+            "                \"correctType\":\"批改模式\",\n" +
+            "                \"questionType\":\"问题类型\"\n" +
+            "            }\n" +
+            "        ],\n" +
+            "    },\n" +
+            "    \"logMsg\":\"\",\n" +
+            "    \"msg\":\"获取成功\",\n" +
+            "    \"status\":200\n" +
+            "\n" +
+            "}\n")
+    public JSONObject getQaScoreInfoByScoreId(@RequestParam("scoreId") String scoreId,
+                                              @RequestParam("token") String token) {
+        CommonResult<JSONObject> result = new CommonResult<>();
+        result.setData(JSONObject.fromObject("{}"));
+        result.setStatus(400);
+
+        Map<String, Object> finalMap = new HashMap<>();
+
+        Score score = scoreService.selectByKey(scoreId);
+        if (ToolUtil.isEmpty(score)) {
+            result.setMsg("获取分数信息失败");
+            result.setLogMsg("根据id获取Score对象发生错误，scoreId：" + scoreId);
+            return JSONObject.fromObject(result);
+        }
+
+        Papers paper = papersService.selectByKey(score.getPaperId());
+        if (ToolUtil.isEmpty(score)) {
+            result.setMsg("获取试卷信息失败");
+            result.setLogMsg("根据id获取Papers对象发生错误，papersId：" + score.getPaperId());
+            return JSONObject.fromObject(result);
+        }
+
+        Examinee examinee = examineeService.selectByKey(score.getEeId());
+        if (ToolUtil.isEmpty(score)) {
+            result.setMsg("获取考生信息失败");
+            result.setLogMsg("根据id获取Examinee对象发生错误，eeId：" + score.getEeId());
+            return JSONObject.fromObject(result);
+        }
+
+        finalMap.put("eeName", returnEmptyIfNull(examinee.getRealName()));
+
+        finalMap.put("paperId", returnEmptyIfNull(paper.getId()));
+        finalMap.put("paperName", returnEmptyIfNull(paper.getPapersName()));
+        finalMap.put("examTime", returnEmptyIfNull(paper.getExamTime()));
+        finalMap.put("fullScore", returnEmptyIfNull(paper.getFullScore()));
+        finalMap.put("endTime", returnEmptyIfNull(paper.getEndTime()));
+
+        finalMap.put("score", returnEmptyIfNull(score.getScore()));
+        finalMap.put("scoreDetail", returnEmptyIfNull(score.getScoreDetail()));
+        finalMap.put("EeAnswer", returnEmptyIfNull(score.getAnswer()));
+
+        List<Map<String, Object>> questionList = paperQuestionService.getPaperQuestionInfoById(null, score.getPaperId());
+        if (ToolUtil.isNotEmpty(questionList)) {
+            finalMap.put("questionList", questionList);
         }
 
         result.setMsg("获取成功");

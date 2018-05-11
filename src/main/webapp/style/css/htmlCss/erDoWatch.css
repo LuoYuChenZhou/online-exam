@@ -1,0 +1,149 @@
+.paperNameDiv {
+    position: absolute;
+    top: 8px;
+    left: 11%;
+}
+
+.timeLeftDiv {
+    position: absolute;
+    top: 11px;
+    right: 22%;
+}
+
+.commitButton {
+    position: absolute;
+    right: 5%;
+}
+
+#paperName {
+    color: #2b4eb8;
+    font-size: 20px;
+}
+
+#timeLeft {
+    color: red;
+    font-size: 20px;
+}
+
+#paperDiv {
+    width: 1200px;
+    height: 687px;
+    margin: 0 auto;
+    background-color: white;
+}
+
+#qaShow {
+    height: 636px;
+    overflow-y: scroll;
+}
+
+.qaBg {
+    width: 1100px;
+    margin: 0 auto 10px auto;
+}
+
+.leftIndex {
+    width: 200px;
+    height: 193px;
+    font-size: 180px;
+    display: inline-block;
+    vertical-align: top;
+    color: #d4d4d4;
+}
+
+.optionDiv {
+    width: 800px;
+    min-height: 193px;
+    background-color: #fff9e7;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.separate {
+    margin: 7px 0;
+}
+
+.chooseOption {
+    width: auto;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.question_text {
+    width: auto;
+    margin-left: 10px;
+}
+
+.chooseLeftText {
+    vertical-align: top;
+    width: 77px;
+    display: inline-block;
+}
+
+.chooseCenterOptions {
+    display: inline-block;
+}
+
+.chooseCenterOptions input {
+    width: 620px;
+}
+
+.smallML {
+    margin-left: 29px;
+    width: auto !important;
+}
+
+.question_desc {
+    width: 620px;
+    min-height: 80px;
+}
+
+.qaBlank input {
+    display: inline;
+}
+
+.blankDesc {
+    padding: 5px;
+    width: 607px;
+    border-radius: 2px;
+    min-height: 159px;
+    background-color: #f7f7f7;
+    border: solid 1px #E6E6E6;
+}
+
+.blankDesc input {
+    color: rgb(87, 114, 160);
+}
+
+.scoreAndLegend {
+    color: rgb(109, 109, 109);
+    width: auto;
+    margin-left: 23px;
+    text-align: left;
+}
+
+.divLabel {
+    color: #6585BA;
+    margin-left: 25px;
+    line-height: 20px;
+}
+
+.blueStyle {
+    color: #6585BA;
+}
+
+.scoreChange {
+    height: 30px;
+    line-height: 30px;
+    position: absolute;
+    top: 5px;
+    right: 6%;
+}
+
+.backBtu {
+    height: 30px;
+    line-height: 30px;
+    position: absolute;
+    top: 5px;
+    right: 14%;
+}

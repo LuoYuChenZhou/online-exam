@@ -31,4 +31,14 @@ public class ScoreServiceImpl extends BaseServiceTk<Score> implements ScoreServi
     public Map<String, Object> getStartAndAllTime(String paperId, String eeId) {
         return scoreMapper.getStartAndAllTime(paperId, eeId);
     }
+
+    @Override
+    public FixPageInfo<Map<String, Object>> getScoreListByPaperId(String paperId, String searchEeInfo, Integer page, Integer limit) {
+        PageHelper.startPage(page, limit);
+        List<Map<String, Object>> tempList = scoreMapper.getScoreListByPaperId(paperId, searchEeInfo);
+        if (ToolUtil.isEmpty(tempList)) {
+            return null;
+        }
+        return new FixPageInfo<>(tempList);
+    }
 }
