@@ -67,6 +67,33 @@
             AND re.examinee_id = #{userId}
     </select>
 
+    <select id="getApplyList" resultType="hashMap">
+        SELECT
+            re.id AS erEeId,
+            IFNULL( er.user_name, '' ) AS erName,
+            IFNULL(
+            (
+            SELECT
+                msg.msg
+            FROM
+                sys_msg msg
+            WHERE
+                re.examinee_id = msg.send_id
+                AND re.examiner_id = msg.receive_id
+                AND msg.msg_type = ( SELECT id FROM sys_dict WHERE dict_code = 'msgType' AND dict_value = 'MT_EE_RQ' )
+                ORDER BY msg.create_time DESC
+                LIMIT 0,1
+            ),
+            ''
+            ) AS extraMsg
+        FROM
+            er_ee re
+            LEFT JOIN v_user er ON re.examinee_id = er.user_id
+        WHERE
+            cur_status = '1'
+            AND re.examiner_id = #{userId}
+    </select>
+
     <select id="getErListByEe" resultType="hashMap">
         SELECT
             vu.user_id AS erId,

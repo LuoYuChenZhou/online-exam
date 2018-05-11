@@ -52,6 +52,17 @@ public class ErEeServiceImpl extends BaseServiceTk<ErEe> implements ErEeService 
     }
 
     @Override
+    public PageInfo<Map<String, Object>> getApplyList(Integer page, Integer limit, String userId) {
+        PageHelper.startPage(page, limit);
+        List<Map<String, Object>> invitedList = erEeMapper.getApplyList(userId);
+        if (ToolUtil.isEmpty(invitedList)) {
+            return null;
+        } else {
+            return new PageInfo<>(invitedList);
+        }
+    }
+
+    @Override
     public FixPageInfo<Map<String, Object>> getExamineeNoRelation(String searchString, Integer page, Integer limit, String userId) {
         PageHelper.startPage(page, limit);
         List<Map<String, Object>> eeList = erEeMapper.getExamineeNoRelation(searchString, userId);

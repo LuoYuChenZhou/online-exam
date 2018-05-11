@@ -13,6 +13,8 @@ public interface ErEeService extends IBaseServiceTk<ErEe> {
 
     PageInfo<Map<String, Object>> getInvitedList(Integer page, Integer limit, String userId);
 
+    PageInfo<Map<String, Object>> getApplyList(Integer page, Integer limit, String userId);
+
     FixPageInfo<Map<String, Object>> getExamineeNoRelation(String searchString, Integer page, Integer limit, String userId);
 
     FixPageInfo<Map<String, Object>> getOtherErListByEe(Integer page, Integer limit, String eeId, String searchErName);

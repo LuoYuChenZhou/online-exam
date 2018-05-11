@@ -86,6 +86,55 @@ public class ErEeController {
         return JSONObject.fromObject(result);
     }
 
+    @RequestMapping(value = "/getApplyList", method = RequestMethod.GET)
+    @Privilege(methodName = "根据考官id（token中）获取申请列表", privilegeLevel = Privilege.ER_TYPE)
+    @ResponseBody
+    @ApiOperation(value = "根据考官id（token中）获取申请列表", notes = "" +
+            "入参说明:<br/>" +
+            "page:当前页<br/>" +
+            "limit:每页大小<br/>" +
+            "token:token<br/>" +
+            "出参说明:<br/>" +
+            "\n" +
+            "{\n" +
+            "\n" +
+            "    \"data\":{\n" +
+            "        \"hasNextPage\":是否有下一页（true或false）,\n" +
+            "        \"hasPreviousPage\":是否有前一页（true或false）,\n" +
+            "        \"list\":[\n" +
+            "            {\n" +
+            "                \"erEeId\":\"关系id\"\n" +
+            "                \"erName\":\"邀请人姓名\"\n" +
+            "                \"extraMsg\":\"附加信息，【\\<\\b\\r\\/\\>附加说明：】后面的是真的附加信息\",\n" +
+            "            }\n" +
+            "        ],\n" +
+            "    },\n" +
+            "    \"logMsg\":\"\",\n" +
+            "    \"msg\":\"查询成功\",\n" +
+            "    \"status\":200\n" +
+            "\n" +
+            "}\n")
+    public JSONObject getApplyList(@RequestParam("page") Integer page,
+                                   @RequestParam("limit") Integer limit,
+                                   @RequestParam("token") String token) {
+        String userId = tokenService.getUserId(token);
+
+        CommonResult<JSONObject> result = new CommonResult<>();
+        result.setData(JSONObject.fromObject("{}"));
+
+        PageInfo<Map<String, Object>> pageInfo = erEeService.getApplyList(page, limit, userId);
+        if (pageInfo == null) {
+            result.setMsg("查询结束，但没有数据");
+            result.setStatus(204);
+        } else {
+            result.setMsg("查询成功");
+            result.setStatus(200);
+            result.setData(JSONObject.fromObject(pageInfo));
+        }
+
+        return JSONObject.fromObject(result);
+    }
+
     @RequestMapping(value = "/getExamineeNoRelation", method = RequestMethod.GET)
     @Privilege(methodName = "获取与自己没有建立关系的考生列表", privilegeLevel = Privilege.ER_TYPE)
     @ResponseBody
