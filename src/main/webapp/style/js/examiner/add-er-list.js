@@ -15,8 +15,8 @@ layui.use('table', function () {
         , page: true //开启分页
         , cols: [[ //表头
             {field: 'realName', title: '考官姓名', width: 210, fixed: 'left'}
-            , {field: 'sex', title: '性别', width: 80}
-            , {title: '操作', width: 100, align: 'center', toolbar: '#mainTableBar'}
+            , {field: 'sex', title: '性别', width: 210}
+            , {title: '操作', width: 210, align: 'center', toolbar: '#mainTableBar'}
         ]]
         , where: {
             token: token
