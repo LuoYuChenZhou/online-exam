@@ -1,16 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lycz.dao.SysMsgMapper">
-  <resultMap id="BaseResultMap" type="com.lycz.model.SysMsg">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="send_id" jdbcType="VARCHAR" property="sendId" />
-    <result column="receive_id" jdbcType="VARCHAR" property="receiveId" />
-    <result column="msg" jdbcType="VARCHAR" property="msg" />
-    <result column="msg_type" jdbcType="VARCHAR" property="msgType" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-  </resultMap>
+    <select id="getMsgListByTimeUser" resultType="hashMap">
+        SELECT
+        sm.id AS id,
+        sm.msg AS msg,
+        sm.msg_type AS msgType,
+        DATE_FORMAT( sm.create_time, '%m月%d日' ) AS createDate,
+        DATE_FORMAT( sm.create_time, '%H时%i分' ) AS createTime
+        FROM
+        sys_msg sm
+        WHERE
+        sm.receive_id = #{userId}
+        <if test=' searchTime != null and searchTime != "" '>
+        AND  DATE_FORMAT( sm.create_time, '%Y-%m' ) = #{searchTime}
+        </if>
+        ORDER BY sm.create_time DESC
+    </select>
+
+    <resultMap id="BaseResultMap" type="com.lycz.model.SysMsg">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="send_id" jdbcType="VARCHAR" property="sendId"/>
+        <result column="receive_id" jdbcType="VARCHAR" property="receiveId"/>
+        <result column="msg" jdbcType="VARCHAR" property="msg"/>
+        <result column="msg_type" jdbcType="VARCHAR" property="msgType"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
 </mapper>

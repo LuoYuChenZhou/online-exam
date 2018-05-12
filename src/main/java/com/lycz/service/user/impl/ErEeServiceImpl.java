@@ -222,7 +222,7 @@ public class ErEeServiceImpl extends BaseServiceTk<ErEe> implements ErEeService 
                 msgValue = "MT_ER_RQ";
                 sysMsg.setSendId(erEe.getExamineeId());
                 sysMsg.setReceiveId(erEe.getExaminerId());
-                sysMsg.setMsg("”" + sendName + "“已解除了与您的考试关系");
+                sysMsg.setMsg("”" + sendName + "“已解除了与您的考生考官关系");
                 break;
             case "erRemove":
                 erEe.setCurStatus("5");
@@ -230,7 +230,7 @@ public class ErEeServiceImpl extends BaseServiceTk<ErEe> implements ErEeService 
                 msgValue = "MT_ER_RM";
                 sysMsg.setSendId(erEe.getExaminerId());
                 sysMsg.setReceiveId(erEe.getExamineeId());
-                sysMsg.setMsg("”" + sendName + "“已解除了与您的考试关系");
+                sysMsg.setMsg("”" + sendName + "“已解除了与您的考生考官关系");
                 break;
             case "eeRefuse":
                 erEe.setCurStatus("6");

@@ -222,7 +222,7 @@ public class ToolUtil extends StringUtils {
      * 将列表根据父级id分级
      *
      * @param sourceList 原列表
-     * @param upperId    父级id
+     * @param upperId    最上级父级id
      * @param idName     作为父级id的名字，不传默认id
      * @param upperName  父级id在map中的名字，不传默认为upperId
      * @ 如：t_avcenter_device表内,行a的id字段作为行b的父级id,放在b的access_device_id字段,

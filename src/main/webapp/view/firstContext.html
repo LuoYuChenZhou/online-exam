@@ -3,15 +3,22 @@
 <head>
     <title>Title</title>
     <link rel="stylesheet" type="text/css" href="../style/css/common/sweetalert2.min.css"/>
-    <script type="text/javascript" src="../style/js/common/jquery-3.2.1.js"></script>
     <script type="text/javascript" src="../style/js/common/sweetalert2.min.js"></script>
     <script type="text/javascript" src="../style/js/common/es6-promise.min.js"></script>
-    <script type="text/javascript" src="../style/js/common/jquery.cookie.js"></script>
-    <script type="text/javascript" src="../style/js/common/common-methods.js"></script>
+    <script type="text/javascript" src="../style/js/common/common-js-css.js"></script>
 </head>
 <body>
 <h2 style="text-align: center;color: #7098da;">欢迎使用到测如流在线评测系统</h2>
-<input type="button" onclick="test()"/>
+<div style="margin-left: 30px">
+    <div class="layui-inline">
+        <label class="layui-form-label">选择年月：</label>
+        <input type="text" class="layui-input" id="searchTime">
+    </div>
+    <hr>
+    <div style="overflow-y: auto;height: 600px;">
+        <ul class="layui-timeline" id="timeLine"></ul>
+    </div>
+</div>
 </body>
 <script type="text/javascript">
     window.onload = function () {
@@ -23,11 +30,69 @@
                 timer: 2000
             });
         }
+        getMsgList();
     };
 
-    function test() {
-        controlMainMask(1);
-        setTimeout("controlMainMask()", 2000);
+    layui.use('laydate', function () {
+        let laydate = layui.laydate;
+        laydate.render({
+            elem: '#searchTime'
+            , type: 'month'
+            , value: new Date()
+            , isInitValue: true
+            , done: function (value, date, endDate) {
+                getMsgList(value);
+            }
+        });
+    });
+
+    // 获取信息列表
+    function getMsgList(value) {
+        if (fieldIsWrong(value)) {
+            value = $("#searchTime").val();
+        }
+        $.get("/SysMsg/getMsgListByTimeUser.do",
+            {
+                searchTime: value
+                , token: token
+            },
+            function (data) {
+                let timeLine = $("#timeLine");
+                timeLine.empty();
+                let finalStr = "";
+                if (data.status === 200) {
+                    let msgList = data.data;
+                    // 先排序，后输出
+                    let keyArray = Object.keys(msgList).sort();
+                    for (let i = keyArray.length - 1; i >= 0; i--) {
+                        let curMsgList = msgList[keyArray[i]];
+                        finalStr += "" +
+                            "        <li class=\"layui-timeline-item\">" +
+                            "            <i class=\"layui-icon layui-timeline-axis\">&#xe63f;</i>" +
+                            "            <div class=\"layui-timeline-content layui-text\">" +
+                            "                <h3 class=\"layui-timeline-title\">" + curMsgList[0].createDate + "</h3>" +
+                            "                <ul>";
+
+                        $.each(curMsgList, function (index, val) {
+                            finalStr += "<li>(" + val.createTime + ")" + val.msg + "</li>";
+                        });
+
+                        finalStr += "" +
+                            "                </ul>" +
+                            "            </div>" +
+                            "        </li>";
+                    }
+                }
+                finalStr += "<li class=\"layui-timeline-item\">" +
+                    "            <i class=\"layui-icon layui-timeline-axis\">&#xe63f;</i>" +
+                    "            <div class=\"layui-timeline-content layui-text\">" +
+                    "                <div class=\"layui-timeline-title\">过去</div>" +
+                    "            </div>" +
+                    "        </li>";
+                timeLine.append(finalStr);
+            });
     }
+
+
 </script>
 </html>
