@@ -75,6 +75,7 @@
     display: inline-block;
     background-color: rgba(101, 133, 186, 0.8);
     border-radius: 50px;
+    cursor: pointer;
 }
 
 .right_btn {
@@ -87,6 +88,7 @@
     display: inline-block;
     background-color: rgba(101, 133, 186, 0.8);
     border-radius: 50px;
+    cursor: pointer;
 }
 
 .left_btn span {

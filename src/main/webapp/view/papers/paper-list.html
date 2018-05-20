@@ -66,6 +66,10 @@
     {{ dtf("yMdHms",d.createTime.time) }}
 </script>
 
+<script type="text/html" id="getPaperStatus">
+    {{ getPaperStatus(d.status) }}
+</script>
+
 <script type="text/html" id="mainTableBar">
     <!--状态为1的可以进行编辑操作，状态为2的可以进行取消发布-->
     {{#  if(d.status == 1){ }}

@@ -10,21 +10,22 @@ layui.use('layer', function () {
 });
 
 getInvitedList();
-
-//左边按钮点击
-$("#left_btn").click(function () {
-    if (leftCanPress === true) {
-        page = page - 1;
-        getInvitedList();
-    }
-});
+$(document).ready(function () {
+    //左边按钮点击
+    $("#left_btn").click(function () {
+        if (leftCanPress === true) {
+            page = page - 1;
+            getInvitedList();
+        }
+    });
 
 //右边按钮点击
-$("#right_btn").click(function () {
-    if (rightCanPress === true) {
-        page = page + 1;
-        getInvitedList();
-    }
+    $('#right_btn').click(function () {
+        if (rightCanPress === true) {
+            page = page + 1;
+            getInvitedList();
+        }
+    });
 });
 
 //设置按钮的背景颜色
@@ -51,8 +52,8 @@ function getInvitedList() {
         },
         function (data) {
             if (data.status === 200) {
-                leftCanPress = data.data.hasNextPage;
-                rightCanPress = data.data.hasPreviousPage;
+                rightCanPress = data.data.hasNextPage;
+                leftCanPress = data.data.hasPreviousPage;
                 btnClassChange();
                 let showStr = "";
                 let sourceList = data.data.list;

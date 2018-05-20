@@ -5,6 +5,7 @@ import com.lycz.configAndDesign.FixPageInfo;
 import com.lycz.configAndDesign.ToolUtil;
 import com.lycz.configAndDesign.annotation.Privilege;
 import com.lycz.model.*;
+import com.lycz.service.base.SysMsgService;
 import com.lycz.service.base.TokenService;
 import com.lycz.service.paper.PaperQuestionService;
 import com.lycz.service.paper.PapersService;
@@ -42,6 +43,8 @@ public class PapersController {
     private ScoreService scoreService;
     @Resource
     private ExamineeService examineeService;
+    @Resource
+    private SysMsgService sysMsgService;
 
     @RequestMapping(value = "/addPaper", method = RequestMethod.POST)
     @Privilege(methodName = "添加新试卷", privilegeLevel = Privilege.ER_TYPE)
@@ -52,7 +55,7 @@ public class PapersController {
             "201")
     public JSONObject addPaper(Papers paperInfo, BatchListEntity questionInfoList,
                                @RequestParam(value = "endTimeS", required = false) String endTimeS,
-                               @RequestParam("token") String token) throws ParseException {
+                               @RequestParam("token") String token) throws Exception {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
         result.setMsg("新增失败");
@@ -96,6 +99,15 @@ public class PapersController {
         }
 
         if (papersService.addNewPaper(paperInfo, baseQuestionsList, paperQuestionList)) {
+            // 推送消息
+            Map<String, Object> userMap = tokenService.getTokenMap(token);
+            String userId = "", userName = "";
+            if (ToolUtil.isNotEmpty(userMap)) {
+                userId = (String) userMap.get("id");
+                userName = (String) userMap.get("realName");
+            }
+            sysMsgService.addEeMsg(userId, "考官【" + userName + "】的试卷【" + paperInfo.getPapersName() + "】已发布", "MT_PU");
+            sysMsgService.addMsg(userId, userId, "试卷【" + paperInfo.getPapersName() + "】已发布", "MT_PU");
             result.setStatus(201);
             result.setMsg("保存成功");
         }
@@ -113,7 +125,7 @@ public class PapersController {
     public JSONObject modifyPaper(Papers paperInfo, BatchListEntity questionInfoList,
                                   @RequestParam("delQaId") String delQaId,
                                   @RequestParam(value = "endTimeS", required = false) String endTimeS,
-                                  @RequestParam("token") String token) throws ParseException {
+                                  @RequestParam("token") String token) throws Exception {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
         result.setMsg("保存失败");
@@ -167,6 +179,15 @@ public class PapersController {
         }
 
         if (papersService.modifyPaper(paperInfo, pqAddList, pqModifyList, bqAddList, bqModifyList, delQaId)) {
+            // 推送消息
+            Map<String, Object> userMap = tokenService.getTokenMap(token);
+            String userId = "", userName = "";
+            if (ToolUtil.isNotEmpty(userMap)) {
+                userId = (String) userMap.get("id");
+                userName = (String) userMap.get("realName");
+            }
+            sysMsgService.addEeMsg(userId, "考官【" + userName + "】的试卷【" + paperInfo.getPapersName() + "】已发布", "MT_PU");
+            sysMsgService.addMsg(userId, userId, "试卷【" + paperInfo.getPapersName() + "】已发布", "MT_PU");
             result.setStatus(201);
             result.setMsg("保存成功");
         }
@@ -301,16 +322,30 @@ public class PapersController {
             "201")
     public JSONObject changePaperStatus(@RequestParam("paperId") String paperId,
                                         @RequestParam("targetStatus") String targetStatus,
-                                        @RequestParam("token") String token) {
+                                        @RequestParam("token") String token) throws Exception {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
         result.setStatus(400);
+
+        Map<String, Object> userMap = tokenService.getTokenMap(token);
+        String userId = "", userName = "";
+        if (ToolUtil.isNotEmpty(userMap)) {
+            userId = (String) userMap.get("id");
+            userName = (String) userMap.get("realName");
+        }
+
+        Papers paper1 = papersService.selectByKey(paperId);
+        String erPaperName = "考官【" + userName + "】的试卷【" + paper1.getPapersName() + "】";
         if (targetStatus.equals("1")) {
-            Papers paper1 = papersService.selectByKey(paperId);
             if (paper1.getStatus().equals("2")) {
-                // 如果是由发布变为编辑状态，将之前的成绩清空
+                // 如果是由发布变为编辑状态，将之前的成绩清空并发送消息
                 scoreService.deleteByPaperId(paperId);
+                sysMsgService.addEeMsg(userId, erPaperName + "取消发布", "MT_UN_PU");
+                sysMsgService.addMsg(userId, userId, "试卷【" + paper1.getPapersName() + "】取消发布", "MT_UN_PU");
             }
+        } else if (targetStatus.equals("2")) {
+            sysMsgService.addEeMsg(userId, erPaperName + "已发布", "MT_PU");
+            sysMsgService.addMsg(userId, userId, "试卷【" + paper1.getPapersName() + "】已发布", "MT_PU");
         }
 
         Papers paper = new Papers();

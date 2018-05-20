@@ -106,7 +106,7 @@ function backToList() {
 
 //跳转到添加考生页面
 function geToAddEe() {
-    window.parent.changeView("examinee/add-examinee-list.html");
+    window.parent.changeView("examinee/my-examinee-list.html");
 }
 
 //从班级内删除考生

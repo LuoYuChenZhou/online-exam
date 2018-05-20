@@ -87,7 +87,7 @@
     </div>
     <div class="for-reset only-ee">
         <input class="effect-17" type="text" placeholder="" id="reg-eeNo">
-        <label>考生号</label>
+        <label><span style="color: orange">*</span>考生号</label>
         <span class="focus-border"></span>
         <span class="reg_msg"></span>
     </div>
@@ -304,10 +304,30 @@
             let phone = $("#reg-phone");
             if (!phone.val()) {
                 phone.siblings(".reg_msg").text("请输入联系电话");
-            } else if (!/1\d{10}/.test(phone.val())) {
+            } else if (!/^[1][3,4,5,7,8][0-9]{9}$/.test(phone.val())) {
                 phone.siblings(".reg_msg").text("手机号码格式错误");
             } else {
                 phone.siblings(".reg_msg").text("");
+            }
+        });
+
+        //考生号字段失去焦点触发,判断是否符合规则
+        $("#reg-eeNo").blur(function () {
+            let eeNo = $("#reg-eeNo");
+            if (!eeNo.val()) {
+                eeNo.siblings(".reg_msg").text("请输入考生号");
+            } else {
+                eeNo.siblings(".reg_msg").text("");
+            }
+        });
+
+        //真实姓名字段失去焦点触发,判断是否符合规则
+        $("#reg-realName").blur(function () {
+            let realName = $("#reg-realName");
+            if (!realName.val()) {
+                realName.siblings(".reg_msg").text("请输入真实姓名");
+            } else {
+                realName.siblings(".reg_msg").text("");
             }
         });
 
@@ -371,6 +391,10 @@
                 realName.siblings(".reg_msg").text("请输入真实姓名");
                 return;
             }
+            if (!eeNo.val()) {
+                eeNo.siblings(".reg_msg").text("请输入考生号");
+                return;
+            }
             if (!sex.val()) {
                 $("#reg_sex_msg").html("<span style=\"color: red\">请选择性别</span>");
                 return;
@@ -378,11 +402,10 @@
             if (!phone.val()) {
                 phone.siblings(".reg_msg").text("请输入联系电话");
                 return;
-            } else if (!/1\d{10}/.test(phone.val())) {
+            } else if (!/^[1][3,4,5,7,8][0-9]{9}$/.test(phone.val())) {
                 phone.siblings(".reg_msg").text("手机号码格式错误");
                 return;
             }
-
 
             $("#register-form").hide();
             load.show();

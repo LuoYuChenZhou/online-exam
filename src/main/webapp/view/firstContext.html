@@ -29,6 +29,7 @@
                 type: 'success',
                 timer: 2000
             });
+            $.cookie('isReg', '0', {path: "/"});
         }
         getMsgList();
         setInterval("getMsgList()", 20000);

@@ -8,6 +8,7 @@ import com.lycz.model.Examinee;
 import com.lycz.model.Examiner;
 import com.lycz.model.SysLog;
 import com.lycz.service.base.SysLogService;
+import com.lycz.service.base.SysMsgService;
 import com.lycz.service.base.TokenService;
 import com.lycz.service.user.ExamineeService;
 import com.lycz.service.user.ExaminerService;
@@ -43,6 +44,8 @@ public class LoginController {
     private TokenService tokenService;
     @Resource
     private SysLogService sysLogService;
+    @Resource
+    private SysMsgService sysMsgService;
 
     /**
      * 登录
@@ -125,7 +128,7 @@ public class LoginController {
             "入参说明：<br/>" +
             "出参说明：<br/>" +
             "")
-    public JSONObject eeRegister(@Valid Examinee examinee, BindingResult bindingResult, @RequestParam("password") String password) {
+    public JSONObject eeRegister(@Valid Examinee examinee, BindingResult bindingResult, @RequestParam("password") String password) throws Exception {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
         result.setStatus(400);
@@ -151,6 +154,7 @@ public class LoginController {
             result.setMsg("注册失败");
             log.error("考生注册发生错误");
         } else {
+            sysMsgService.addMsg(examinee.getId(), examinee.getId(), "注册成功", "MT_RE");
             Examinee examinee1 = examineeService.eeLogin(examinee.getLoginName(), examinee.getLoginPwd());
             String token = tokenService.createToken(examinee1);
             Map<String, String> tokenMap = new HashMap<>();
@@ -176,7 +180,7 @@ public class LoginController {
             "字段太多了， 不想写" +
             "出参说明：<br/>" +
             "")
-    public JSONObject erRegister(@Valid Examiner examiner, BindingResult bindingResult, @RequestParam("password") String password) {
+    public JSONObject erRegister(@Valid Examiner examiner, BindingResult bindingResult, @RequestParam("password") String password) throws Exception {
         CommonResult<JSONObject> result = new CommonResult<>();
         result.setData(JSONObject.fromObject("{}"));
         result.setStatus(400);
@@ -202,6 +206,7 @@ public class LoginController {
             result.setMsg("注册失败");
             log.error("考官注册发生错误");
         } else {
+            sysMsgService.addMsg(examiner.getId(), examiner.getId(), "注册成功", "MT_RE");
             Examiner examiner1 = examinerService.erLogin(examiner.getLoginName(), examiner.getLoginPwd());
             String token = tokenService.createToken(examiner1);
             Map<String, String> tokenMap = new HashMap<>();
