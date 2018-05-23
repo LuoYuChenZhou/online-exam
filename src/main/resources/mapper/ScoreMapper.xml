@@ -32,7 +32,7 @@
     <select id="getScoreListByPaperId" resultType="hashMap">
         SELECT
         s.id AS scoreId,
-        s.score AS score,
+        IFNULL(s.score,'待批改') AS score,
         s.blur_start_time AS blurStartTime,
         s.commit_time AS commitTime,
         ee.real_name AS realName,
