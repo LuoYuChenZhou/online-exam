@@ -391,13 +391,17 @@
                 realName.siblings(".reg_msg").text("请输入真实姓名");
                 return;
             }
-            if (!eeNo.val()) {
-                eeNo.siblings(".reg_msg").text("请输入考生号");
-                return;
+            if (regType !== "1") {
+                if (!eeNo.val()) {
+                    eeNo.siblings(".reg_msg").text("请输入考生号");
+                    return;
+                }
             }
             if (!sex.val()) {
                 $("#reg_sex_msg").html("<span style=\"color: red\">请选择性别</span>");
                 return;
+            }else{
+                $("#reg_sex_msg").html("");
             }
             if (!phone.val()) {
                 phone.siblings(".reg_msg").text("请输入联系电话");
