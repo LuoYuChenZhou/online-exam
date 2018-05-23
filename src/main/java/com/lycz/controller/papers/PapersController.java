@@ -99,15 +99,17 @@ public class PapersController {
         }
 
         if (papersService.addNewPaper(paperInfo, baseQuestionsList, paperQuestionList)) {
-            // 推送消息
-            Map<String, Object> userMap = tokenService.getTokenMap(token);
-            String userId = "", userName = "";
-            if (ToolUtil.isNotEmpty(userMap)) {
-                userId = (String) userMap.get("id");
-                userName = (String) userMap.get("realName");
+            if (Objects.equals(paperInfo.getStatus(), "2")) {
+                // 推送消息
+                Map<String, Object> userMap = tokenService.getTokenMap(token);
+                String userId = "", userName = "";
+                if (ToolUtil.isNotEmpty(userMap)) {
+                    userId = (String) userMap.get("id");
+                    userName = (String) userMap.get("realName");
+                }
+                sysMsgService.addEeMsg(userId, "考官【" + userName + "】的试卷【" + paperInfo.getPapersName() + "】已发布", "MT_PU");
+                sysMsgService.addMsg(userId, userId, "试卷【" + paperInfo.getPapersName() + "】已发布", "MT_PU");
             }
-            sysMsgService.addEeMsg(userId, "考官【" + userName + "】的试卷【" + paperInfo.getPapersName() + "】已发布", "MT_PU");
-            sysMsgService.addMsg(userId, userId, "试卷【" + paperInfo.getPapersName() + "】已发布", "MT_PU");
             result.setStatus(201);
             result.setMsg("保存成功");
         }
@@ -179,15 +181,17 @@ public class PapersController {
         }
 
         if (papersService.modifyPaper(paperInfo, pqAddList, pqModifyList, bqAddList, bqModifyList, delQaId)) {
-            // 推送消息
-            Map<String, Object> userMap = tokenService.getTokenMap(token);
-            String userId = "", userName = "";
-            if (ToolUtil.isNotEmpty(userMap)) {
-                userId = (String) userMap.get("id");
-                userName = (String) userMap.get("realName");
+            if (Objects.equals(paperInfo.getStatus(), "2")) {
+                // 推送消息
+                Map<String, Object> userMap = tokenService.getTokenMap(token);
+                String userId = "", userName = "";
+                if (ToolUtil.isNotEmpty(userMap)) {
+                    userId = (String) userMap.get("id");
+                    userName = (String) userMap.get("realName");
+                }
+                sysMsgService.addEeMsg(userId, "考官【" + userName + "】的试卷【" + paperInfo.getPapersName() + "】已发布", "MT_PU");
+                sysMsgService.addMsg(userId, userId, "试卷【" + paperInfo.getPapersName() + "】已发布", "MT_PU");
             }
-            sysMsgService.addEeMsg(userId, "考官【" + userName + "】的试卷【" + paperInfo.getPapersName() + "】已发布", "MT_PU");
-            sysMsgService.addMsg(userId, userId, "试卷【" + paperInfo.getPapersName() + "】已发布", "MT_PU");
             result.setStatus(201);
             result.setMsg("保存成功");
         }
