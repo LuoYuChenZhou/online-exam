@@ -29,16 +29,21 @@ public class ToolUtil extends StringUtils {
      * 本工程中用于多选题输入正确答案的和，获取错误答案的和
      *
      * @param trueOptionsValue 正确答案的和
+     * @param numOfOptions     选项个数
      * @return 错误答案的和
      */
-    public static Integer getWrongOptionsValue(Integer trueOptionsValue) {
+    public static Integer getWrongOptionsValue(Integer trueOptionsValue, Integer numOfOptions) {
         if (isEmpty(trueOptionsValue)) return null;
         StringBuilder sb = new StringBuilder();
         char[] trueC = Integer.toBinaryString(trueOptionsValue).toCharArray();
         for (char c : trueC) {
             sb.append(Objects.equals(c, '1') ? "0" : "1");
         }
-        return Integer.parseInt(sb.toString(), 2);
+        StringBuilder sb1 = new StringBuilder();
+        for (int i = sb.toString().length(); i < numOfOptions; i++) {
+            sb1.append("1");
+        }
+        return Integer.parseInt(sb1.append(sb).toString(), 2);
     }
 
     /**

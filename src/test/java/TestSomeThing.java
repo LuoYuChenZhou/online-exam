@@ -24,7 +24,7 @@ public class TestSomeThing {
         log.warn(a & b);
         log.warn(b & (b - 1));
         log.warn(Integer.toBinaryString(b));
-        log.warn(Integer.toBinaryString(ToolUtil.getWrongOptionsValue(b)));
+        log.warn(Integer.toBinaryString(ToolUtil.getWrongOptionsValue(b,3)));
     }
 
     @Test

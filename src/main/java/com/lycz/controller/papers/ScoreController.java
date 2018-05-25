@@ -178,7 +178,8 @@ public class ScoreController {
                                     if (Objects.equals("1", qaMap.get("scoreType"))) {
                                         scoreDetailMap.put(questionId, "0");
                                     } else {
-                                        Integer wrongAnswer = ToolUtil.getWrongOptionsValue(Integer.parseInt((String) qaMap.get("answer")));
+                                        Integer numOfOptions = ((String) qaMap.get("options")).substring(0, ((String) qaMap.get("options")).length() - 2).split("\\$\\$").length;
+                                        Integer wrongAnswer = ToolUtil.getWrongOptionsValue(Integer.parseInt((String) qaMap.get("answer")), numOfOptions);
                                         Integer inputAnswer = Integer.parseInt(answer);
                                         if (ToolUtil.isEmpty(wrongAnswer)) {
                                             scoreDetailMap.put(questionId, (String) qaMap.get("assignScore"));

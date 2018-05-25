@@ -154,7 +154,7 @@ public class PapersController {
         List<PaperQuestion> pqAddList = new ArrayList<>();
         List<PaperQuestion> pqModifyList = new ArrayList<>();
         if (ToolUtil.isNotEmpty(baseQuestionsList)) {
-            for (int i = 0; i < baseQuestionsList.size(); i++) {
+            for (int i = 0; i < paperQuestionList.size(); i++) {
                 BaseQuestions bq = baseQuestionsList.get(i);
                 PaperQuestion pq = paperQuestionList.get(i);
 

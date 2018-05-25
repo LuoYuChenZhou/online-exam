@@ -56,7 +56,7 @@ function searchBtnClick() {
         where: {
             token: token
             , paperId: $("#searchPaperId").val()
-            , searchEeInfo: $("#searchEeInfo").val()
+            , searchErName: $("#searchErName").val()
         },
         page: {
             curr: 1
