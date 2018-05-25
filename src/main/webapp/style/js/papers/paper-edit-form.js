@@ -660,7 +660,6 @@ function paperCommit(type) {
         allInfo["baseQuestionsList[" + index + "].subject"] = jsonFormObject["subject" + i];
         allInfo["baseQuestionsList[" + index + "].questionType"] = jsonFormObject["qType" + i];
         allInfo["baseQuestionsList[" + index + "].questionAnalyze"] = jsonFormObject["questionAnalyze" + i];
-        allInfo["baseQuestionsList[" + index + "].status"] = "1";
 
         let qaId = qaIndexIdMap.get("qa" + i);
         if (!fieldIsWrong(qaId)) {

@@ -101,7 +101,7 @@
 
     <delete id="batchDelPQ">
         DELETE pq FROM paper_question pq
-        WHERE pq.paper_id = #{}
+        WHERE pq.paper_id = #{paperId}
         AND pq.question_id IN
         <foreach collection="qaIdList" item="item" separator="," open="(" close=")">
             #{item}

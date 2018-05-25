@@ -158,6 +158,8 @@ public class PapersController {
                 BaseQuestions bq = baseQuestionsList.get(i);
                 PaperQuestion pq = paperQuestionList.get(i);
 
+                bq.setStatus("1");
+
                 if (ToolUtil.isNotEmpty(bq.getId())) {
                     bq.setModifyTime(date);
                     bqModifyList.add(bq);
