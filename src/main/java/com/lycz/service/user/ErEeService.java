@@ -43,4 +43,9 @@ public interface ErEeService extends IBaseServiceTk<ErEe> {
     String acceptEeEr(String sendName, ErEe erEe) throws Exception;
 
     List<Map<String, Object>> getErListByEe(String eeId);
+
+    /**
+     * 根据考生id获取考官id列表
+     */
+    List<String> getErIdListByEeId(String eeId);
 }

@@ -264,6 +264,10 @@ public class ErEeServiceImpl extends BaseServiceTk<ErEe> implements ErEeService 
         //由于可能没有要删除的，所以不做大于0的判断
         eeGradeService.deleteByEeEr(erEe.getExaminerId(), erEe.getExamineeId());
         if (sysMsgService.insertSelective(sysMsg) > 0 && updateByPrimaryKeySelective(erEe) > 0) {
+            if (rmType.equals("erRemove")) {
+                // 考生端消息
+                commonService.sendErEeAMQMessage("您与考官【" + sendName + "】的师生关系已解除", erEe.getExaminerId(), erEe.getExamineeId(), "remove");
+            }
             return "1";
         } else {
             return "0";
@@ -277,18 +281,20 @@ public class ErEeServiceImpl extends BaseServiceTk<ErEe> implements ErEeService 
         sysMsg.setStatus("0");
         sysMsg.setCreateTime(new Date());
         String msgCode = "msgType";
-        String msgValue;
+        String msgValue, erName;
 
         if (Objects.equals(erEe.getCurStatus(), "1")) {
             msgValue = "MT_ER_AC";
             sysMsg.setSendId(erEe.getExamineeId());
             sysMsg.setReceiveId(erEe.getExaminerId());
             sysMsg.setMsg("”" + sendName + "“同意了您的申请");
+            erName = sendName;
         } else if (Objects.equals(erEe.getCurStatus(), "2")) {
             msgValue = "MT_EE_AC";
             sysMsg.setSendId(erEe.getExamineeId());
             sysMsg.setReceiveId(erEe.getExaminerId());
             sysMsg.setMsg("”" + sendName + "“接受了您的邀请");
+            erName = vUserService.selectByUserId(erEe.getExaminerId()).getUserName();
         } else {
             return "接受时，当前状态错误" + erEe.getCurStatus();
         }
@@ -308,6 +314,8 @@ public class ErEeServiceImpl extends BaseServiceTk<ErEe> implements ErEeService 
         eeGradeService.buildEeGradeByStatus(erEe.getExaminerId(), erEe.getExamineeId());
 
         if (sysMsgService.insertSelective(sysMsg) > 0 && updateByPrimaryKeySelective(erEe) > 0) {
+            // 考生端消息
+            commonService.sendErEeAMQMessage("您与考官【" + erName + "】的师生关系已建立", erEe.getExaminerId(), erEe.getExamineeId(), "add");
             return "1";
         } else {
             return "0";
@@ -317,5 +325,10 @@ public class ErEeServiceImpl extends BaseServiceTk<ErEe> implements ErEeService 
     @Override
     public List<Map<String, Object>> getErListByEe(String eeId) {
         return erEeMapper.getErListByEe(eeId);
+    }
+
+    @Override
+    public List<String> getErIdListByEeId(String eeId) {
+        return erEeMapper.getErIdListByEeId(eeId);
     }
 }

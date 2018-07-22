@@ -10,6 +10,7 @@ import com.lycz.model.SysLog;
 import com.lycz.service.base.SysLogService;
 import com.lycz.service.base.SysMsgService;
 import com.lycz.service.base.TokenService;
+import com.lycz.service.user.ErEeService;
 import com.lycz.service.user.ExamineeService;
 import com.lycz.service.user.ExaminerService;
 import io.swagger.annotations.Api;
@@ -46,6 +47,8 @@ public class LoginController {
     private SysLogService sysLogService;
     @Resource
     private SysMsgService sysMsgService;
+    @Resource
+    private ErEeService erEeService;
 
     /**
      * 登录
@@ -110,8 +113,18 @@ public class LoginController {
         }
         saveLoginLog(loginName, "不显示", type, "登录成功");
 
-        Map<String, String> tokenMap = new HashMap<>();
+        Map<String, Object> tokenMap = new HashMap<>();
         tokenMap.put("token", token);
+
+        // 考生登录获取所属考官列表
+        if (Objects.equals("2", type)) {
+            List<String> erIdList = erEeService.getErIdListByEeId(((Examinee) tokenObj).getId());
+            if (ToolUtil.isNotEmpty(erIdList)) {
+                tokenMap.put("erIdList", erIdList);
+            }
+            tokenMap.put("userId", ((Examinee) tokenObj).getId());
+        }
+
         result.setData(JSONObject.fromObject(tokenMap));
         result.setStatus(200);
         result.setMsg("登录成功");

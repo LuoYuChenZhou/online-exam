@@ -2,18 +2,56 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-           http://www.springframework.org/schema/context
-           http://www.springframework.org/schema/context/spring-context-3.0.xsd
-           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+       xmlns:jms="http://www.springframework.org/schema/jms" xmlns:amq="http://activemq.apache.org/schema/core"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:c="http://www.springframework.org/schema/c" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd">
 
     <!-- 扫描service层注解的bean -->
     <context:component-scan base-package="com.lycz.service"/>
     <!--扫描aop-->
     <context:component-scan base-package="com.lycz.configAndDesign.aspect"/>
+
+    <!-- activemq相关配置，此配置方式需要添加amq对应的命名空间 -->
+    <!-- 连接工厂 -->
+    <amq:connectionFactory id="amqConnectionFactory" brokerURL="tcp://localhost:61616" userName="sys" password="login"/>
+    <!-- 设置预取策略 -->
+    <amq:prefetchPolicy id="prefetchPolicy" queuePrefetch="1" topicPrefetch="1000"/>
+    <!--为了提高效率，配置一个连接池 -->
+    <bean id="cachedConnectionFactory"
+          class="org.springframework.jms.connection.CachingConnectionFactory"
+          p:targetConnectionFactory-ref="amqConnectionFactory"
+          p:sessionCacheSize="10"/>
+    <!-- 配置消息终点 -->
+    <amq:queue id="spittleQueue" physicalName="online.exam.queue"/>
+    <amq:topic id="spittleTopic" physicalName="online.exam.topic"/>
+    <bean id="messageConverter"
+          class="org.springframework.jms.support.converter.SimpleMessageConverter"/>
+    <!-- 配置JmsTemplate（用于简化代码） -->
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate"
+          p:defaultDestination-ref="spittleTopic"
+          p:messageConverter-ref="messageConverter">
+        <constructor-arg ref="amqConnectionFactory"/>
+    </bean>
+    <!-- 消息监听 -->
+    <!--<bean id="messageListener1" class="controller.amq.MessageListener1" />
+    <bean id="messageListener2" class="controller.amq.MessageListener2" />
+    <bean id="messageListener3" class="controller.amq.MessageListener3" />
+    <bean id="messageListener4" class="controller.amq.MessageListener4" />
+    &lt;!&ndash; listener-container 默认是queue类型的 &ndash;&gt;
+    <jms:listener-container connection-factory="amqConnectionFactory">
+        <jms:listener destination="spittle.alert.queue" ref="messageListener1" method="onMessage" />
+        <jms:listener destination="spittle.alert.queue" ref="messageListener2" method="onMessage" />
+    </jms:listener-container>
+    <jms:listener-container destination-type="topic" connection-factory="amqConnectionFactory">
+        <jms:listener destination="biz1.topic" ref="messageListener3" method="onMessage" />
+        <jms:listener destination="biz1.topic" ref="messageListener4" method="onMessage" />
+    </jms:listener-container>-->
 
     <!-- 引入jdbc配置文件 -->
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

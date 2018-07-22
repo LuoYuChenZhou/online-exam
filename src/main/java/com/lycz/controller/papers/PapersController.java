@@ -5,6 +5,7 @@ import com.lycz.configAndDesign.FixPageInfo;
 import com.lycz.configAndDesign.ToolUtil;
 import com.lycz.configAndDesign.annotation.Privilege;
 import com.lycz.model.*;
+import com.lycz.service.base.CommonService;
 import com.lycz.service.base.SysMsgService;
 import com.lycz.service.base.TokenService;
 import com.lycz.service.paper.PaperQuestionService;
@@ -45,6 +46,8 @@ public class PapersController {
     private ExamineeService examineeService;
     @Resource
     private SysMsgService sysMsgService;
+    @Resource
+    private CommonService commonService;
 
     @RequestMapping(value = "/addPaper", method = RequestMethod.POST)
     @Privilege(methodName = "添加新试卷", privilegeLevel = Privilege.ER_TYPE)
@@ -109,6 +112,7 @@ public class PapersController {
                 }
                 sysMsgService.addEeMsg(userId, "考官【" + userName + "】的试卷【" + paperInfo.getPapersName() + "】已发布", "MT_PU");
                 sysMsgService.addMsg(userId, userId, "试卷【" + paperInfo.getPapersName() + "】已发布", "MT_PU");
+                commonService.sendActiveMQMessage("topic", "考官【" + userName + "】的试卷【" + paperInfo.getPapersName() + "】已发布", token);
             }
             result.setStatus(201);
             result.setMsg("保存成功");
@@ -193,6 +197,7 @@ public class PapersController {
                 }
                 sysMsgService.addEeMsg(userId, "考官【" + userName + "】的试卷【" + paperInfo.getPapersName() + "】已发布", "MT_PU");
                 sysMsgService.addMsg(userId, userId, "试卷【" + paperInfo.getPapersName() + "】已发布", "MT_PU");
+                commonService.sendActiveMQMessage("topic", "考官【" + userName + "】的试卷【" + paperInfo.getPapersName() + "】已发布", token);
             }
             result.setStatus(201);
             result.setMsg("保存成功");
@@ -348,10 +353,12 @@ public class PapersController {
                 scoreService.deleteByPaperId(paperId);
                 sysMsgService.addEeMsg(userId, erPaperName + "取消发布", "MT_UN_PU");
                 sysMsgService.addMsg(userId, userId, "试卷【" + paper1.getPapersName() + "】取消发布", "MT_UN_PU");
+                commonService.sendActiveMQMessage("topic", "考官【" + userName + "】的试卷【" + paper1.getPapersName() + "】取消发布", token);
             }
         } else if (targetStatus.equals("2")) {
             sysMsgService.addEeMsg(userId, erPaperName + "已发布", "MT_PU");
             sysMsgService.addMsg(userId, userId, "试卷【" + paper1.getPapersName() + "】已发布", "MT_PU");
+            commonService.sendActiveMQMessage("topic", "考官【" + userName + "】的试卷【" + paper1.getPapersName() + "】已发布", token);
         }
 
         Papers paper = new Papers();

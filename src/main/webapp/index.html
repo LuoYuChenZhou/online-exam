@@ -220,6 +220,10 @@
                 success: function (data) {
                     if (data.status === 200) {
                         $.cookie('online_token', data.data.token, {path: "/"});
+                        if(!fieldIsWrong(data.data.erIdList)){
+                            $.cookie('erIdList', data.data.erIdList, {path: "/"});
+                            $.cookie('online_cur_userId', data.data.userId, {path: "/"});
+                        }
                         toMainMenu();
                     } else if (data.status === 400) {
                         $("#message-div").html("<span style='display:block;color: Orange'>请确定登录模式</span>");

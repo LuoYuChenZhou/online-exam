@@ -122,4 +122,14 @@
         </if>
         ORDER BY er.real_name
     </select>
+
+    <select id="getErIdListByEeId" resultType="String">
+        SELECT
+            examiner_id
+        FROM
+            er_ee
+        WHERE
+            examinee_id = #{eeId}
+            AND cur_status = '3'
+    </select>
 </mapper>

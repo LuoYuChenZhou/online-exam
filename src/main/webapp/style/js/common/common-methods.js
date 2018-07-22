@@ -62,11 +62,15 @@ $.ajaxSetup({
                 layer.msg('系统繁忙。。', {icon: 5});
                 return;
             }
-            let obj = eval('(' + data.responseText + ')');
-            if (obj.status > 401) {
-                layer.msg('系统繁忙。。', {icon: 5});
-            } else if (obj.status === 401) {
-                top.location.href = localhostPath;
+            if (!fieldIsWrong(data.responseText) && data.responseText.substring(0, 1) !== "<") {
+                let obj = eval('(' + data.responseText + ')');
+                if (!fieldIsWrong(obj)) {
+                    if (obj.status > 401) {
+                        layer.msg('系统繁忙。。', {icon: 5});
+                    } else if (obj.status === 401) {
+                        top.location.href = localhostPath;
+                    }
+                }
             }
         }
 });
@@ -276,4 +280,16 @@ function strMapToObj(strMap) {
 // ES6的Map对象转Json
 function strMapToJson(strMap) {
     return JSON.stringify(strMapToObj(strMap));
+}
+
+// 将数组中所有符合条件的元素删除
+function deleteAllSameEleFromArray(option, array) {
+    let index = array.index(option);
+    console.log(index,array);
+    if (index > -1) {
+        array.splice(index, 1);
+        deleteAllSameEleFromArray(option, array);
+    } else {
+        return array;
+    }
 }

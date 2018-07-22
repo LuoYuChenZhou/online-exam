@@ -13,10 +13,13 @@
     <script type="text/javascript" src="/style/layui/layui.js"></script>
     <script type="text/javascript" src="../style/js/common/sweetalert2.min.js"></script>
     <script type="text/javascript" src="../style/js/common/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="../style/js/common/amq_jquery_adapter.js"></script>
+    <script type="text/javascript" src="../style/js/common/amq.js"></script>
     <script type="text/javascript" src="../style/js/common/jquery.cookie.js"></script>
     <script type="text/javascript" src="../style/js/common/common-methods.js"></script>
     <script type="text/javascript" src="../style/js/common/nav.js"></script>
     <script type="text/javascript" src="/style/iconfont/iconfont.js"></script>
+    <script type="text/javascript" src="/style/js/common/online_amq.js"></script>
 </head>
 <body class="index">
 <!--顶部-->
@@ -25,6 +28,13 @@
         <img src="../style/image/logo.png"/>
     </div>
     <div id="main_menu_top_right">
+        <div class="separator"></div>
+        <a href="javascript:void(0);" onclick="showOrHideMsgDiv()">
+            <svg class="icon left_menu_top" aria-hidden="true">
+                <use xlink:href="#icon-xiaoxi"></use>
+            </svg>
+            <span id="newMsgShow" class="layui-badge-dot layui-bg-orange" style="display: none;bottom: 12px;"></span>
+        </a>
         <div class="separator"></div>
         <a href="javascript:void(0);">
             <svg class="icon left_menu_top" aria-hidden="true">
@@ -42,6 +52,9 @@
         <span>欢迎使用~</span>
     </div>
 </div>
+<!-- 消息框体 -->
+<div id="triangleDiv"></div>
+<div id="messageArea"></div>
 <!--菜单-->
 <div id="nav" class="nav">
     <div class="nav-top">
